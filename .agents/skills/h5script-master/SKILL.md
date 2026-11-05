@@ -1,21 +1,21 @@
 ---
 name: h5script-master
 description: >
-  Master knowledge base for Infor M3 H5 scripting (TypeScript/JavaScript personalizations for MForms panels, H5 Script SDK 10.4.1) AND for converting legacy Smart Office (JScript.Net) personalizations to H5 TypeScript. Use for ALL H5 tasks: creating, editing, reviewing, debugging and deploying scripts; IInstanceController, Requesting/Requested/RequestCompleted, e.cancel, ListControl/IActiveGrid, ContentElement.AddElement, ConfirmDialog, SessionCache/InstanceCache, ScriptUtil, MIService (executeRequestV2, MIRequest), IonApiService, MForms Automation, drillback, localScript debugging, TypeScript compilation flags, IDS datagrid issues, panel names like OIA101BC, SO JScript to H5 mapping (MIWorker, controller.add_Requesting), Abhishek's coding rules, and Fortude/Safco scripts (UCA0 approval locks, qty-lock validators). Trigger on any OIS/APS/CRS/PMS/MWS/PDS/PPS program script, pasted .ts/.js, 'M3 script', 'H5 button', 'block ENTER', 'add a column to the list'. Refer to the GitHub Knowledge Base at https://github.com/ChirathRo/KB_Infor_Technical.
+  Master knowledge base for Infor M3 H5 scripting (TypeScript/JavaScript personalizations for MForms panels, H5 Script SDK 10.4.1) AND for converting legacy Smart Office (JScript.Net) personalizations to H5 TypeScript. Use for ALL H5 tasks: creating, editing, reviewing, debugging and deploying scripts; IInstanceController, Requesting/Requested/RequestCompleted, e.cancel, ListControl/IActiveGrid, ContentElement.AddElement, ConfirmDialog, SessionCache/InstanceCache, ScriptUtil, MIService (executeRequestV2, MIRequest), IonApiService, MForms Automation, drillback, localScript debugging, TypeScript compilation flags, IDS datagrid issues, panel names like OIA101BC, SO JScript to H5 mapping (MIWorker, controller.add_Requesting), Abhishek's coding rules, and Fortude/Safco scripts (UCA0 approval locks, qty-lock validators). Trigger on any OIS/APS/CRS/PMS/MWS/PDS/PPS program script, pasted .ts/.js, 'M3 script', 'H5 button', 'block ENTER', 'add a column to the list'. Refer to the GitHub Knowledge Base at https://github.com/chirathrc/KB_Infor_Technical.
 ---
 
 # Infor M3 H5 Script — Master Knowledge Base
 > Consolidated from live project scripts, H5 Script Developer's Guide (10.4.1), Fortude Training Guide,
-> and the GitHub Knowledge Base at **https://github.com/ChirathRo/KB_Infor_Technical**.
+> and the GitHub Knowledge Base at **https://github.com/chirathrc/KB_Infor_Technical**.
 
 ## 0. GitHub Knowledge Base Mapping
 Always cite and reference resources using their GitHub repository URLs rather than local paths:
-- **Repository**: `https://github.com/ChirathRo/KB_Infor_Technical`
-- **Master Script Catalog**: [`KB_INDEX.json`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/KB_INDEX.json)
-- **Standard MI API Swagger Catalog**: [`mi-swagger/MI_CATALOG.md`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/mi-swagger/MI_CATALOG.md)
-- **API Reference & Typings**: [`api-reference/h5.script.d.ts`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/api-reference/h5.script.d.ts) and [`api-reference/API_QUICK_REFERENCE.md`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/api-reference/API_QUICK_REFERENCE.md)
-- **Development Standards**: [`docs/STANDARDS_AND_CONVENTIONS.md`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/docs/STANDARDS_AND_CONVENTIONS.md)
-- **Functional Specs**: [`design-specifications/SPECS_SUMMARY.md`](https://github.com/ChirathRo/KB_Infor_Technical/blob/main/design-specifications/SPECS_SUMMARY.md)
+- **Repository**: `https://github.com/chirathrc/KB_Infor_Technical`
+- **Master Script Catalog**: [`KB_INDEX.json`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/KB_INDEX.json)
+- **Standard MI API Swagger Catalog**: [`mi-swagger/MI_CATALOG.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/mi-swagger/MI_CATALOG.md)
+- **API Reference & Typings**: [`api-reference/h5.script.d.ts`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/api-reference/h5.script.d.ts) and [`api-reference/API_QUICK_REFERENCE.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/api-reference/API_QUICK_REFERENCE.md)
+- **Development Standards**: [`docs/STANDARDS_AND_CONVENTIONS.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/docs/STANDARDS_AND_CONVENTIONS.md)
+- **Functional Specs**: [`design-specifications/SPECS_SUMMARY.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/design-specifications/SPECS_SUMMARY.md)
 
 ---
 
@@ -122,9 +122,9 @@ class [ScriptFileName] {
 
 ## 4. Reference Scripts on GitHub
 Refer to matching production implementations in:
-- Finance: `https://github.com/ChirathRo/KB_Infor_Technical/tree/main/scripts/finance`
-- Sales & Distribution: `https://github.com/ChirathRo/KB_Infor_Technical/tree/main/scripts/sales-and-distribution`
-- Manufacturing & Purchasing: `https://github.com/ChirathRo/KB_Infor_Technical/tree/main/scripts/manufacturing-and-purchasing`
-- Infor SDK Samples: `https://github.com/ChirathRo/KB_Infor_Technical/tree/main/scripts/infor-samples`
-- Standard MI APIs: `https://github.com/ChirathRo/KB_Infor_Technical/tree/main/mi-swagger`
+- Finance: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/finance`
+- Sales & Distribution: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/sales-and-distribution`
+- Manufacturing & Purchasing: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/manufacturing-and-purchasing`
+- Infor SDK Samples: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/infor-samples`
+- Standard MI APIs: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/mi-swagger`
 
