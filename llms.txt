@@ -15,3 +15,4 @@
 - [scripts/manufacturing-and-purchasing/](scripts/manufacturing-and-purchasing/): Production Orders (PMS), Purchase Orders (PPS)
 - [scripts/infor-samples/](scripts/infor-samples/): Infor SDK samples demonstrating specific H5 features
 - [scripts/utilities/](scripts/utilities/): Shared tools and entry mode setters
+

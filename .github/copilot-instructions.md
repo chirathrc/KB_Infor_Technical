@@ -68,3 +68,4 @@ Always follow the official standards defined in `docs/STANDARDS_AND_CONVENTIONS.
 4. **DOM & Grid Best Practices**:
    - Use `args.controller.GetGrid()` for `IActiveGrid` list operations.
    - Use `args.controller.GetContent().OnUnload(...)` to clean up dynamically created DOM elements or timers.
+

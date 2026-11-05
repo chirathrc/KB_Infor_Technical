@@ -827,6 +827,19 @@
     ]
   },
   {
+    "file": "MMS121_DisplayShelfLife.ts",
+    "category": "sales-and-distribution",
+    "path": "scripts/sales-and-distribution/MMS121_DisplayShelfLife.ts",
+    "m3Program": "MMS121",
+    "author": "Fortude",
+    "summary": "Functional Specification FTD_M3_FS 2072 (SAFCO ELEV8 Implementation). MMS121/B (MMA121BC) - Calculates and displays remaining Shelf Life Percentage in a custom grid column ('Shl...",
+    "keyApis": [
+      "MIService (M3 API)",
+      "Hook: RequestCompleted",
+      "Grid / List Control"
+    ]
+  },
+  {
     "file": "MWS068_DisplayNumberOfPacks.ts",
     "category": "sales-and-distribution",
     "path": "scripts/sales-and-distribution/MWS068_DisplayNumberOfPacks.ts",

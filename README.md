@@ -73,7 +73,7 @@ The `mi-swagger/` directory contains complete OpenAPI/Swagger JSON specification
 | [`FAS130_RestrictFields.ts`](scripts/finance/FAS130_RestrictFields.ts) | `FAS130` | Validates the input format of field WWYREF on the FAS130/F panel. Ported from on-prem JScript (Andrea Devica, 20250801). - Trigger : Runs on Enter key press on FAS130/F panel. -... | DOM / Standard API |
 | [`GLS015_field_hide.ts`](scripts/finance/GLS015_field_hide.ts) | `GLS015` | This script automatically sets the field WWVDSC (Voucher Description) to the value "转账凭证" (translated: Transfer Voucher) on panel GLS015. It is triggered during Enter key action... | DOM / Standard API |
 
-## Sales & Distribution (CRS, MMS, MWS, OIS) (20 Scripts)
+## Sales & Distribution (CRS, MMS, MWS, OIS) (21 Scripts)
 
 | Script Name | M3 Program | Summary / Purpose | Key APIs Used |
 | :--- | :--- | :--- | :--- |
@@ -83,6 +83,7 @@ The `mi-swagger/` directory contains complete OpenAPI/Swagger JSON specification
 | [`MMS100B_MWS300B_AutomationOfPositiveRO.ts`](scripts/sales-and-distribution/MMS100B_MWS300B_AutomationOfPositiveRO.ts) | `MMS100` | Script checks if a single selected row in M3’s MWA300BC or MMA100BC panels is a positive Return Order (RO) by validating its order type (TRTP) using the CRS200MI API. If the RO ... | MIService (M3 API), Grid / List Control |
 | [`MMS100E_Apply_UserRole_Validation.ts`](scripts/sales-and-distribution/MMS100E_Apply_UserRole_Validation.ts) | `MMS100` | Keep Authorize enabled for valid user roles only - Place this H5script in MMS100/E panel | MIService (M3 API), ConfirmDialog |
 | [`MMS101B1_PreventLineDeletion.ts`](scripts/sales-and-distribution/MMS101B1_PreventLineDeletion.ts) | `MMS101` | Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MMS101B panel. | Hook: RequestCompleted, Grid / List Control |
+| [`MMS121_DisplayShelfLife.ts`](scripts/sales-and-distribution/MMS121_DisplayShelfLife.ts) | `MMS121` | Functional Specification FTD_M3_FS 2072 (SAFCO ELEV8 Implementation). MMS121/B (MMA121BC) - Calculates and displays remaining Shelf Life Percentage in a custom grid column ('Shl... | MIService (M3 API), Hook: RequestCompleted, Grid / List Control |
 | [`MWS068_DisplayNumberOfPacks.ts`](scripts/sales-and-distribution/MWS068_DisplayNumberOfPacks.ts) | `MWS068` | H5 Script for MWS068/B panel to display number of packs (raw materials) in Lot Ref 2 (MLBRE2) and KG value for livestock FG in Indonesia WHs in Main Attribute 3 (MLATV3). Calcul... | MIService (M3 API), Hook: RequestCompleted, Grid / List Control |
 | [`MWS301B1_PreventLineDeletion.ts`](scripts/sales-and-distribution/MWS301B1_PreventLineDeletion.ts) | `MWS301` | Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MWS301B panel. | Hook: RequestCompleted, Grid / List Control |
 | [`MWS410B_MOsCostingStatus.ts`](scripts/sales-and-distribution/MWS410B_MOsCostingStatus.ts) | `MWS410` | Validates Costing status for bulk MOs in MWS410/B before allowing option 32. Calls MWS150MI.SelSupplyChain and MDBREADMI.GetMWOHED55 to validate. | MIService (M3 API) |

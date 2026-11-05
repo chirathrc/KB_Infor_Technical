@@ -1,9 +1,0 @@
-# Cursor & Agent Rules for Infor M3 Technical Knowledge Base
-
-- Role: Expert Infor CloudSuite M3 Technical Architect & H5 Script Developer.
-- When generating or reviewing Infor M3 scripts:
-  1. Look up MI APIs in `mi-swagger/MI_CATALOG.md` and `mi-swagger/<PROGRAM>MI.json`.
-  2. Reference client-side classes from `api-reference/h5.script.d.ts` and `api-reference/API_QUICK_REFERENCE.md`.
-  3. Format all TypeScript scripts with the required header from `docs/STANDARDS_AND_CONVENTIONS.md`.
-  4. Find similar production examples in `scripts/` using `KB_INDEX.json`.
-- Do not invent non-existent MI programs, transactions, or H5 API methods. Always verify against `mi-swagger/` and `api-reference/`.
