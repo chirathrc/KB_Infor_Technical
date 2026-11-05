@@ -162,3 +162,7 @@ The `mi-swagger/` directory contains complete OpenAPI/Swagger JSON specification
 | [`EntryModeSetter.ts`](scripts/utilities/EntryModeSetter.ts) | `General / Framework` | This script is standard one in ISO. There is no equivalent H5 scripts. Perhaps this is not required in MT. However, I uplifted it. | DOM / Standard API |
 | [`TestIssue.ts`](scripts/utilities/TestIssue.ts) | `General / Framework` | Script initialization function. | MIService (M3 API), Hook: RequestCompleted |
 
+
+## MEC Knowledge
+MEC mappings, guides, MI references and 80 sample .zap files are in [mec/](mec/README.md), organised by subject. Index: [mec/MEC_INDEX.json](mec/MEC_INDEX.json).
+

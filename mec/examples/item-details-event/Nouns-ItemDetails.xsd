@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Noun ItemDetails: M3 item master (MITMAS) + item/warehouse (MITBAL) + item/facility (MITFAC) + alternate U/M (MITAUN) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schema.infor.com/InforOAGIS/2" targetNamespace="http://schema.infor.com/InforOAGIS/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:element name="ItemDetails" type="ItemDetailsType"/>
+	<xs:complexType name="ItemDetailsType">
+		<xs:sequence>
+			<xs:element name="ItemHeader" type="ItemDetailsHeaderType"/>
+			<xs:element name="Warehouse" type="ItemDetailsWarehouseType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Facility" type="ItemDetailsFacilityType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="AlternateUOM" type="ItemDetailsAlternateUOMType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemDetailsHeaderType">
+		<xs:sequence>
+			<xs:element name="ItemNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemTypeDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemGroupDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProductGroupDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessArea" type="xs:string" minOccurs="0"/>
+			<xs:element name="BasicUOM" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchaseOrderUOM" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchasePriceUOM" type="xs:string" minOccurs="0"/>
+			<xs:element name="SalesPriceUOM" type="xs:string" minOccurs="0"/>
+			<xs:element name="ItemCategory" type="xs:string" minOccurs="0"/>
+			<xs:element name="MakeBuyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="LotNumberingMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="LotControlMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="Responsible" type="xs:string" minOccurs="0"/>
+			<xs:element name="ResponsibleName" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProcurementGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="SalesItem" type="xs:string" minOccurs="0"/>
+			<xs:element name="AttributeModel" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExtendedItemNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="HierarchyLevel1" type="xs:string" minOccurs="0"/>
+			<xs:element name="HierarchyLevel2" type="xs:string" minOccurs="0"/>
+			<xs:element name="HierarchyLevel3" type="xs:string" minOccurs="0"/>
+			<xs:element name="HierarchyLevel4" type="xs:string" minOccurs="0"/>
+			<xs:element name="HierarchyLevel5" type="xs:string" minOccurs="0"/>
+			<xs:element name="NetWeight" type="xs:string" minOccurs="0"/>
+			<xs:element name="GrossWeight" type="xs:string" minOccurs="0"/>
+			<xs:element name="Volume" type="xs:string" minOccurs="0"/>
+			<xs:element name="Length" type="xs:string" minOccurs="0"/>
+			<xs:element name="Width" type="xs:string" minOccurs="0"/>
+			<xs:element name="Height" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATCodePurchase" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATCodeSales" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="ChangeDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="ChangedBy" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemDetailsWarehouseType">
+		<xs:sequence>
+			<xs:element name="Warehouse" type="xs:string" minOccurs="0"/>
+			<xs:element name="WarehouseName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Facility" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="Responsible" type="xs:string" minOccurs="0"/>
+			<xs:element name="Buyer" type="xs:string" minOccurs="0"/>
+			<xs:element name="Supplier" type="xs:string" minOccurs="0"/>
+			<xs:element name="PlanningPolicy" type="xs:string" minOccurs="0"/>
+			<xs:element name="OrderType" type="xs:string" minOccurs="0"/>
+			<xs:element name="DefaultLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReorderPoint" type="xs:string" minOccurs="0"/>
+			<xs:element name="SafetyStock" type="xs:string" minOccurs="0"/>
+			<xs:element name="MaximumStock" type="xs:string" minOccurs="0"/>
+			<xs:element name="EconomicOrderQuantity" type="xs:string" minOccurs="0"/>
+			<xs:element name="LeadTime" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnHandApproved" type="xs:string" minOccurs="0"/>
+			<xs:element name="AllocatableOnHand" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemDetailsFacilityType">
+		<xs:sequence>
+			<xs:element name="Facility" type="xs:string" minOccurs="0"/>
+			<xs:element name="FacilityName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="OnHandBalance" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ItemDetailsAlternateUOMType">
+		<xs:sequence>
+			<xs:element name="UOMType" type="xs:string" minOccurs="0"/>
+			<xs:element name="UOM" type="xs:string" minOccurs="0"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConversionFactor" type="xs:string" minOccurs="0"/>
+			<xs:element name="ConversionForm" type="xs:string" minOccurs="0"/>
+			<xs:element name="DecimalPlaces" type="xs:string" minOccurs="0"/>
+			<xs:element name="PriceAdjustmentFactor" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

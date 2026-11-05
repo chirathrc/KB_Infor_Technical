@@ -1,0 +1,106 @@
+{
+  "name": "M3BOD_StockAdjustment_Load_In_Custom",
+  "version": "1.0",
+  "namespace": "M3 BOD",
+  "description": "KB example F11: inbound Load BOD -> MMS850MI/AddAdjust per line; no Acknowledge, no output document",
+  "schema_in": {"xsd": "LoadStockAdjustment.xsd", "name": "LoadStockAdjustment", "root": "LoadStockAdjustment", "category": "BOD"},
+  "schema_out": null,
+  "properties": [
+    {"type": "CP", "name": "Company", "value": "100"},
+    {"type": "CP", "name": "Partner", "value": "EXTWMS"},
+    {"type": "CP", "name": "MessageType", "value": "STKADJ"}
+  ],
+  "constants": [
+    {"name": "PRFL", "value": "\"*EXE\"", "desc": "Process flag, execute immediately"}
+  ],
+  "variables": [
+    {"name": "g_CONO", "type": "String", "init": "\"\""},
+    {"name": "g_E0PA", "type": "String", "init": "\"\""},
+    {"name": "g_E065", "type": "String", "init": "\"\""},
+    {"name": "g_LineNo", "type": "int", "init": "0"},
+    {"name": "g_LineOK", "type": "boolean", "init": "false"},
+    {"name": "g_LineKey", "type": "String", "init": "\"\""},
+    {"name": "g_WHLO", "type": "String", "init": "\"\""},
+    {"name": "g_ITNO", "type": "String", "init": "\"\""},
+    {"name": "g_WHSL", "type": "String", "init": "\"\""},
+    {"name": "g_BANO", "type": "String", "init": "\"\""},
+    {"name": "g_QLQT", "type": "String", "init": "\"\""},
+    {"name": "g_RSCD", "type": "String", "init": "\"\""},
+    {"name": "g_BREM", "type": "String", "init": "\"\""},
+    {"name": "g_Errors", "type": "java.util.List<String>", "init": "new java.util.ArrayList<String>()"}
+  ],
+  "sequence": [
+    {"java": "VersionLog", "desc": "Version history", "code": [
+      "/* KB example F11 (Load In) v1.0",
+      "   Inbound Load BOD from ION -> one MMS850MI/AddAdjust per line.",
+      "   Load = fire-and-forget: no Acknowledge, no Acknowledge_Error_Out map, no output document.",
+      "   Line errors are collected; at the end the message is failed with MeCError so it shows in EC Administration. */"]},
+    {"java": "InitSettings", "desc": "Read control properties", "out": {"oCONO": ["$g_CONO"]}, "code": [
+      "String c = getManifestInfo(\"agr:Company\");",
+      "oCONO = (c == null) ? \"\" : c.trim();",
+      "String p = getManifestInfo(\"agr:Partner\");",
+      "g_E0PA = (p == null) ? \"\" : p.trim();",
+      "String t = getManifestInfo(\"agr:MessageType\");",
+      "g_E065 = (t == null) ? \"\" : t.trim();",
+      "if (oCONO.isEmpty()) {",
+      "  throw new MeCError(\"Control property Company is not set\");",
+      "}"]},
+    {"settings": {"Company": "$g_CONO"}},
+    {"loop": "LineLoop", "cond": "WT", "ctl": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment", "body": [
+      {"java": "ReadLine", "desc": "Validate one line and stage the API inputs",
+       "in": {"iWHLO": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/Warehouse",
+              "iITNO": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/ItemNumber",
+              "iWHSL": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/Location",
+              "iBANO": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/LotNumber",
+              "iQTY":  "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/Quantity",
+              "iRSCD": "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/ReasonCode",
+              "iREM":  "IN:/LoadStockAdjustment/DataArea/StockAdjustment/LoadStockAdjustment/Remark"},
+       "code": [
+        "g_LineNo++;",
+        "g_WHLO = (iWHLO == null) ? \"\" : iWHLO.trim();",
+        "g_ITNO = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+        "g_WHSL = (iWHSL == null) ? \"\" : iWHSL.trim();",
+        "g_BANO = (iBANO == null) ? \"\" : iBANO.trim();",
+        "g_RSCD = (iRSCD == null) ? \"\" : iRSCD.trim();",
+        "g_BREM = (iREM == null) ? \"\" : iREM.trim();",
+        "g_LineKey = \"line \" + g_LineNo + \" (\" + g_WHLO + \"/\" + g_ITNO + \")\";",
+        "g_LineOK = true;",
+        "g_QLQT = \"\";",
+        "if (g_WHLO.isEmpty() || g_ITNO.isEmpty()) {",
+        "  g_LineOK = false;",
+        "  g_Errors.add(g_LineKey + \": warehouse and item number are required\");",
+        "} else {",
+        "  try {",
+        "    java.math.BigDecimal q = new java.math.BigDecimal(iQTY == null ? \"\" : iQTY.trim());",
+        "    if (q.signum() == 0) {",
+        "      g_LineOK = false;",
+        "      g_Errors.add(g_LineKey + \": quantity is zero\");",
+        "    } else {",
+        "      g_QLQT = q.toPlainString();",
+        "    }",
+        "  } catch (NumberFormatException e) {",
+        "    g_LineOK = false;",
+        "    g_Errors.add(g_LineKey + \": quantity '\" + iQTY + \"' is not a number\");",
+        "  }",
+        "}"]},
+      {"loop": "IfLineValid", "cond": "IT", "body": [
+        {"bool": "IsLineValid", "desc": "Post only validated lines", "code": ["return g_LineOK;"]},
+        {"api": "MMS850MI/AddAdjust", "mode": "AVI",
+         "in": {"PRFL": "#PRFL", "E0PA": "$g_E0PA", "E065": "$g_E065", "WHLO": "$g_WHLO", "ITNO": "$g_ITNO",
+                "WHSL": "$g_WHSL", "BANO": "$g_BANO", "QLQT": "$g_QLQT", "RSCD": "$g_RSCD", "BREM": "$g_BREM"},
+         "out": {}},
+        {"java": "CheckAdjust", "desc": "Collect the API error, keep processing the other lines", "code": [
+          "if (!isLastAPICallOK()) {",
+          "  g_Errors.add(g_LineKey + \": \" + getLastMIProgram() + \"/\" + getLastTransaction() + \" => \" + getLastAPIMessage());",
+          "}"]}
+      ]}
+    ]},
+    {"java": "Finish", "desc": "Report collected errors; fail the message if any line failed", "code": [
+      "for (int i = 0; i < g_Errors.size(); i++) {",
+      "  logWarn(g_Errors.get(i));",
+      "}",
+      "if (!g_Errors.isEmpty()) {",
+      "  throw new MeCError(g_Errors.size() + \" of \" + g_LineNo + \" lines failed; first: \" + g_Errors.get(0));",
+      "}"]}
+  ]
+}

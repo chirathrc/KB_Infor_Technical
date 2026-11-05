@@ -1,0 +1,482 @@
+[
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\GC_CN_SCBACK2_IN.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "GC_CN_SCBACK2_IN.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\GC_SCBACK1_IN.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "GC_SCBACK1_IN.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3BOD_HSBCACKIN_Acknowledge_Error_Out_GC_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3BOD_HSBCACKIN_Acknowledge_Error_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3BOD_HSBCACKIN_Process_In_GC_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3BOD_HSBCACKIN_Process_In_GC_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_EHubPaymentConfirmation_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_EHubPaymentConfirmation_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_CN_SCB_ACH_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_CN_SCB_ACH_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_CN_SCB_BT_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_CN_SCB_BT_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_CN_SCB_RTGS_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_CN_SCB_RTGS_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_CN_SCB_TT_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_CN_SCB_TT_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_ID_HSBC_FAST_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_ID_HSBC_FAST_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_ID_HSBC_HVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_ID_HSBC_HVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_ID_HSBC_LVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_ID_HSBC_LVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_MY_HSBC_DTN_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_MY_HSBC_DTN_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_MY_HSBC_HVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_MY_HSBC_HVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_MY_HSBC_LVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_MY_HSBC_LVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_SG_HSBC_FAST_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_SG_HSBC_FAST_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_SG_HSBC_HVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_SG_HSBC_HVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_SG_HSBC_LVP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_SG_HSBC_LVP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_SG_HSBC_PP_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_SG_HSBC_PP_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_VN_HSBC_FTR_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_VN_HSBC_FTR_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_GC_VN_HSBC_LTR_OUT_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_GC_VN_HSBC_LTR_OUT_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bank-payments-hsbc-scb\\M3FTD_SCB_HSBC_Payment_MBM_ReDetector_Custom.zap",
+    "subject": "bank-payments-hsbc-scb",
+    "name": "M3FTD_SCB_HSBC_Payment_MBM_ReDetector_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3BODs_BMFormulaForecastLst_Sync_Out_GC_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3BODs_BMFormulaForecastLst_Sync_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3BODs_BMIngredientStockLst_Sync_Out_GC_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3BODs_BMIngredientStockLst_Sync_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3BODs_BMMaterialPriceLst_Sync_Out_GC_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3BODs_BMMaterialPriceLst_Sync_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3BOD_BMPDSCleanUpAutomation_Acknowledge_Error_Out_GC_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3BOD_BMPDSCleanUpAutomation_Acknowledge_Error_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3BOD_BMPDSCleanUpAutomation_Process_In_GC_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3BOD_BMPDSCleanUpAutomation_Process_In_GC_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3FTD_GC_BESTMIX_In_FeedFormulaItemUpdate_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3FTD_GC_BESTMIX_In_FeedFormulaItemUpdate_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3FTD_GC_BESTMIX_In_FormulaRecipeCurrentPeriod_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3FTD_GC_BESTMIX_In_FormulaRecipeCurrentPeriod_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3FTD_GC_BESTMIX_In_FormulaRecipeFuturePeriods_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3FTD_GC_BESTMIX_In_FormulaRecipeFuturePeriods_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3FTD_GC_BESTMIX_In_PremixRecipeCurrentPeriod_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3FTD_GC_BESTMIX_In_PremixRecipeCurrentPeriod_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\bestmix-feed-formula\\M3FTD_GC_BESTMIX_In_PremixRecipeFuturePeriods_Custom.zap",
+    "subject": "bestmix-feed-formula",
+    "name": "M3FTD_GC_BESTMIX_In_PremixRecipeFuturePeriods_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\eam-item-master\\M3BOD_EAMItemMaster_Acknowledge_Error_Out_2_13_2.zap",
+    "subject": "eam-item-master",
+    "name": "M3BOD_EAMItemMaster_Acknowledge_Error_Out_2_13_2.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\eam-item-master\\M3BOD_EAMItemMaster_Acknowledge_Out_2_13_2.zap",
+    "subject": "eam-item-master",
+    "name": "M3BOD_EAMItemMaster_Acknowledge_Out_2_13_2.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\eam-item-master\\M3BOD_EAMItemMaster_Process_In_2_13_4.zap",
+    "subject": "eam-item-master",
+    "name": "M3BOD_EAMItemMaster_Process_In_2_13_4.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\einvoice-ehub\\M3BOD_EInvoiceIntegrationCustomerOrderInvoices_Sync_Out_1_0_0.zap",
+    "subject": "einvoice-ehub",
+    "name": "M3BOD_EInvoiceIntegrationCustomerOrderInvoices_Sync_Out_1_0_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\einvoice-ehub\\M3BOD_EInvoiceIntegrationDeliveryNote_Sync_Out_1_0_0.zap",
+    "subject": "einvoice-ehub",
+    "name": "M3BOD_EInvoiceIntegrationDeliveryNote_Sync_Out_1_0_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\einvoice-ehub\\M3BOD_EInvoiceInvoiceReversalAndInternalInvoice_Sync_Out_1_0_0.zap",
+    "subject": "einvoice-ehub",
+    "name": "M3BOD_EInvoiceInvoiceReversalAndInternalInvoice_Sync_Out_1_0_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\einvoice-ehub\\M3BOD_EInvoiceManualInvoicesFixedAssets_Sync_Out_1_0_0.zap",
+    "subject": "einvoice-ehub",
+    "name": "M3BOD_EInvoiceManualInvoicesFixedAssets_Sync_Out_1_0_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\einvoice-ehub\\M3FTD_EHubInvoicetoM3_Custom.zap",
+    "subject": "einvoice-ehub",
+    "name": "M3FTD_EHubInvoicetoM3_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\gl-discount-upload\\M3FTD_GC_CreditNoteDiscountUploadME.zap",
+    "subject": "gl-discount-upload",
+    "name": "M3FTD_GC_CreditNoteDiscountUploadME.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\gl-discount-upload\\M3FTD_GC_GLDiscountUpload.zap",
+    "subject": "gl-discount-upload",
+    "name": "M3FTD_GC_GLDiscountUpload.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_InventoryAdjustment_Process_In_2_12_1.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_InventoryAdjustment_Process_In_2_12_1.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_PurchaseRequisitionWF_Sync_Out_1_0_0_GC_Custom.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_PurchaseRequisitionWF_Sync_Out_1_0_0_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_ReceiveDelivery_Process_In_2_12_1.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_ReceiveDelivery_Process_In_2_12_1.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_ReceiveDelivery_Sync_In_2_15_0.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_ReceiveDelivery_Sync_In_2_15_0.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_Requisition_Process_In_2_12_1.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_Requisition_Process_In_2_12_1.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_Shipment_Process_In_2_14_3.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_Shipment_Process_In_2_14_3.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_Shipment_Sync_In_2_9_0.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_Shipment_Sync_In_2_9_0.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_StockCountUpload_Acknowledge_Error_Out_GC_Custom.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_StockCountUpload_Acknowledge_Error_Out_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\inventory-and-stock\\M3BOD_StockCountUpload_Process_In_GC_Custom.zap",
+    "subject": "inventory-and-stock",
+    "name": "M3BOD_StockCountUpload_Process_In_GC_Custom.zap",
+    "type": "inbound"
+  },
+  {
+    "file": "mec\\samples\\purchasing-and-workflow\\M3BOD_AutomationofPositiveRO_Sync_Out_Custom.zap",
+    "subject": "purchasing-and-workflow",
+    "name": "M3BOD_AutomationofPositiveRO_Sync_Out_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\purchasing-and-workflow\\M3BOD_CreditLimitApproveWF_Sync_Out_1_0_0.zap",
+    "subject": "purchasing-and-workflow",
+    "name": "M3BOD_CreditLimitApproveWF_Sync_Out_1_0_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\purchasing-and-workflow\\M3BOD_PurchaseOrderWF_Sync_Out_1_0_0_GC_Custom.zap",
+    "subject": "purchasing-and-workflow",
+    "name": "M3BOD_PurchaseOrderWF_Sync_Out_1_0_0_GC_Custom.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\purchasing-and-workflow\\M3BOD_PurchaseOrder_Sync_Out_2_14_3.zap",
+    "subject": "purchasing-and-workflow",
+    "name": "M3BOD_PurchaseOrder_Sync_Out_2_14_3.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\purchasing-and-workflow\\M3BOD_SupplierInvoice_Sync_Out_2_13_0.zap",
+    "subject": "purchasing-and-workflow",
+    "name": "M3BOD_SupplierInvoice_Sync_Out_2_13_0.zap",
+    "type": "outbound"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_DO_Mapping_Receiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_DO_Mapping_Receiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_DO_Mapping_Receiving_Update_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_DO_Mapping_Receiving_Update_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_POReceivingTicket_Mapping_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_POReceivingTicket_Mapping_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_POReceiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_POReceiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_WBOutbound_1_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_WBOutbound_1_V1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_CN_WBOutbound_2_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_CN_WBOutbound_2_V1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_DO_Mapping_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_DO_Mapping_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_DO_Mapping_Update_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_DO_Mapping_Update_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_DO_Mapping_Receiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_DO_Mapping_Receiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_DO_Mapping_Receiving_Update_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_DO_Mapping_Receiving_Update_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_Outbound_Mapping_1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_Outbound_Mapping_1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_Outbound_Mapping_2_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_Outbound_Mapping_2_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_POReceivingTicket_Mapping_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_POReceivingTicket_Mapping_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_ID_POReceiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_ID_POReceiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_POReceivingTicket_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_POReceivingTicket_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_POReceiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_POReceiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_DO_Mapping_Receiving_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_DO_Mapping_Receiving_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_DO_Mapping_Receiving_Update_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_DO_Mapping_Receiving_Update_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_POReceivingTicket_Mapping_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_POReceivingTicket_Mapping_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_POReceiving_Mapping_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_POReceiving_Mapping_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_WBOutbound_1_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_WBOutbound_1_V1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_VN_WBOutbound_2_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_VN_WBOutbound_2_V1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_WBOutbound_1_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_WBOutbound_1_V1_Custom.zap",
+    "type": "other"
+  },
+  {
+    "file": "mec\\samples\\weighbridge-wb\\M3FTD_GC_WB_WBOutbound_2_V1_Custom.zap",
+    "subject": "weighbridge-wb",
+    "name": "M3FTD_GC_WB_WBOutbound_2_V1_Custom.zap",
+    "type": "other"
+  }
+]

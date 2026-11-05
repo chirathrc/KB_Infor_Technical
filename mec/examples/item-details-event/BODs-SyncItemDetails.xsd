@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Custom BOD Sync.ItemDetails - verb Sync, noun ItemDetails (InforOAGIS 2) -->
+<xs:schema targetNamespace="http://schema.infor.com/InforOAGIS/2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schema.infor.com/InforOAGIS/2" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="Nouns-ItemDetails.xsd"/>
+	<xs:include schemaLocation="Resources-Meta.xsd"/>
+	<xs:element name="SyncItemDetails" type="SyncItemDetailsType"/>
+	<xs:complexType name="SyncItemDetailsType">
+		<xs:complexContent>
+			<xs:extension base="BusinessObjectDocumentType">
+				<xs:sequence>
+					<xs:element name="DataArea" type="SyncItemDetailsDataAreaType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SyncItemDetailsDataAreaType">
+		<xs:sequence>
+			<xs:element ref="Sync"/>
+			<xs:element ref="ItemDetails"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,263 @@
+{
+ "name": "M3FTD_GC_WB_CN_WBOutbound_1_V1_Custom",
+ "version": "1.4",
+ "namespace": "Test",
+ "description": "A new mapping",
+ "schema_in": {
+  "xsd": "MappingSampleSchema.xsd",
+  "name": "MappingSampleSchema",
+  "root": "WBOutbound_1"
+ },
+ "schema_out": {
+  "xsd": "WBOutbound_1_Out_Schema.xsd",
+  "name": "WBOutbound_1_Out_Schema",
+  "root": "WBOutbound_1_Out"
+ },
+ "properties": [
+  {
+   "type": "CP",
+   "name": "Company",
+   "value": "100"
+  }
+ ],
+ "api_fields": [
+  {
+   "program": "MDBREADMI",
+   "transaction": "GetMHDISH00",
+   "list": false,
+   "in": [
+    {
+     "name": "INOU",
+     "label": "Direction",
+     "length": 1,
+     "mandatory": true,
+     "type": "N"
+    },
+    {
+     "name": "DLIX",
+     "label": "Delivery number",
+     "length": 11,
+     "mandatory": true,
+     "type": "N"
+    }
+   ],
+   "out": [
+    {
+     "name": "CONA",
+     "label": "Consignee",
+     "length": 10,
+     "type": "A"
+    },
+    {
+     "name": "DLIX",
+     "label": "Delivery number",
+     "length": 11,
+     "type": "N"
+    },
+    {
+     "name": "WHLO",
+     "label": "Warehouse",
+     "length": 3,
+     "type": "A"
+    }
+   ]
+  }
+ ],
+ "variables": [
+  {
+   "name": "g_IsAllDeliveryAvailable",
+   "type": "Boolean",
+   "init": "true",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_PrimaryKey",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "INOU",
+   "type": "String",
+   "init": "\"1\"",
+   "desc": "Direction, size is 1, type is Numeric"
+  },
+  {
+   "name": "g_ItemCounter",
+   "type": "int",
+   "init": "0",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_ItemExist",
+   "type": "int",
+   "init": "0",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Message",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Company",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_ServerIp",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Port",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Database",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Environment",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Mill",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_Password",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "el"
+  },
+  {
+   "name": "g_Debug",
+   "type": "boolean",
+   "init": "true",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "g_PrimaryKey_",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  },
+  {
+   "name": "DLIX",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Delivery number, size is 11, type is Numeric"
+  },
+  {
+   "name": "oDLIX",
+   "type": "String",
+   "init": "\"\"",
+   "desc": "Please describe me"
+  }
+ ],
+ "sequence": [
+  {
+   "assign": {
+    "from": "IN:/WBOutbound_1/LineRecord",
+    "to": "OUT:/WBOutbound_1_Out/Items"
+   }
+  },
+  {
+   "java": "DataConversion",
+   "in": {
+    "i_PrimaryKey": "IN:/WBOutbound_1/LineRecord/PrimaryKey",
+    "i_TransactionType": "IN:/WBOutbound_1/LineRecord/TransactionType"
+   },
+   "out": {
+    "o_PrimaryKey": [
+     "$g_PrimaryKey"
+    ],
+    "o_TransactionType": []
+   },
+   "code": "o_PrimaryKey = (i_PrimaryKey != null) ? i_PrimaryKey.trim() : \"\" ;\n\t\to_TransactionType = (i_TransactionType != null) ? i_TransactionType.trim() : \"\" ;\n\t\t\n\t\tString[] values = o_PrimaryKey.split(\":\");\n\t\tg_Mill = values[0];\n\t\tg_PrimaryKey_ = values[1];\n\t\t\n//\t\t//cat.info(\" o_PrimaryKey : \" + o_PrimaryKey + \"|| o_TransactionType : \" + o_TransactionType +\"|| o_M3DeliveryNumber : \" + o_M3DeliveryNumber);\n//\t\n//\t\t// Retrieve connection details from properties\n//\t\t\t\tcat.info(\"Retreaving data from M3\");\n//\n//\t\t\t\tString centralFileFolder = com.intentia.ec.server.DocServer\n//\t\t\t\t\t\t.getEcProperties().getProperty(\"mec.central.file.path\");\n//\n//\t\t\t\tString PropertiesFile = centralFileFolder + \"/sqlconn\";\n//\n//\t\t\t\tcat.info(strUUID + \"[:] PropertiesFile: '\" + PropertiesFile + \"'\");\n//\n//\t\t\t\t// Read properties file if it exists\n//\t\t\t\tboolean propertiesOK = false;\n//\t\t\t\tjava.util.Properties properties = new java.util.Properties();\n//\t\t\t\ttry {\n//\t\t\t\t\tproperties.load(new java.io.FileInputStream(PropertiesFile\n//\t\t\t\t\t\t\t+ \".properties\"));\n//\t\t\t\t\tpropertiesOK = true;\n//\t\t\t\t} catch (java.io.IOException ioe) {\n//\n//\t\t\t\t\tcat.info(\"IO Error occurred reading properties file for \"\n//\t\t\t\t\t\t\t+ getClass() + \".\\n\");\n//\t\t\t\t}\n//\n//\t\t\t\t// If properties ok then get each one\n//\t\t\t\tif (propertiesOK) {\n//\t\t\t\t\t\n//\t\t\t\t\tg_Company = properties.getProperty(\"Conn.cmpCN\");\n//\t\t\t\t\tg_ServerIp = properties.getProperty(\"Conn.serverIp\");\n//\t\t\t\t\tg_Database = properties.getProperty(\"Conn.database\");\n//\t\t\t\t//\tg_Username = properties.getProperty(\"Conn.username\");\n//\t\t\t\t\tg_Password = properties.getProperty(\"Conn.password\");\n//\t\t\t\t\tg_Port = properties.getProperty(\"Conn.port\");\n//\t\t\t\t\t \n//\t\t\t\t//\tcat.info(\"connection info read success\" + g_ServerIp + g_Database+ g_Username+g_Password+g_Port);\n\t\tg_Company = getManifestInfo(\"agr:Company\");\n\n\t\tlogDebug(\"  [:] g_Company=\" + g_Company);"
+  },
+  {
+   "settings": {
+    "Company": "$g_Company"
+   }
+  },
+  {
+   "loop": "DeliveryLoop",
+   "cond": "WT",
+   "ctl": "IN:/WBOutbound_1/LineRecord/M3DeliveryNumbers/M3DeliveryNumber",
+   "body": [
+    {
+     "bool": "GetDeliveryNo",
+     "in": {
+      "iDeliveryNo": "IN:/WBOutbound_1/LineRecord/M3DeliveryNumbers/M3DeliveryNumber"
+     },
+     "out": {
+      "oDLIX": [
+       "$oDLIX"
+      ]
+     },
+     "code": "// Please implement me\n\t\tg_ItemCounter++;\n\t\tlogDebug(\":: oDLIX in :\" + iDeliveryNo);\n\t\toDLIX = (iDeliveryNo != null) ? iDeliveryNo.trim() : \"\";\n\t\tlogDebug(\":: oDLIX :\" + oDLIX);\n\t\tlogDebug(\":: CONO :\" + g_Company);\n\t\treturn true;"
+    },
+    {
+     "loop": "SkipNullValuesLoop",
+     "cond": "IT",
+     "body": [
+      {
+       "bool": "CheckIsNullDLIX",
+       "in": {
+        "iDLIX": "GetDeliveryNo.oDLIX"
+       },
+       "code": "// Please implement me\n\t\tif(iDLIX.isEmpty()){\n\t\t\treturn false;\n\t\t}else{\n\t\t\treturn true;\n\t\t}"
+      },
+      {
+       "api": "MDBREADMI/GetMHDISH00",
+       "mode": "AVI",
+       "in": {
+        "INOU": "$INOU",
+        "DLIX": "$oDLIX"
+       }
+      },
+      {
+       "java": "CheckDeliveryStatus",
+       "in": {
+        "iDLIX": "GetDeliveryNo.oDLIX"
+       },
+       "code": "// Please implement me\n\t\tlogDebug(\"isLastAPICallOK() :: \" + isLastAPICallOK());\n\t\tlogDebug(\"g_IsAllDeliveryAvailable(before) :: \" + g_IsAllDeliveryAvailable);\n\t\tg_ItemExist++;\n\t\tif (!isLastAPICallOK()) {\n\n\t\t\tg_Message = g_Message + iDLIX + \" \";\n\t\t\tg_IsAllDeliveryAvailable = false;\n\t\t}\n\t\tlogDebug(\"g_IsAllDeliveryAvailable(after) :: \" + g_IsAllDeliveryAvailable);"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "java": "SetOutputData",
+   "out": {
+    "oItemNo": [
+     "OUT:/WBOutbound_1_Out/Items/Item/ItemNo"
+    ],
+    "oItemName": [
+     "OUT:/WBOutbound_1_Out/Items/Item/ItemName"
+    ],
+    "oMessage": [
+     "OUT:/WBOutbound_1_Out/Message"
+    ]
+   },
+   "code": "// Please implement me\n\t\n\t\tif(g_ItemCounter >0){\n\t\t\t\n\t\t\tif (g_ItemExist > 0){\n\t\t\t\tif(g_IsAllDeliveryAvailable)\n\t\t\t\t{\n\t\t\t\t\t oMessage = \"OK,下一步\"; \t\t\t\t\t\n\t\t\t\t}\n\t\t\t\telse\n\t\t\t\t{ \n\t\t\t\t\t//oMessage = g_Message + \" Delivery Numbers do not exist\";\n\t\t\t\t\toMessage = g_Message + \"  发货单号不存在\";\n\t\t\t\t}\t\n\t\t\t}else{\n\t\t\t\t\n\t\t\t\toMessage = \" 发货单号不存在\";\n\t\t\t\t//oMessage = \"Delivery Numbers do not exist\";\n\t\t\t}\n\t\t}else{\n\t\t\t//oMessage = \"Delivery Numbers do not exist\";\n\t\t\toMessage = \" 发货单号不存在\";\n\t\t}\n\t\t\n\t\toItemName = \"Finish Feed\";\n\t\toItemNo = \" \";"
+  },
+  {
+   "java": "OutputFileNameSetter",
+   "code": "java.util.Date date= new java.util.Date();\n\t\t \t\t \n\t\tString fileName = g_Mill + \"_OUTBOUND_1_OUT_\" + g_PrimaryKey_ + \"_\" + date.getTime() + \".xml\";\n\t\tString PartnerName = g_Mill + \"_OUTBOUND_1_OUT_\" + g_PrimaryKey_;\n\t\tlogDebug(\"  [:] *************>> fileName=\" + fileName);\n\t\tsetManifestInfo(\"map:FileName\", fileName);\n\t\tsetManifestInfo(ManifestConstants.MAP_ION_TO_LOGICAL_ID, \"lid://infor.m3.m3:mec_prio\");\n\t\tsetManifestInfo(ManifestConstants.MAP_ION_CUSTOM + \"FileName\", fileName);\n\t\tsetManifestInfo(ManifestConstants.MAP_PARTNER, PartnerName);\n\t\tsetManifestInfo(ManifestConstants.MAP_ION_DOCUMENT_ID, oDLIX + \"_\" + date.getTime());"
+  }
+ ]
+}

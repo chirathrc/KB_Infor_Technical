@@ -1,0 +1,1079 @@
+{
+ "name": "M3BOD_ItemDetails_Sync_Out_Custom",
+ "version": "1.0",
+ "namespace": "M3 BOD",
+ "description": "M3 item event -> MMS200MI item details -> custom Sync.ItemDetails BOD",
+ "schema_in": {
+  "xsd": "EventData_MT.xsd",
+  "name": "EventData_MT",
+  "root": "EventData",
+  "category": "Other"
+ },
+ "schema_out": {
+  "xsd": "BODs-SyncItemDetails.xsd",
+  "name": "BODs-SyncItemDetails",
+  "root": "SyncItemDetails",
+  "category": "BOD"
+ },
+ "properties": [
+  {
+   "type": "CP",
+   "name": "StrictListCheck",
+   "value": "true"
+  }
+ ],
+ "constants": [],
+ "variables": [
+  {
+   "name": "eventData",
+   "type": "java.util.Map<String, String>",
+   "init": "null",
+   "desc": "Event element Name -> Value"
+  },
+  {
+   "name": "CONO",
+   "desc": "Company from the event (formatted)"
+  },
+  {
+   "name": "ITNO",
+   "desc": "Item number from the event"
+  },
+  {
+   "name": "LANC",
+   "desc": "User language (GetUserInfo)"
+  },
+  {
+   "name": "bodAE",
+   "desc": "Accounting entity of the BOD"
+  },
+  {
+   "name": "tenantID",
+   "desc": "Tenant id (on-premise translation)"
+  },
+  {
+   "name": "LogicalID",
+   "desc": "From logical id"
+  },
+  {
+   "name": "dtGen",
+   "type": "DataTranslator",
+   "init": "null",
+   "desc": "Generic data translator"
+  },
+  {
+   "name": "strictLists",
+   "type": "boolean",
+   "init": "true",
+   "desc": "CP StrictListCheck"
+  },
+  {
+   "name": "g_Whs",
+   "type": "java.util.List<String[]>",
+   "init": "null",
+   "desc": "Collected warehouse rows"
+  },
+  {
+   "name": "g_Fac",
+   "type": "java.util.List<String[]>",
+   "init": "null",
+   "desc": "Collected facility rows"
+  },
+  {
+   "name": "g_Aun",
+   "type": "java.util.List<String[]>",
+   "init": "null",
+   "desc": "Collected alternate U/M rows"
+  },
+  {
+   "name": "g_WhsIt",
+   "type": "java.util.Iterator<String[]>",
+   "init": "null",
+   "desc": "Warehouse iterator"
+  },
+  {
+   "name": "g_FacIt",
+   "type": "java.util.Iterator<String[]>",
+   "init": "null",
+   "desc": "Facility iterator"
+  },
+  {
+   "name": "g_AunIt",
+   "type": "java.util.Iterator<String[]>",
+   "init": "null",
+   "desc": "Alternate U/M iterator"
+  },
+  {
+   "name": "g_Row",
+   "type": "String[]",
+   "init": "null",
+   "desc": "Current output row"
+  }
+ ],
+ "sequence": [
+  {
+   "java": "VersionLog",
+   "desc": "Version log",
+   "code": [
+    "/*",
+    " * M3BOD_ItemDetails_Sync_Out_Custom",
+    " * FS: M3 item event -> retrieve all item details by ITNO -> custom Sync.ItemDetails BOD to ION.",
+    " * v1.0  2026-11-04  Initial version (generated with iec-mapping-from-fs, KB v0.2)",
+    " *   Event (EventData) -> ITNO/CONO -> MMS200MI GetItmBasic, LstItmWhsByItm, LstFacByItem, LstItmAltUnitMs",
+    " *   Errors: missing ITNO/CONO, invalid item, API NOK -> MeCError (no BOD). Delete event -> abort (no BOD).",
+    " */"
+   ]
+  },
+  {
+   "java": "InitEventData",
+   "desc": "Create the event map and the collection lists",
+   "code": [
+    "eventData = new java.util.HashMap<String, String>();",
+    "g_Whs = new java.util.ArrayList<String[]>();",
+    "g_Fac = new java.util.ArrayList<String[]>();",
+    "g_Aun = new java.util.ArrayList<String[]>();"
+   ]
+  },
+  {
+   "loop": "GetEventDataLoop",
+   "cond": "WT",
+   "ctl": "IN:/EventData/Document/ElementData",
+   "desc": "One iteration per event element",
+   "body": [
+    {
+     "java": "GetEventData",
+     "desc": "Store each element Name/Value; ITNO and CONO accepted with or without the MM table prefix",
+     "in": {
+      "iName": "IN:/EventData/Document/ElementData/Name",
+      "iValue": "IN:/EventData/Document/ElementData/Value"
+     },
+     "code": [
+      "if (iName != null) {",
+      "    String n = iName.trim();",
+      "    String v = (iValue == null) ? \"\" : IONToolbox.rightTrim(iValue);",
+      "    if (n.equals(\"ITNO\") || n.equals(\"MMITNO\")) {",
+      "        eventData.put(\"ITNO\", v);            // item keys keep leading characters",
+      "    } else if (n.equals(\"CONO\") || n.equals(\"MMCONO\")) {",
+      "        eventData.put(\"CONO\", v.trim());",
+      "    } else {",
+      "        eventData.put(n, v.trim());",
+      "    }",
+      "}"
+     ]
+    }
+   ]
+  },
+  {
+   "java": "ManageEventData",
+   "desc": "Validate the event: delete -> abort, missing ITNO/CONO -> MeCError",
+   "in": {
+    "iOperation": "IN:/EventData/Operation",
+    "iDocumentName": "IN:/EventData/DocumentName",
+    "iEventId": "IN:/EventData/EventId"
+   },
+   "out": {
+    "oCONO": [
+     "$CONO"
+    ],
+    "oITNO": [
+     "$ITNO"
+    ]
+   },
+   "code": [
+    "String op = (iOperation == null) ? \"\" : iOperation.trim().toUpperCase();",
+    "String doc = (iDocumentName == null) ? \"\" : iDocumentName.trim();",
+    "String evt = (iEventId == null) ? \"\" : iEventId.trim();",
+    "oCONO = eventData.get(\"CONO\");",
+    "oITNO = eventData.get(\"ITNO\");",
+    "oCONO = (oCONO == null) ? \"\" : oCONO.trim();",
+    "oITNO = (oITNO == null) ? \"\" : oITNO;",
+    "",
+    "// Delete events: the item no longer exists in M3 - end without output",
+    "if (op.equals(\"D\") || op.equals(\"DELETE\")) {",
+    "    logInfo(\"ItemDetails: delete event \" + evt + \" for item '\" + oITNO + \"' - no BOD produced\");",
+    "    abort(\"ItemDetails: delete event - no Sync.ItemDetails BOD\");   // ends the mapping, no output",
+    "} else {",
+    "    // Mandatory keys",
+    "    if (IONToolbox.isEmpty(oITNO)) {",
+    "        throw new MeCError(\"ItemDetails: item number (ITNO/MMITNO) missing in event \" + evt + \" [\" + doc + \"]\");",
+    "    }",
+    "    if (IONToolbox.isEmpty(oCONO)) {",
+    "        throw new MeCError(\"ItemDetails: company (CONO/MMCONO) missing in event \" + evt + \" for item \" + oITNO);",
+    "    }",
+    "    logDebug(\"ItemDetails: event \" + evt + \" op=\" + op + \" CONO=\" + oCONO + \" ITNO=\" + oITNO);",
+    "}"
+   ]
+  },
+  {
+   "java": "GetCONO_DIVI_AE",
+   "desc": "Format company, company-level accounting entity",
+   "in": {
+    "iCONO": "$CONO"
+   },
+   "out": {
+    "oCONO": [
+     "$CONO"
+    ],
+    "oAE": [
+     "$bodAE"
+    ]
+   },
+   "code": [
+    "// Get CONO",
+    "oCONO = IONToolbox.formatCompany(iCONO);",
+    "",
+    "// Item master is company-level: accounting entity from M3 company only",
+    "oAE = IONToolbox.getAccountingEntityId(oCONO, null);"
+   ]
+  },
+  {
+   "settings": {
+    "Company": "GetCONO_DIVI_AE.oCONO"
+   }
+  },
+  {
+   "java": "Init",
+   "desc": "DataTranslator, tenant id, control properties",
+   "in": {
+    "iCONO": "GetCONO_DIVI_AE.oCONO",
+    "iTenantId": "IN:/EventData/TenantId"
+   },
+   "code": [
+    "// Trim CONO:",
+    "iCONO = iCONO == null ? \"\" : iCONO.trim();",
+    "",
+    "// Instantiate generic DataTranslator",
+    "String blankDIVI = \"\";",
+    "dtGen = new DataTranslator(getManifestMap(), iCONO, blankDIVI, \"ION\", \"1\", \"Generic\");",
+    "",
+    "// Set tenant id",
+    "if (iTenantId == null) {",
+    "    // On-premise: Translate M3 BE company to tenant id",
+    "    tenantID = dtGen.toMessage(\"Generic\", \"TenantID\", iCONO, \"\", \"\", \"CMNCMP\", \"CONO\");",
+    "    setManifestInfo(ManifestConstants.MAP_ION_TENANT_ID, tenantID);",
+    "}",
+    "",
+    "// Control property StrictListCheck (default true): list API failure fails the message",
+    "String strict = getManifestInfo(\"agr:StrictListCheck\");",
+    "strictLists = !(strict != null && strict.trim().equalsIgnoreCase(\"false\"));"
+   ]
+  },
+  {
+   "api": "MMS200MI/GetUserInfo",
+   "mode": "AVM",
+   "in": {},
+   "out": {
+    "ZDLANC": [
+     "$LANC"
+    ]
+   },
+   "desc": "User language for descriptions and the BOD languageCode"
+  },
+  {
+   "api": "MMS200MI/GetItmBasic",
+   "mode": "AVI",
+   "in": {
+    "ITNO": "$ITNO",
+    "LNCD": "$LANC"
+   },
+   "out": {},
+   "desc": "Item master (MITMAS) - NOK checked in ValidateItem"
+  },
+  {
+   "java": "ValidateItem",
+   "desc": "Invalid item / API failure / empty response -> MeCError (no BOD)",
+   "in": {
+    "iITNO": "GetItmBasic.ITNO"
+   },
+   "code": [
+    "if (!isLastAPICallOK()) {",
+    "    throw new MeCError(\"ItemDetails: MMS200MI/GetItmBasic failed for item \" + ITNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage());",
+    "}",
+    "String rITNO = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+    "if (IONToolbox.isEmpty(rITNO)) {",
+    "    throw new MeCError(\"ItemDetails: MMS200MI/GetItmBasic returned no data for item \" + ITNO);",
+    "}",
+    "if (!rITNO.equals(ITNO)) {",
+    "    throw new MeCError(\"ItemDetails: MMS200MI/GetItmBasic returned item \" + rITNO + \" for requested item \" + ITNO);",
+    "}"
+   ]
+  },
+  {
+   "loop": "WarehouseLoop",
+   "cond": "WT",
+   "desc": "One iteration per MMS200MI/LstItmWhsByItm row",
+   "body": [
+    {
+     "api": "MMS200MI/LstItmWhsByItm",
+     "mode": "ARI",
+     "in": {
+      "ITNO": "$ITNO",
+      "LNCD": "$LANC"
+     },
+     "out": {},
+     "desc": "List warehouse records of the item (NOK checked in CheckWarehouse)"
+    },
+    {
+     "java": "CollectWarehouse",
+     "in": {
+      "iITNO": "LstItmWhsByItm.ITNO",
+      "iWHLO": "LstItmWhsByItm.WHLO",
+      "iWHNM": "LstItmWhsByItm.WHNM",
+      "iFACI": "LstItmWhsByItm.FACI",
+      "iSTAT": "LstItmWhsByItm.STAT",
+      "iRESP": "LstItmWhsByItm.RESP",
+      "iBUYE": "LstItmWhsByItm.BUYE",
+      "iSUNO": "LstItmWhsByItm.SUNO",
+      "iPLCD": "LstItmWhsByItm.PLCD",
+      "iORTY": "LstItmWhsByItm.ORTY",
+      "iWHSL": "LstItmWhsByItm.WHSL",
+      "iREOP": "LstItmWhsByItm.REOP",
+      "iSSQT": "LstItmWhsByItm.SSQT",
+      "iMXST": "LstItmWhsByItm.MXST",
+      "iEOQT": "LstItmWhsByItm.EOQT",
+      "iLEAT": "LstItmWhsByItm.LEAT",
+      "iSTQT": "LstItmWhsByItm.STQT",
+      "iAVAL": "LstItmWhsByItm.AVAL"
+     },
+     "out": {},
+     "code": [
+      "// One call per row returned by MMS200MI/LstItmWhsByItm. The list is positioned on the item key,",
+      "// so rows of other items are skipped; only exact matches are kept.",
+      "String rITNO = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+      "if (rITNO.equals(ITNO)) {",
+      "    String[] row = new String[17];",
+      "    row[0] = (iWHLO == null) ? \"\" : iWHLO.trim();   // Warehouse",
+      "    row[1] = (iWHNM == null) ? \"\" : iWHNM.trim();   // WarehouseName",
+      "    row[2] = (iFACI == null) ? \"\" : iFACI.trim();   // Facility",
+      "    row[3] = (iSTAT == null) ? \"\" : iSTAT.trim();   // Status",
+      "    row[4] = (iRESP == null) ? \"\" : iRESP.trim();   // Responsible",
+      "    row[5] = (iBUYE == null) ? \"\" : iBUYE.trim();   // Buyer",
+      "    row[6] = (iSUNO == null) ? \"\" : iSUNO.trim();   // Supplier",
+      "    row[7] = (iPLCD == null) ? \"\" : iPLCD.trim();   // PlanningPolicy",
+      "    row[8] = (iORTY == null) ? \"\" : iORTY.trim();   // OrderType",
+      "    row[9] = (iWHSL == null) ? \"\" : iWHSL.trim();   // DefaultLocation",
+      "    row[10] = (iREOP == null) ? \"\" : iREOP.trim();   // ReorderPoint",
+      "    row[11] = (iSSQT == null) ? \"\" : iSSQT.trim();   // SafetyStock",
+      "    row[12] = (iMXST == null) ? \"\" : iMXST.trim();   // MaximumStock",
+      "    row[13] = (iEOQT == null) ? \"\" : iEOQT.trim();   // EconomicOrderQuantity",
+      "    row[14] = (iLEAT == null) ? \"\" : iLEAT.trim();   // LeadTime",
+      "    row[15] = (iSTQT == null) ? \"\" : iSTQT.trim();   // OnHandApproved",
+      "    row[16] = (iAVAL == null) ? \"\" : iAVAL.trim();   // AllocatableOnHand",
+      "    g_Whs.add(row);",
+      "}"
+     ],
+     "desc": "Keep rows of the event item in g_Whs"
+    }
+   ]
+  },
+  {
+   "java": "CheckWarehouse",
+   "code": [
+    "// Runs after the MMS200MI/LstItmWhsByItm loop: the last API call is the list call itself.",
+    "if (!isLastAPICallOK()) {",
+    "    String msg = \"ItemDetails: MMS200MI/LstItmWhsByItm failed for item \" + ITNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage();",
+    "    if (strictLists) {",
+    "        throw new MeCError(msg);   // never send a BOD with a section silently missing",
+    "    }",
+    "    logWarn(msg + \" - warehouse section omitted (StrictListCheck=false)\");",
+    "    g_Whs.clear();",
+    "}",
+    "logDebug(\"ItemDetails: \" + g_Whs.size() + \" warehouse record(s) for item \" + ITNO);"
+   ],
+   "desc": "API failure on MMS200MI/LstItmWhsByItm: fail the message (default) or omit the section"
+  },
+  {
+   "loop": "FacilityLoop",
+   "cond": "WT",
+   "desc": "One iteration per MMS200MI/LstFacByItem row",
+   "body": [
+    {
+     "api": "MMS200MI/LstFacByItem",
+     "mode": "ARI",
+     "in": {
+      "ITNO": "$ITNO"
+     },
+     "out": {},
+     "desc": "List facility records of the item (NOK checked in CheckFacility)"
+    },
+    {
+     "java": "CollectFacility",
+     "in": {
+      "iITNO": "LstFacByItem.ITNO",
+      "iFACI": "LstFacByItem.FACI",
+      "iFACN": "LstFacByItem.FACN",
+      "iSTAT": "LstFacByItem.STAT",
+      "iFANO": "LstFacByItem.FANO"
+     },
+     "out": {},
+     "code": [
+      "// One call per row returned by MMS200MI/LstFacByItem. The list is positioned on the item key,",
+      "// so rows of other items are skipped; only exact matches are kept.",
+      "String rITNO = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+      "if (rITNO.equals(ITNO)) {",
+      "    String[] row = new String[4];",
+      "    row[0] = (iFACI == null) ? \"\" : iFACI.trim();   // Facility",
+      "    row[1] = (iFACN == null) ? \"\" : iFACN.trim();   // FacilityName",
+      "    row[2] = (iSTAT == null) ? \"\" : iSTAT.trim();   // Status",
+      "    row[3] = (iFANO == null) ? \"\" : iFANO.trim();   // OnHandBalance",
+      "    g_Fac.add(row);",
+      "}"
+     ],
+     "desc": "Keep rows of the event item in g_Fac"
+    }
+   ]
+  },
+  {
+   "java": "CheckFacility",
+   "code": [
+    "// Runs after the MMS200MI/LstFacByItem loop: the last API call is the list call itself.",
+    "if (!isLastAPICallOK()) {",
+    "    String msg = \"ItemDetails: MMS200MI/LstFacByItem failed for item \" + ITNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage();",
+    "    if (strictLists) {",
+    "        throw new MeCError(msg);   // never send a BOD with a section silently missing",
+    "    }",
+    "    logWarn(msg + \" - facility section omitted (StrictListCheck=false)\");",
+    "    g_Fac.clear();",
+    "}",
+    "logDebug(\"ItemDetails: \" + g_Fac.size() + \" facility record(s) for item \" + ITNO);"
+   ],
+   "desc": "API failure on MMS200MI/LstFacByItem: fail the message (default) or omit the section"
+  },
+  {
+   "loop": "AlternateUOMLoop",
+   "cond": "WT",
+   "desc": "One iteration per MMS200MI/LstItmAltUnitMs row",
+   "body": [
+    {
+     "api": "MMS200MI/LstItmAltUnitMs",
+     "mode": "ARI",
+     "in": {
+      "FITN": "$ITNO",
+      "TITN": "$ITNO",
+      "LNCD": "$LANC"
+     },
+     "out": {},
+     "desc": "List alternate U/M records of the item (NOK checked in CheckAlternateUOM)"
+    },
+    {
+     "java": "CollectAlternateUOM",
+     "in": {
+      "iITNO": "LstItmAltUnitMs.ITNO",
+      "iAUTP": "LstItmAltUnitMs.AUTP",
+      "iALUN": "LstItmAltUnitMs.ALUN",
+      "iTX40": "LstItmAltUnitMs.TX40",
+      "iCOFA": "LstItmAltUnitMs.COFA",
+      "iDMCF": "LstItmAltUnitMs.DMCF",
+      "iDCCD": "LstItmAltUnitMs.DCCD",
+      "iPCOF": "LstItmAltUnitMs.PCOF"
+     },
+     "out": {},
+     "code": [
+      "// One call per row returned by MMS200MI/LstItmAltUnitMs. The list is positioned on the item key,",
+      "// so rows of other items are skipped; only exact matches are kept.",
+      "String rITNO = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+      "if (rITNO.equals(ITNO)) {",
+      "    String[] row = new String[7];",
+      "    row[0] = (iAUTP == null) ? \"\" : iAUTP.trim();   // UOMType",
+      "    row[1] = (iALUN == null) ? \"\" : iALUN.trim();   // UOM",
+      "    row[2] = (iTX40 == null) ? \"\" : iTX40.trim();   // Description",
+      "    row[3] = (iCOFA == null) ? \"\" : iCOFA.trim();   // ConversionFactor",
+      "    row[4] = (iDMCF == null) ? \"\" : iDMCF.trim();   // ConversionForm",
+      "    row[5] = (iDCCD == null) ? \"\" : iDCCD.trim();   // DecimalPlaces",
+      "    row[6] = (iPCOF == null) ? \"\" : iPCOF.trim();   // PriceAdjustmentFactor",
+      "    g_Aun.add(row);",
+      "}"
+     ],
+     "desc": "Keep rows of the event item in g_Aun"
+    }
+   ]
+  },
+  {
+   "java": "CheckAlternateUOM",
+   "code": [
+    "// Runs after the MMS200MI/LstItmAltUnitMs loop: the last API call is the list call itself.",
+    "if (!isLastAPICallOK()) {",
+    "    String msg = \"ItemDetails: MMS200MI/LstItmAltUnitMs failed for item \" + ITNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage();",
+    "    if (strictLists) {",
+    "        throw new MeCError(msg);   // never send a BOD with a section silently missing",
+    "    }",
+    "    logWarn(msg + \" - alternate U/M section omitted (StrictListCheck=false)\");",
+    "    g_Aun.clear();",
+    "}",
+    "logDebug(\"ItemDetails: \" + g_Aun.size() + \" alternate U/M record(s) for item \" + ITNO);"
+   ],
+   "desc": "API failure on MMS200MI/LstItmAltUnitMs: fail the message (default) or omit the section"
+  },
+  {
+   "java": "SetOutboxHeaderData",
+   "desc": "BOD type, accounting entity, target logical id, document id",
+   "code": [
+    "// BODType, hard coded here",
+    "setManifestInfo(ManifestConstants.MAP_ION_BOD_TYPE, \"Sync.ItemDetails\"); // \"map:ionBODType\"",
+    "",
+    "// AccountingEntityID",
+    "setManifestInfo(ManifestConstants.MAP_ION_ACCOUNTING_ENTITY, bodAE); // \"map:ionAccountingEntity\"",
+    "",
+    "// ToLogicalId, set from event when present",
+    "if (!IONToolbox.isEmpty(eventData.get(\"ToLogicalId\"))) {",
+    "    setManifestInfo(ManifestConstants.MAP_ION_TO_LOGICAL_ID, eventData.get(\"ToLogicalId\")); // \"map:ionToLogicalId\"",
+    "}",
+    "",
+    "// Document id shown in ION OneView",
+    "setManifestInfo(ManifestConstants.MAP_ION_DOCUMENT_ID, ITNO); // \"map:ionDocumentId\""
+   ]
+  },
+  {
+   "java": "SetHeader",
+   "desc": "BOD root attributes and ApplicationArea",
+   "in": {
+    "iCONO": "$CONO",
+    "iLANC": "$LANC",
+    "iSentTimestamp": "IN:/EventData/SentTimestamp",
+    "iBODID": null
+   },
+   "out": {
+    "oReleaseID": [
+     "OUT:/SyncItemDetails[@releaseID]"
+    ],
+    "oVersionID": [
+     "OUT:/SyncItemDetails[@versionID]"
+    ],
+    "oSystemEnvironmentCode": [
+     "OUT:/SyncItemDetails[@systemEnvironmentCode]"
+    ],
+    "oLanguageCode": [
+     "OUT:/SyncItemDetails[@languageCode]"
+    ],
+    "oLogicalID": [
+     "OUT:/SyncItemDetails/ApplicationArea/Sender/LogicalID",
+     "$LogicalID"
+    ],
+    "oLogicalID_schemeVersionID": [
+     "OUT:/SyncItemDetails/ApplicationArea/Sender/LogicalID[@schemeVersionID]"
+    ],
+    "oComponentID": [
+     "OUT:/SyncItemDetails/ApplicationArea/Sender/ComponentID"
+    ],
+    "oComponentID_schemeVersionID": [
+     "OUT:/SyncItemDetails/ApplicationArea/Sender/ComponentID[@schemeVersionID]"
+    ],
+    "oConfirmationCode": [
+     "OUT:/SyncItemDetails/ApplicationArea/Sender/ConfirmationCode"
+    ],
+    "oCreationDateTime": [
+     "OUT:/SyncItemDetails/ApplicationArea/CreationDateTime"
+    ],
+    "oBODID": [
+     "OUT:/SyncItemDetails/ApplicationArea/BODID"
+    ]
+   },
+   "code": [
+    "// Set OAGIS release",
+    "oReleaseID = \"9.2\";",
+    "",
+    "// Set version of the given BOD definition",
+    "oVersionID = \"1.0.0\";",
+    "",
+    "// Set \"Test\" or \"Production\" (default) mode",
+    "oSystemEnvironmentCode = getSystemEnvironmentCode();",
+    "",
+    "// Set language for the contents of the BOD",
+    "if (iLANC != null) {",
+    "    oLanguageCode = dtGen.toMessage(\"Generic\", \"languageCode\", iLANC, \"\", \"\", \"CSYTAB\",\"LNCD\");",
+    "}",
+    "",
+    "// Set from logical ID",
+    "oLogicalID = getFromLogicalID();",
+    "",
+    "// Set MEC mapping version",
+    "oLogicalID_schemeVersionID = getMappingVersion();",
+    "",
+    "// Set business application that issued the BOD",
+    "oComponentID = \"M3BE\";",
+    "",
+    "// Set M3 BE version",
+    "oComponentID_schemeVersionID = getBEVersion();",
+    "",
+    "// Set date time stamp that the given instance of the BOD was created (UTC)",
+    "oCreationDateTime = IONToolbox.normalizeXMLDateTime(iSentTimestamp);",
+    "",
+    "// Set GUID that will make each BOD instance uniquely identifiable, default MEC message UUID",
+    "if (iBODID != null) {",
+    "    oBODID = iBODID;",
+    "} else {",
+    "    oBODID = getMapUUID();",
+    "}",
+    "// Set ConfirmationCode",
+    "oConfirmationCode = \"OnError\";"
+   ]
+  },
+  {
+   "java": "SetSync",
+   "desc": "Sync verb: accounting entity, location, action code",
+   "in": {
+    "iCONO": "$CONO",
+    "iOperation": "IN:/EventData/Operation"
+   },
+   "out": {
+    "oAccountingEntityID": [
+     "OUT:/SyncItemDetails/DataArea/Sync/AccountingEntityID"
+    ],
+    "oLocationID": [
+     "OUT:/SyncItemDetails/DataArea/Sync/LocationID"
+    ],
+    "oActionCode": [
+     "OUT:/SyncItemDetails/DataArea/Sync/ActionCriteria/ActionExpression[@actionCode]"
+    ]
+   },
+   "code": [
+    "// Set accounting entity id",
+    "oAccountingEntityID = (!IONToolbox.isEmpty(bodAE)) ? bodAE : \"\";",
+    "",
+    "// Item master is company-level: no location",
+    "oLocationID = \"\";",
+    "",
+    "// Set action code (C -> Add, U -> Replace)",
+    "oActionCode = IONToolbox.createSyncActionCode(iOperation);"
+   ]
+  },
+  {
+   "java": "SetItemHeader",
+   "desc": "Map MMS200MI/GetItmBasic to ItemDetails/ItemHeader",
+   "in": {
+    "iITNO": "GetItmBasic.ITNO",
+    "iITDS": "GetItmBasic.ITDS",
+    "iFUDS": "GetItmBasic.FUDS",
+    "iSTAT": "GetItmBasic.STAT",
+    "iITTY": "GetItmBasic.ITTY",
+    "iDS05": "GetItmBasic.DS05",
+    "iITGR": "GetItmBasic.ITGR",
+    "iDS02": "GetItmBasic.DS02",
+    "iITCL": "GetItmBasic.ITCL",
+    "iDS03": "GetItmBasic.DS03",
+    "iBUAR": "GetItmBasic.BUAR",
+    "iUNMS": "GetItmBasic.UNMS",
+    "iPUUN": "GetItmBasic.PUUN",
+    "iPPUN": "GetItmBasic.PPUN",
+    "iSPUN": "GetItmBasic.SPUN",
+    "iTPCD": "GetItmBasic.TPCD",
+    "iMABU": "GetItmBasic.MABU",
+    "iBACD": "GetItmBasic.BACD",
+    "iINDI": "GetItmBasic.INDI",
+    "iRESP": "GetItmBasic.RESP",
+    "iRENM": "GetItmBasic.RENM",
+    "iPRGP": "GetItmBasic.PRGP",
+    "iSALE": "GetItmBasic.SALE",
+    "iATMO": "GetItmBasic.ATMO",
+    "iITNE": "GetItmBasic.ITNE",
+    "iHIE1": "GetItmBasic.HIE1",
+    "iHIE2": "GetItmBasic.HIE2",
+    "iHIE3": "GetItmBasic.HIE3",
+    "iHIE4": "GetItmBasic.HIE4",
+    "iHIE5": "GetItmBasic.HIE5",
+    "iNEWE": "GetItmBasic.NEWE",
+    "iGRWE": "GetItmBasic.GRWE",
+    "iVOL3": "GetItmBasic.VOL3",
+    "iILEN": "GetItmBasic.ILEN",
+    "iIWID": "GetItmBasic.IWID",
+    "iIHEI": "GetItmBasic.IHEI",
+    "iVTCP": "GetItmBasic.VTCP",
+    "iVTCS": "GetItmBasic.VTCS",
+    "iRGDT": "GetItmBasic.RGDT",
+    "iLMDT": "GetItmBasic.LMDT",
+    "iCHID": "GetItmBasic.CHID"
+   },
+   "out": {
+    "oItemNumber": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemNumber"
+    ],
+    "oName": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Name"
+    ],
+    "oDescription": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Description"
+    ],
+    "oStatus": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Status"
+    ],
+    "oItemType": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemType"
+    ],
+    "oItemTypeDescription": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemTypeDescription"
+    ],
+    "oItemGroup": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemGroup"
+    ],
+    "oItemGroupDescription": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemGroupDescription"
+    ],
+    "oProductGroup": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ProductGroup"
+    ],
+    "oProductGroupDescription": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ProductGroupDescription"
+    ],
+    "oBusinessArea": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/BusinessArea"
+    ],
+    "oBasicUOM": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/BasicUOM"
+    ],
+    "oPurchaseOrderUOM": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/PurchaseOrderUOM"
+    ],
+    "oPurchasePriceUOM": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/PurchasePriceUOM"
+    ],
+    "oSalesPriceUOM": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/SalesPriceUOM"
+    ],
+    "oItemCategory": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ItemCategory"
+    ],
+    "oMakeBuyCode": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/MakeBuyCode"
+    ],
+    "oLotNumberingMethod": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/LotNumberingMethod"
+    ],
+    "oLotControlMethod": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/LotControlMethod"
+    ],
+    "oResponsible": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Responsible"
+    ],
+    "oResponsibleName": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ResponsibleName"
+    ],
+    "oProcurementGroup": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ProcurementGroup"
+    ],
+    "oSalesItem": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/SalesItem"
+    ],
+    "oAttributeModel": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/AttributeModel"
+    ],
+    "oExtendedItemNumber": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ExtendedItemNumber"
+    ],
+    "oHierarchyLevel1": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/HierarchyLevel1"
+    ],
+    "oHierarchyLevel2": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/HierarchyLevel2"
+    ],
+    "oHierarchyLevel3": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/HierarchyLevel3"
+    ],
+    "oHierarchyLevel4": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/HierarchyLevel4"
+    ],
+    "oHierarchyLevel5": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/HierarchyLevel5"
+    ],
+    "oNetWeight": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/NetWeight"
+    ],
+    "oGrossWeight": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/GrossWeight"
+    ],
+    "oVolume": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Volume"
+    ],
+    "oLength": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Length"
+    ],
+    "oWidth": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Width"
+    ],
+    "oHeight": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/Height"
+    ],
+    "oVATCodePurchase": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/VATCodePurchase"
+    ],
+    "oVATCodeSales": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/VATCodeSales"
+    ],
+    "oEntryDate": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/EntryDate"
+    ],
+    "oChangeDate": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ChangeDate"
+    ],
+    "oChangedBy": [
+     "OUT:/SyncItemDetails/DataArea/ItemDetails/ItemHeader/ChangedBy"
+    ]
+   },
+   "code": [
+    "// Item master values from MMS200MI/GetItmBasic (validated in ValidateItem). Trim; dates yyyyMMdd -> yyyy-MM-dd.",
+    "oItemNumber = (iITNO == null) ? \"\" : IONToolbox.rightTrim(iITNO);",
+    "oName = (iITDS == null) ? \"\" : iITDS.trim();",
+    "oDescription = (iFUDS == null) ? \"\" : iFUDS.trim();",
+    "oStatus = (iSTAT == null) ? \"\" : iSTAT.trim();",
+    "oItemType = (iITTY == null) ? \"\" : iITTY.trim();",
+    "oItemTypeDescription = (iDS05 == null) ? \"\" : iDS05.trim();",
+    "oItemGroup = (iITGR == null) ? \"\" : iITGR.trim();",
+    "oItemGroupDescription = (iDS02 == null) ? \"\" : iDS02.trim();",
+    "oProductGroup = (iITCL == null) ? \"\" : iITCL.trim();",
+    "oProductGroupDescription = (iDS03 == null) ? \"\" : iDS03.trim();",
+    "oBusinessArea = (iBUAR == null) ? \"\" : iBUAR.trim();",
+    "oBasicUOM = (iUNMS == null) ? \"\" : iUNMS.trim();",
+    "oPurchaseOrderUOM = (iPUUN == null) ? \"\" : iPUUN.trim();",
+    "oPurchasePriceUOM = (iPPUN == null) ? \"\" : iPPUN.trim();",
+    "oSalesPriceUOM = (iSPUN == null) ? \"\" : iSPUN.trim();",
+    "oItemCategory = (iTPCD == null) ? \"\" : iTPCD.trim();",
+    "oMakeBuyCode = (iMABU == null) ? \"\" : iMABU.trim();",
+    "oLotNumberingMethod = (iBACD == null) ? \"\" : iBACD.trim();",
+    "oLotControlMethod = (iINDI == null) ? \"\" : iINDI.trim();",
+    "oResponsible = (iRESP == null) ? \"\" : iRESP.trim();",
+    "oResponsibleName = (iRENM == null) ? \"\" : iRENM.trim();",
+    "oProcurementGroup = (iPRGP == null) ? \"\" : iPRGP.trim();",
+    "oSalesItem = (iSALE == null) ? \"\" : iSALE.trim();",
+    "oAttributeModel = (iATMO == null) ? \"\" : iATMO.trim();",
+    "oExtendedItemNumber = (iITNE == null) ? \"\" : iITNE.trim();",
+    "oHierarchyLevel1 = (iHIE1 == null) ? \"\" : iHIE1.trim();",
+    "oHierarchyLevel2 = (iHIE2 == null) ? \"\" : iHIE2.trim();",
+    "oHierarchyLevel3 = (iHIE3 == null) ? \"\" : iHIE3.trim();",
+    "oHierarchyLevel4 = (iHIE4 == null) ? \"\" : iHIE4.trim();",
+    "oHierarchyLevel5 = (iHIE5 == null) ? \"\" : iHIE5.trim();",
+    "oNetWeight = (iNEWE == null) ? \"\" : iNEWE.trim();",
+    "oGrossWeight = (iGRWE == null) ? \"\" : iGRWE.trim();",
+    "oVolume = (iVOL3 == null) ? \"\" : iVOL3.trim();",
+    "oLength = (iILEN == null) ? \"\" : iILEN.trim();",
+    "oWidth = (iIWID == null) ? \"\" : iIWID.trim();",
+    "oHeight = (iIHEI == null) ? \"\" : iIHEI.trim();",
+    "oVATCodePurchase = (iVTCP == null) ? \"\" : iVTCP.trim();",
+    "oVATCodeSales = (iVTCS == null) ? \"\" : iVTCS.trim();",
+    "String dRGDT = (iRGDT == null) ? \"\" : iRGDT.trim();",
+    "if (dRGDT.equals(\"0\") || dRGDT.equals(\"00000000\")) dRGDT = \"\";",
+    "oEntryDate = (dRGDT.length() == 8) ? dRGDT.substring(0, 4) + \"-\" + dRGDT.substring(4, 6) + \"-\" + dRGDT.substring(6, 8) : dRGDT;",
+    "String dLMDT = (iLMDT == null) ? \"\" : iLMDT.trim();",
+    "if (dLMDT.equals(\"0\") || dLMDT.equals(\"00000000\")) dLMDT = \"\";",
+    "oChangeDate = (dLMDT.length() == 8) ? dLMDT.substring(0, 4) + \"-\" + dLMDT.substring(4, 6) + \"-\" + dLMDT.substring(6, 8) : dLMDT;",
+    "oChangedBy = (iCHID == null) ? \"\" : iCHID.trim();"
+   ]
+  },
+  {
+   "java": "PrepareOutput",
+   "desc": "Iterators over the collected lists",
+   "code": [
+    "g_WhsIt = g_Whs.iterator();",
+    "g_FacIt = g_Fac.iterator();",
+    "g_AunIt = g_Aun.iterator();"
+   ]
+  },
+  {
+   "loop": "EmitWarehouse",
+   "cond": "WT",
+   "emits": [
+    "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse"
+   ],
+   "desc": "One Warehouse element per collected row",
+   "body": [
+    {
+     "bool": "HasNextWarehouse",
+     "code": [
+      "if (g_WhsIt != null && g_WhsIt.hasNext()) {",
+      "    g_Row = g_WhsIt.next();",
+      "    return true;",
+      "}",
+      "return false;"
+     ],
+     "desc": "Iterator over g_Whs"
+    },
+    {
+     "java": "SetWarehouse",
+     "out": {
+      "oWarehouse": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Warehouse"
+      ],
+      "oWarehouseName": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/WarehouseName"
+      ],
+      "oFacility": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Facility"
+      ],
+      "oStatus": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Status"
+      ],
+      "oResponsible": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Responsible"
+      ],
+      "oBuyer": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Buyer"
+      ],
+      "oSupplier": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/Supplier"
+      ],
+      "oPlanningPolicy": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/PlanningPolicy"
+      ],
+      "oOrderType": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/OrderType"
+      ],
+      "oDefaultLocation": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/DefaultLocation"
+      ],
+      "oReorderPoint": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/ReorderPoint"
+      ],
+      "oSafetyStock": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/SafetyStock"
+      ],
+      "oMaximumStock": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/MaximumStock"
+      ],
+      "oEconomicOrderQuantity": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/EconomicOrderQuantity"
+      ],
+      "oLeadTime": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/LeadTime"
+      ],
+      "oOnHandApproved": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/OnHandApproved"
+      ],
+      "oAllocatableOnHand": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Warehouse/AllocatableOnHand"
+      ]
+     },
+     "code": [
+      "// Current row from g_Whs (set by HasNextWarehouse).",
+      "oWarehouse = g_Row[0];",
+      "oWarehouseName = g_Row[1];",
+      "oFacility = g_Row[2];",
+      "oStatus = g_Row[3];",
+      "oResponsible = g_Row[4];",
+      "oBuyer = g_Row[5];",
+      "oSupplier = g_Row[6];",
+      "oPlanningPolicy = g_Row[7];",
+      "oOrderType = g_Row[8];",
+      "oDefaultLocation = g_Row[9];",
+      "oReorderPoint = g_Row[10];",
+      "oSafetyStock = g_Row[11];",
+      "oMaximumStock = g_Row[12];",
+      "oEconomicOrderQuantity = g_Row[13];",
+      "oLeadTime = g_Row[14];",
+      "oOnHandApproved = g_Row[15];",
+      "oAllocatableOnHand = g_Row[16];"
+     ],
+     "desc": "Write one Warehouse element"
+    }
+   ]
+  },
+  {
+   "loop": "EmitFacility",
+   "cond": "WT",
+   "emits": [
+    "OUT:/SyncItemDetails/DataArea/ItemDetails/Facility"
+   ],
+   "desc": "One Facility element per collected row",
+   "body": [
+    {
+     "bool": "HasNextFacility",
+     "code": [
+      "if (g_FacIt != null && g_FacIt.hasNext()) {",
+      "    g_Row = g_FacIt.next();",
+      "    return true;",
+      "}",
+      "return false;"
+     ],
+     "desc": "Iterator over g_Fac"
+    },
+    {
+     "java": "SetFacility",
+     "out": {
+      "oFacility": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Facility/Facility"
+      ],
+      "oFacilityName": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Facility/FacilityName"
+      ],
+      "oStatus": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Facility/Status"
+      ],
+      "oOnHandBalance": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/Facility/OnHandBalance"
+      ]
+     },
+     "code": [
+      "// Current row from g_Fac (set by HasNextFacility).",
+      "oFacility = g_Row[0];",
+      "oFacilityName = g_Row[1];",
+      "oStatus = g_Row[2];",
+      "oOnHandBalance = g_Row[3];"
+     ],
+     "desc": "Write one Facility element"
+    }
+   ]
+  },
+  {
+   "loop": "EmitAlternateUOM",
+   "cond": "WT",
+   "emits": [
+    "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM"
+   ],
+   "desc": "One AlternateUOM element per collected row",
+   "body": [
+    {
+     "bool": "HasNextAlternateUOM",
+     "code": [
+      "if (g_AunIt != null && g_AunIt.hasNext()) {",
+      "    g_Row = g_AunIt.next();",
+      "    return true;",
+      "}",
+      "return false;"
+     ],
+     "desc": "Iterator over g_Aun"
+    },
+    {
+     "java": "SetAlternateUOM",
+     "out": {
+      "oUOMType": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/UOMType"
+      ],
+      "oUOM": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/UOM"
+      ],
+      "oDescription": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/Description"
+      ],
+      "oConversionFactor": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/ConversionFactor"
+      ],
+      "oConversionForm": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/ConversionForm"
+      ],
+      "oDecimalPlaces": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/DecimalPlaces"
+      ],
+      "oPriceAdjustmentFactor": [
+       "OUT:/SyncItemDetails/DataArea/ItemDetails/AlternateUOM/PriceAdjustmentFactor"
+      ]
+     },
+     "code": [
+      "// Current row from g_Aun (set by HasNextAlternateUOM).",
+      "oUOMType = g_Row[0];",
+      "oUOM = g_Row[1];",
+      "oDescription = g_Row[2];",
+      "oConversionFactor = g_Row[3];",
+      "oConversionForm = g_Row[4];",
+      "oDecimalPlaces = g_Row[5];",
+      "oPriceAdjustmentFactor = g_Row[6];"
+     ],
+     "desc": "Write one AlternateUOM element"
+    }
+   ]
+  },
+  {
+   "java": "LogResult",
+   "desc": "Summary in the MEC message log",
+   "code": [
+    "logInfo(\"ItemDetails: Sync.ItemDetails built for item \" + ITNO + \" (CONO \" + CONO + \"): \"",
+    "        + g_Whs.size() + \" warehouse(s), \" + g_Fac.size() + \" facility(ies), \" + g_Aun.size() + \" alternate U/M(s)\");"
+   ]
+  }
+ ]
+}

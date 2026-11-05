@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ILLUSTRATIVE output for Event_MITMAS_Update_sample.xml. Values are invented test data, not from a real tenant. -->
+<SyncItemDetails xmlns="http://schema.infor.com/InforOAGIS/2" releaseID="9.2" versionID="1.0.0" systemEnvironmentCode="Test" languageCode="en-US">
+	<ApplicationArea>
+		<Sender>
+			<LogicalID schemeVersionID="1.0">lid://infor.m3.m3</LogicalID>
+			<ComponentID schemeVersionID="16.0.0">M3BE</ComponentID>
+			<ConfirmationCode>OnError</ConfirmationCode>
+		</Sender>
+		<CreationDateTime>2026-11-04T09:15:30.123Z</CreationDateTime>
+		<BODID>bf941e3f-c28a-4411-9a31-067d4d26c686</BODID>
+	</ApplicationArea>
+	<DataArea>
+		<Sync>
+			<AccountingEntityID>100_</AccountingEntityID>
+			<LocationID></LocationID>
+			<ActionCriteria>
+				<ActionExpression actionCode="Replace"/>
+			</ActionCriteria>
+		</Sync>
+		<ItemDetails>
+			<ItemHeader>
+				<ItemNumber>TEST-ITEM-001</ItemNumber>
+				<Name>Test item new name</Name>
+				<Description>Stainless bolt M8x40</Description>
+				<Status>20</Status>
+				<ItemType>FG</ItemType>
+				<ItemTypeDescription>Finished goods</ItemTypeDescription>
+				<ItemGroup>BOLT</ItemGroup>
+				<ItemGroupDescription>Bolts</ItemGroupDescription>
+				<ProductGroup>FAST</ProductGroup>
+				<ProductGroupDescription>Fasteners</ProductGroupDescription>
+				<BusinessArea>IND</BusinessArea>
+				<BasicUOM>EA</BasicUOM>
+				<PurchaseOrderUOM>BOX</PurchaseOrderUOM>
+				<PurchasePriceUOM>BOX</PurchasePriceUOM>
+				<SalesPriceUOM>EA</SalesPriceUOM>
+				<ItemCategory>1</ItemCategory>
+				<MakeBuyCode>2</MakeBuyCode>
+				<LotNumberingMethod>0</LotNumberingMethod>
+				<LotControlMethod>0</LotControlMethod>
+				<Responsible>JSMITH</Responsible>
+				<ResponsibleName>John Smith</ResponsibleName>
+				<ProcurementGroup>A01</ProcurementGroup>
+				<SalesItem>1</SalesItem>
+				<AttributeModel></AttributeModel>
+				<ExtendedItemNumber></ExtendedItemNumber>
+				<HierarchyLevel1>IND</HierarchyLevel1>
+				<HierarchyLevel2>FAST</HierarchyLevel2>
+				<HierarchyLevel3></HierarchyLevel3>
+				<HierarchyLevel4></HierarchyLevel4>
+				<HierarchyLevel5></HierarchyLevel5>
+				<NetWeight>0.025</NetWeight>
+				<GrossWeight>0.03</GrossWeight>
+				<Volume>0.0001</Volume>
+				<Length>40</Length>
+				<Width>8</Width>
+				<Height>8</Height>
+				<VATCodePurchase>1</VATCodePurchase>
+				<VATCodeSales>1</VATCodeSales>
+				<EntryDate>2025-03-12</EntryDate>
+				<ChangeDate>2026-11-04</ChangeDate>
+				<ChangedBy>JSMITH</ChangedBy>
+			</ItemHeader>
+			<Warehouse>
+				<Warehouse>100</Warehouse>
+				<WarehouseName>Main warehouse</WarehouseName>
+				<Facility>A01</Facility>
+				<Status>20</Status>
+				<Responsible>JSMITH</Responsible>
+				<Buyer>PBUYER</Buyer>
+				<Supplier>S10001</Supplier>
+				<PlanningPolicy>R1</PlanningPolicy>
+				<OrderType>PO</OrderType>
+				<DefaultLocation>A-01-01</DefaultLocation>
+				<ReorderPoint>500</ReorderPoint>
+				<SafetyStock>200</SafetyStock>
+				<MaximumStock>2000</MaximumStock>
+				<EconomicOrderQuantity>1000</EconomicOrderQuantity>
+				<LeadTime>5</LeadTime>
+				<OnHandApproved>1350</OnHandApproved>
+				<AllocatableOnHand>1200</AllocatableOnHand>
+			</Warehouse>
+			<Facility>
+				<Facility>A01</Facility>
+				<FacilityName>Plant A</FacilityName>
+				<Status>20</Status>
+				<OnHandBalance>1350</OnHandBalance>
+			</Facility>
+			<AlternateUOM>
+				<UOMType>1</UOMType>
+				<UOM>BOX</UOM>
+				<Description>Box of 100</Description>
+				<ConversionFactor>100</ConversionFactor>
+				<ConversionForm>1</ConversionForm>
+				<DecimalPlaces>0</DecimalPlaces>
+				<PriceAdjustmentFactor>1</PriceAdjustmentFactor>
+			</AlternateUOM>
+		</ItemDetails>
+	</DataArea>
+</SyncItemDetails>

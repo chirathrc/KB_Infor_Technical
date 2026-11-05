@@ -17,3 +17,7 @@
 - Always inspect response bodies for `ServerReturnedNOK` and `errorMessage` on `executeRequestV2`.
 - Compile every script to `.js` using `tsc` so both `.ts` and `.js` are delivered.
 
+
+## MEC Knowledge
+- MEC mappings, guides and samples: https://github.com/chirathrc/KB_Infor_Technical/tree/main/mec
+

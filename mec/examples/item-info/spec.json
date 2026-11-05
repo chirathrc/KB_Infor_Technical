@@ -1,0 +1,100 @@
+{
+ "name": "M3FTD_TEST_ItemInfo_Custom",
+ "schema_in": {
+  "xsd": "In.xsd",
+  "name": "In",
+  "root": "ItemRequest"
+ },
+ "schema_out": {
+  "xsd": "Out.xsd",
+  "name": "Out",
+  "root": "ItemResponse"
+ },
+ "variables": [
+  {
+   "name": "g_CONO"
+  },
+  {
+   "name": "g_ITDS"
+  }
+ ],
+ "sequence": [
+  {
+   "java": "Init",
+   "in": {
+    "iCONO": "IN:/ItemRequest/Company"
+   },
+   "out": {
+    "oCONO": [
+     "$g_CONO"
+    ]
+   },
+   "code": [
+    "// FS ref: TEST-001 v1.0",
+    "oCONO = (iCONO == null) ? \"\" : iCONO.trim();"
+   ]
+  },
+  {
+   "settings": {
+    "Company": "$g_CONO"
+   }
+  },
+  {
+   "loop": "Lines",
+   "ctl": "IN:/ItemRequest/Line",
+   "emits": [
+    "OUT:/ItemResponse/Line"
+   ],
+   "body": [
+    {
+     "api": "MMS200MI/GetItmWhsBasic",
+     "mode": "AVI",
+     "in": {
+      "ITNO": "IN:/ItemRequest/Line/Item",
+      "WHLO": "IN:/ItemRequest/Line/Warehouse"
+     },
+     "out": {
+      "ITDS": [
+       "$g_ITDS"
+      ]
+     }
+    },
+    {
+     "loop": "Balances",
+     "body": [
+      {
+       "api": "MMS060MI/LstBalID",
+       "mode": "ARI",
+       "in": {
+        "WHLO": "IN:/ItemRequest/Line/Warehouse",
+        "ITNO": "IN:/ItemRequest/Line/Item"
+       },
+       "out": {
+        "STQT": [
+         "OUT:/ItemResponse/Line/OnHand"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "java": "SetLine",
+     "in": {
+      "iITNO": "IN:/ItemRequest/Line/Item",
+      "iITDS": "$g_ITDS",
+      "iOK": "GetItmWhsBasic.STAT"
+     },
+     "out": {
+      "oItem": [
+       "OUT:/ItemResponse/Line/Item"
+      ],
+      "oName": [
+       "OUT:/ItemResponse/Line/Name"
+      ]
+     },
+     "code": "oItem = iITNO; oName = iITDS;"
+    }
+   ]
+  }
+ ]
+}

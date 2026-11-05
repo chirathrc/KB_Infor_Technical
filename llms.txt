@@ -16,3 +16,8 @@
 - [scripts/infor-samples/](scripts/infor-samples/): Infor SDK samples demonstrating specific H5 features
 - [scripts/utilities/](scripts/utilities/): Shared tools and entry mode setters
 
+
+## MEC Knowledge
+- [mec/README.md](mec/README.md): MEC mapping guides, MI reference, tools and 80 sample .zap files by subject
+- [mec/MEC_INDEX.json](mec/MEC_INDEX.json): Machine-readable index of MEC samples
+

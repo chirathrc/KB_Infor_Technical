@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Load BOD envelope (03 F11): ApplicationArea/Sender, DataArea/Load/ActionCriteria, DataArea/<Noun>/Load<Noun>.
+     No targetNamespace (as in the confirmed running Load-In reference). Code-like and numeric-looking fields are
+     xs:string inside the repeating group (01 §7); quantities are parsed in Java with BigDecimal. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="LoadStockAdjustment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ApplicationArea">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Sender">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LogicalID" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ConfirmationCode" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="BODID" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataArea">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Load">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ActionCriteria" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ActionExpression" type="xs:string" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="StockAdjustment">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LoadStockAdjustment" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Warehouse" type="xs:string"/>
+                          <xs:element name="ItemNumber" type="xs:string"/>
+                          <xs:element name="Location" type="xs:string" minOccurs="0"/>
+                          <xs:element name="LotNumber" type="xs:string" minOccurs="0"/>
+                          <xs:element name="Quantity" type="xs:string"/>
+                          <xs:element name="ReasonCode" type="xs:string" minOccurs="0"/>
+                          <xs:element name="Remark" type="xs:string" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
