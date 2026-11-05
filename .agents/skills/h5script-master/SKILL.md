@@ -12,10 +12,10 @@ description: >
 Always cite and reference resources using their GitHub repository URLs rather than local paths:
 - **Repository**: `https://github.com/chirathrc/KB_Infor_Technical`
 - **Master Script Catalog**: [`KB_INDEX.json`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/KB_INDEX.json)
-- **Standard MI API Swagger Catalog**: [`mi-swagger/MI_CATALOG.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/mi-swagger/MI_CATALOG.md)
-- **API Reference & Typings**: [`api-reference/h5.script.d.ts`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/api-reference/h5.script.d.ts) and [`api-reference/API_QUICK_REFERENCE.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/api-reference/API_QUICK_REFERENCE.md)
-- **Development Standards**: [`docs/STANDARDS_AND_CONVENTIONS.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/docs/STANDARDS_AND_CONVENTIONS.md)
-- **Functional Specs**: [`design-specifications/SPECS_SUMMARY.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/design-specifications/SPECS_SUMMARY.md)
+- **Standard MI API Swagger Catalog**: [`m3-api/mi-swagger/MI_CATALOG.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/m3-api/mi-swagger/MI_CATALOG.md)
+- **API Reference & Typings**: [`h5/sdk-reference/h5.script.d.ts`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/h5/sdk-reference/h5.script.d.ts) and [`h5/sdk-reference/API_QUICK_REFERENCE.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/h5/sdk-reference/API_QUICK_REFERENCE.md)
+- **Development Standards**: [`h5/guides/STANDARDS_AND_CONVENTIONS.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/h5/guides/STANDARDS_AND_CONVENTIONS.md)
+- **Functional Specs**: [`h5/design-specs/SPECS_SUMMARY.md`](https://github.com/chirathrc/KB_Infor_Technical/blob/main/h5/design-specs/SPECS_SUMMARY.md)
 
 ---
 
@@ -122,9 +122,9 @@ class [ScriptFileName] {
 
 ## 4. Reference Scripts on GitHub
 Refer to matching production implementations in:
-- Finance: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/finance`
-- Sales & Distribution: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/sales-and-distribution`
-- Manufacturing & Purchasing: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/manufacturing-and-purchasing`
-- Infor SDK Samples: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/scripts/infor-samples`
-- Standard MI APIs: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/mi-swagger`
+- Finance: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/h5/scripts/finance`
+- Sales & Distribution: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/h5/scripts/sales-and-distribution`
+- Manufacturing & Purchasing: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/h5/scripts/manufacturing-and-purchasing`
+- Infor SDK Samples: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/h5/scripts/infor-samples`
+- Standard MI APIs: `https://github.com/chirathrc/KB_Infor_Technical/tree/main/m3-api/mi-swagger`
 

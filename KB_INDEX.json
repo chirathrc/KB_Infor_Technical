@@ -2,7 +2,7 @@
   {
     "file": "APS100F_HSBC_Pre_Validation.ts",
     "category": "finance",
-    "path": "scripts/finance/APS100F_HSBC_Pre_Validation.ts",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation.ts",
     "m3Program": "APS100",
     "author": "Nethum Ariyarathna",
     "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
@@ -14,7 +14,7 @@
   {
     "file": "APS100F_HSBC_Pre_Validation_CN.ts",
     "category": "finance",
-    "path": "scripts/finance/APS100F_HSBC_Pre_Validation_CN.ts",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_CN.ts",
     "m3Program": "APS100",
     "author": "Nethum Ariyarathna",
     "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
@@ -26,7 +26,7 @@
   {
     "file": "APS100F_HSBC_Pre_Validation_VN.ts",
     "category": "finance",
-    "path": "scripts/finance/APS100F_HSBC_Pre_Validation_VN.ts",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_VN.ts",
     "m3Program": "APS100",
     "author": "Nethum Ariyarathna",
     "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
@@ -38,7 +38,7 @@
   {
     "file": "APS100_Approver.ts",
     "category": "finance",
-    "path": "scripts/finance/APS100_Approver.ts",
+    "path": "h5/scripts/finance/APS100_Approver.ts",
     "m3Program": "APS100",
     "author": "NimeshaPa (Fortude)",
     "summary": "Auto-fills the Approver Code (WEAPCD) on APS100/E by reading CSYPAR00 parameter via MDBREADMI.GetCSYPAR00.",
@@ -49,7 +49,7 @@
   {
     "file": "APS100_exrate.ts",
     "category": "finance",
-    "path": "scripts/finance/APS100_exrate.ts",
+    "path": "h5/scripts/finance/APS100_exrate.ts",
     "m3Program": "APS100",
     "author": "Fortude",
     "summary": "H5 script for APS100/F panel to automatically retrieve and update the exchange rate (WWARAT) for a purchase order (WWPUNO). Calls MDBREADMI.GetMPHEAD00 to fetch CUTE, AGRA, and ...",
@@ -60,7 +60,7 @@
   {
     "file": "APS120_ReconciliationValidation.ts",
     "category": "finance",
-    "path": "scripts/finance/APS120_ReconciliationValidation.ts",
+    "path": "h5/scripts/finance/APS120_ReconciliationValidation.ts",
     "m3Program": "APS120",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for APS120/F1 to validate invoice approval during advance payment reconciliation. Calls APS200MI.GetInvTotInfo to check APRV for each invoice in the grid. Displays err...",
@@ -72,7 +72,7 @@
   {
     "file": "APS131_Set_Report_Text.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text.ts",
     "m3Program": "APS131",
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices.",
@@ -84,7 +84,7 @@
   {
     "file": "APS131_Set_Report_Text_200.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text_200.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text_200.ts",
     "m3Program": "APS131",
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for several divisions.",
@@ -96,7 +96,7 @@
   {
     "file": "APS131_Set_Report_Text_CN.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text_CN.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text_CN.ts",
     "m3Program": "APS131",
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for CN.",
@@ -108,7 +108,7 @@
   {
     "file": "APS131_Set_Report_Text_ID.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text_ID.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text_ID.ts",
     "m3Program": "APS131",
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for ID.",
@@ -120,7 +120,7 @@
   {
     "file": "APS131_Set_Report_Text_MY.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text_MY.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text_MY.ts",
     "m3Program": "APS131",
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for MY.",
@@ -132,7 +132,7 @@
   {
     "file": "APS131_Set_Report_Text_VN.ts",
     "category": "finance",
-    "path": "scripts/finance/APS131_Set_Report_Text_VN.ts",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text_VN.ts",
     "m3Program": "APS131",
     "author": "Nethum Ariyarathna (Fortude)",
     "summary": "This script adds custom dropdowns on APS131 to help users correctly fill in the Report Text (WRLITX) field. It ensures that: // * The payment method is selected based on the div...",
@@ -144,7 +144,7 @@
   {
     "file": "APS160_China_Special_Remark_Tag.ts",
     "category": "finance",
-    "path": "scripts/finance/APS160_China_Special_Remark_Tag.ts",
+    "path": "h5/scripts/finance/APS160_China_Special_Remark_Tag.ts",
     "m3Program": "APS160",
     "author": "Nethum Ariyarathna",
     "summary": "H5 Script to add a \"Special Remark\" field to APA160E0 and persist it via CUSEXTMI AddFieldValue. Captures additional remarks for Chinese purchase-related transactions.",
@@ -156,7 +156,7 @@
   {
     "file": "ARS110_PaymentTerm.ts",
     "category": "finance",
-    "path": "scripts/finance/ARS110_PaymentTerm.ts",
+    "path": "h5/scripts/finance/ARS110_PaymentTerm.ts",
     "m3Program": "ARS110",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for ARS110 panel to display the Payment Term (TEPY) for a customer (CUNO) using CMS100MI.LstPaymentTerm API. Displays a label with \"Payment Term: [TEPY]\" (multilingual...",
@@ -168,7 +168,7 @@
   {
     "file": "ars110_vouchertxt.ts",
     "category": "finance",
-    "path": "scripts/finance/ars110_vouchertxt.ts",
+    "path": "h5/scripts/finance/ars110_vouchertxt.ts",
     "m3Program": "ARS110",
     "author": "ShaleenW (Fortude)",
     "summary": "Adds custom text fields to ARS112/F for combining temporary receipt number and voucher text, and sets the result in the voucher field.",
@@ -180,7 +180,7 @@
   {
     "file": "CheckInvoice.ts",
     "category": "finance",
-    "path": "scripts/finance/CheckInvoice.ts",
+    "path": "h5/scripts/finance/CheckInvoice.ts",
     "m3Program": "General / Framework",
     "author": "Rahul Killedar (Fortude)",
     "summary": "The purpose of this script is to enforce validation on Invoice Date (WDIDAT) and Accounting Date (WDACDT) in panel OIS180/E, based on specific order types (WFORTP, WTORTP). It e...",
@@ -189,7 +189,7 @@
   {
     "file": "CheckInvoice_ARS120.ts",
     "category": "finance",
-    "path": "scripts/finance/CheckInvoice_ARS120.ts",
+    "path": "h5/scripts/finance/CheckInvoice_ARS120.ts",
     "m3Program": "ARS120",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in ARS120\\E.",
@@ -198,7 +198,7 @@
   {
     "file": "CheckInvoice_FAS130.ts",
     "category": "finance",
-    "path": "scripts/finance/CheckInvoice_FAS130.ts",
+    "path": "h5/scripts/finance/CheckInvoice_FAS130.ts",
     "m3Program": "FAS130",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in FAS130\\E.",
@@ -207,7 +207,7 @@
   {
     "file": "CheckInvoice_MFS100.ts",
     "category": "finance",
-    "path": "scripts/finance/CheckInvoice_MFS100.ts",
+    "path": "h5/scripts/finance/CheckInvoice_MFS100.ts",
     "m3Program": "MFS100",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in FAS130\\E.",
@@ -216,7 +216,7 @@
   {
     "file": "FAS130_RestrictFields.ts",
     "category": "finance",
-    "path": "scripts/finance/FAS130_RestrictFields.ts",
+    "path": "h5/scripts/finance/FAS130_RestrictFields.ts",
     "m3Program": "FAS130",
     "author": "Nethum Ariyarathna",
     "summary": "Validates the input format of field WWYREF on the FAS130/F panel. Ported from on-prem JScript (Andrea Devica, 20250801). - Trigger : Runs on Enter key press on FAS130/F panel. -...",
@@ -225,7 +225,7 @@
   {
     "file": "GLS015_field_hide.ts",
     "category": "finance",
-    "path": "scripts/finance/GLS015_field_hide.ts",
+    "path": "h5/scripts/finance/GLS015_field_hide.ts",
     "m3Program": "GLS015",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script automatically sets the field WWVDSC (Voucher Description) to the value \"转账凭证\" (translated: Transfer Voucher) on panel GLS015. It is triggered during Enter key action...",
@@ -234,7 +234,7 @@
   {
     "file": "H5SampleAddElements.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleAddElements.ts",
+    "path": "h5/scripts/infor-samples/H5SampleAddElements.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -245,7 +245,7 @@
   {
     "file": "H5SampleCancelRequest.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleCancelRequest.ts",
+    "path": "h5/scripts/infor-samples/H5SampleCancelRequest.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -254,7 +254,7 @@
   {
     "file": "H5SampleCurrencyXML.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleCurrencyXML.ts",
+    "path": "h5/scripts/infor-samples/H5SampleCurrencyXML.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -266,7 +266,7 @@
   {
     "file": "H5SampleCustomColumns.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleCustomColumns.ts",
+    "path": "h5/scripts/infor-samples/H5SampleCustomColumns.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -278,7 +278,7 @@
   {
     "file": "H5SampleCustomDialog.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleCustomDialog.ts",
+    "path": "h5/scripts/infor-samples/H5SampleCustomDialog.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "Script initialization function.",
@@ -287,7 +287,7 @@
   {
     "file": "H5SampleDrillback.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleDrillback.ts",
+    "path": "h5/scripts/infor-samples/H5SampleDrillback.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample. In development.",
@@ -298,7 +298,7 @@
   {
     "file": "H5SampleExportToExcel.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleExportToExcel.ts",
+    "path": "h5/scripts/infor-samples/H5SampleExportToExcel.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -309,7 +309,7 @@
   {
     "file": "H5SampleHelloWorld.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleHelloWorld.ts",
+    "path": "h5/scripts/infor-samples/H5SampleHelloWorld.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -320,7 +320,7 @@
   {
     "file": "H5SampleHideColumns.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleHideColumns.ts",
+    "path": "h5/scripts/infor-samples/H5SampleHideColumns.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -331,7 +331,7 @@
   {
     "file": "H5SampleImageFromList.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleImageFromList.ts",
+    "path": "h5/scripts/infor-samples/H5SampleImageFromList.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -343,7 +343,7 @@
   {
     "file": "H5SampleIonApiService.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleIonApiService.ts",
+    "path": "h5/scripts/infor-samples/H5SampleIonApiService.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -356,7 +356,7 @@
   {
     "file": "H5SampleMFormsAutomation.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleMFormsAutomation.ts",
+    "path": "h5/scripts/infor-samples/H5SampleMFormsAutomation.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -368,7 +368,7 @@
   {
     "file": "H5SampleMIService.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleMIService.ts",
+    "path": "h5/scripts/infor-samples/H5SampleMIService.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "MIService utility used here is still in development. H5 Script SDK sample.",
@@ -380,7 +380,7 @@
   {
     "file": "H5SampleMIServiceV2.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleMIServiceV2.ts",
+    "path": "h5/scripts/infor-samples/H5SampleMIServiceV2.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "MIService utility used here is still in development. H5 Script SDK sample.",
@@ -392,7 +392,7 @@
   {
     "file": "H5SampleOpenFieldHelp.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleOpenFieldHelp.ts",
+    "path": "h5/scripts/infor-samples/H5SampleOpenFieldHelp.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -403,7 +403,7 @@
   {
     "file": "H5SampleOptionButton.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleOptionButton.ts",
+    "path": "h5/scripts/infor-samples/H5SampleOptionButton.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -414,7 +414,7 @@
   {
     "file": "H5SamplePreviewListHeader.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SamplePreviewListHeader.ts",
+    "path": "h5/scripts/infor-samples/H5SamplePreviewListHeader.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -426,7 +426,7 @@
   {
     "file": "H5SampleRegexValidator.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleRegexValidator.ts",
+    "path": "h5/scripts/infor-samples/H5SampleRegexValidator.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -435,7 +435,7 @@
   {
     "file": "H5SampleRequestTracer.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleRequestTracer.ts",
+    "path": "h5/scripts/infor-samples/H5SampleRequestTracer.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -446,7 +446,7 @@
   {
     "file": "H5SampleSelectionChanged.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleSelectionChanged.ts",
+    "path": "h5/scripts/infor-samples/H5SampleSelectionChanged.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -458,7 +458,7 @@
   {
     "file": "H5SampleShowOnMap.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleShowOnMap.ts",
+    "path": "h5/scripts/infor-samples/H5SampleShowOnMap.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -469,7 +469,7 @@
   {
     "file": "H5SampleShowXml.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleShowXml.ts",
+    "path": "h5/scripts/infor-samples/H5SampleShowXml.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -480,7 +480,7 @@
   {
     "file": "H5SampleUserDetails.ts",
     "category": "infor-samples",
-    "path": "scripts/infor-samples/H5SampleUserDetails.ts",
+    "path": "h5/scripts/infor-samples/H5SampleUserDetails.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
@@ -492,7 +492,7 @@
   {
     "file": "GC_PMS050E_FlagBulkMOs.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS050E_FlagBulkMOs.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS050E_FlagBulkMOs.ts",
     "m3Program": "PMS050",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script automates the selection of the \"Flag Complete\" checkbox on panel PMS050/E for bulk manufacturing orders based on the item type. It ensures that MOs of type G02 are a...",
@@ -501,7 +501,7 @@
   {
     "file": "GC_PMS060_DisplayTotal.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS060_DisplayTotal.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS060_DisplayTotal.ts",
     "m3Program": "PMS060",
     "author": "NimeshaPa (Fortude)",
     "summary": "This script adds a button and textbox to the PMS060 panel to calculate and display the total reported quantity (RQTA) from the list/grid view.",
@@ -513,7 +513,7 @@
   {
     "file": "GC_PMS086_ValidateChgDelOptions.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS086_ValidateChgDelOptions.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS086_ValidateChgDelOptions.ts",
     "m3Program": "PMS086",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script enforces order integrity in the PMS086 program by restricting Change (option 2) and Delete (option 4) list options when the order status is \"90\". It is designed to p...",
@@ -524,7 +524,7 @@
   {
     "file": "GC_PMS100E_UpdStructureComplexity.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS100E_UpdStructureComplexity.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS100E_UpdStructureComplexity.ts",
     "m3Program": "PMS100",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script is designed to automatically calculate and populate the Structure Complexity field (WHSCOM) on panel PMS100/E based on order quantity and yield quantity. It improves...",
@@ -533,7 +533,7 @@
   {
     "file": "GC_PMS101F_MediPack_ResF12.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS101F_MediPack_ResF12.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS101F_MediPack_ResF12.ts",
     "m3Program": "PMS101",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script enforces business logic for Medipack items (Item Type = G06) in the PMS101 program by restricting the use of the F12 (Previous) key. The rule ensures that users do n...",
@@ -544,7 +544,7 @@
   {
     "file": "GC_PMS250E_UpdStrCom_Auto.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/GC_PMS250E_UpdStrCom_Auto.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS250E_UpdStrCom_Auto.ts",
     "m3Program": "PMS250",
     "author": "Nethum Ariyarathna",
     "summary": "Clears specific fields on PMS250/E panel to ensure only the 'shop traveler' document is printed.",
@@ -553,7 +553,7 @@
   {
     "file": "pms100Js.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/pms100Js.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/pms100Js.ts",
     "m3Program": "PMS100",
     "author": "NimeshaPa (Fortude)",
     "summary": "Automatically launches PMS100 with pre-filled manufacturing order data for each selected line on PMS100/B and refreshes the list view after execution.",
@@ -565,7 +565,7 @@
   {
     "file": "PMS101E_MediPackV7.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PMS101E_MediPackV7.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PMS101E_MediPackV7.ts",
     "m3Program": "PMS101",
     "author": "Rahul Killedar (Fortude)",
     "summary": "Calculates bags for Medi Pack item based on yield and item type",
@@ -576,7 +576,7 @@
   {
     "file": "pms170Js.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/pms170Js.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/pms170Js.ts",
     "m3Program": "PMS170",
     "author": "ShaleenW (Fortude)",
     "summary": "Retrieves the selected Planned MO from PMS170/B | and creates an automation that opens PMS170/E and fills in relevant fields. Place this H5script in PMS170/B panel",
@@ -588,7 +588,7 @@
   {
     "file": "PPS171E_NonTradedItemsDisable_PPQT_PUNN.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS171E_NonTradedItemsDisable_PPQT_PUNN.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS171E_NonTradedItemsDisable_PPQT_PUNN.ts",
     "m3Program": "PPS171",
     "author": "Nethum Ariyarathna",
     "summary": "This Script disables PPQT and PUNN fields when POGETY is 28 or 29.",
@@ -599,7 +599,7 @@
   {
     "file": "PPS180B1_TotalOrderValue.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS180B1_TotalOrderValue.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS180B1_TotalOrderValue.ts",
     "m3Program": "PPS180",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for PPA180BC to display Purchase Price, Total Line Amount, Total Order Value and Approval Status for purchase requisition sublines. Uses PPS170MI and CMS100MI APIs.",
@@ -612,7 +612,7 @@
   {
     "file": "PPS180E_M3PRApproval.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS180E_M3PRApproval.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS180E_M3PRApproval.ts",
     "m3Program": "PPS180",
     "author": "Nethum Ariyarathna",
     "summary": "Adds Submit and Unapprove buttons on PPS180/E panel to manage purchase requisition approval status. Calls CUSEXTMI API to check and update approval status, disables specific fie...",
@@ -624,7 +624,7 @@
   {
     "file": "PPS2001E_NonTradedItemsDisable.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS2001E_NonTradedItemsDisable.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS2001E_NonTradedItemsDisable.ts",
     "m3Program": "PPS200",
     "author": "NimeshaPa (Fortude)",
     "summary": "Disables fields if GETY from PPS200MI GetLine is '28' or '29'.",
@@ -635,7 +635,7 @@
   {
     "file": "PPS200E_M3POApproval.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS200E_M3POApproval.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval.ts",
     "m3Program": "PPS200",
     "author": "NimeshaPa (Fortude)",
     "summary": "Added a button in Change mode to submit POs with status 12 for approval by updating TEOR via PPS200MI.",
@@ -647,7 +647,7 @@
   {
     "file": "PPS200E_M3POApproval_V2.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS200E_M3POApproval_V2.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval_V2.ts",
     "m3Program": "PPS200",
     "author": "NimeshaPa (Fortude)",
     "summary": "Added a button in Change mode to submit POs with status 12 for approval by updating TEOR via PPS200MI.",
@@ -659,7 +659,7 @@
   {
     "file": "PPS201B_ValidatePOApproval.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS201B_ValidatePOApproval.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS201B_ValidatePOApproval.ts",
     "m3Program": "PPS201",
     "author": "NimeshaPa (Fortude)",
     "summary": "Prevents unauthorized execution in PPS201/B1 if TEOR (line-level approval) is already set.",
@@ -671,7 +671,7 @@
   {
     "file": "PPS215.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS215.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS215.ts",
     "m3Program": "PPS215",
     "author": "Rahul Killedar (Fortude)",
     "summary": "Disables WWOVCD and WWCEVA fields on PPS215/E",
@@ -680,7 +680,7 @@
   {
     "file": "PPS220B_ValidatePOApproval.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS220B_ValidatePOApproval.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS220B_ValidatePOApproval.ts",
     "m3Program": "PPS220",
     "author": "NimeshaPa (Fortude)",
     "summary": "Prevents list option 2 or 35 execution in PPS220/B if line-level approval (TEOR) is already set.",
@@ -693,7 +693,7 @@
   {
     "file": "PPS220I1_PPS270E_DisableQtyAndValidation.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS220I1_PPS270E_DisableQtyAndValidation.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS220I1_PPS270E_DisableQtyAndValidation.ts",
     "m3Program": "PPS220",
     "author": "Chirath Rothila (Fortude)",
     "summary": "Validate the qty entered in PPA270/E and disable Qty to Notify column in PPS220/L1.",
@@ -705,7 +705,7 @@
   {
     "file": "PPS300E_GRNWSP.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts",
     "m3Program": "PPS300",
     "author": "Nethum Ariyarathna",
     "summary": "Adds an Auto-GRN button on PPS300/E panel to process selected purchase order lines using PPS001MI.Receipt API. Supports multilingual (English/Chinese) messages and validates loc...",
@@ -718,7 +718,7 @@
   {
     "file": "PPS300_VehicleNo_V1.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V1.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V1.ts",
     "m3Program": "PPS300",
     "author": "Infor / Unknown",
     "summary": "Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/",
@@ -730,7 +730,7 @@
   {
     "file": "PPS300_VehicleNo_V2.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V2.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V2.ts",
     "m3Program": "PPS300",
     "author": "Infor / Unknown",
     "summary": "Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/",
@@ -744,7 +744,7 @@
   {
     "file": "PPS310_QualityInspectAPI.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "scripts/manufacturing-and-purchasing/PPS310_QualityInspectAPI.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS310_QualityInspectAPI.ts",
     "m3Program": "PPS310",
     "author": "Nimesha Pawani",
     "summary": "Added \"Confirm All\" button to PPS310/A to inspect all GRN lines via PPS001MI.Inspect.",
@@ -756,7 +756,7 @@
   {
     "file": "CRS610_CustomerControl.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/CRS610_CustomerControl.ts",
+    "path": "h5/scripts/sales-and-distribution/CRS610_CustomerControl.ts",
     "m3Program": "CRS610",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script customizes behavior for users accessing the CRS610 program. It restricts specific function keys based on user role and interaction mode, and also disables or pre-set...",
@@ -767,7 +767,7 @@
   {
     "file": "CustomerOrderChargesOIS103.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/CustomerOrderChargesOIS103.ts",
+    "path": "h5/scripts/sales-and-distribution/CustomerOrderChargesOIS103.ts",
     "m3Program": "General / Framework",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for OIS103/E panel to calculate and display total accrued discount for a customer and restrict negative charge entries (WRCRAM) to be less than or equal to the accrued...",
@@ -780,7 +780,7 @@
   {
     "file": "GC_MMS121B1_AddProdDtCol.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/GC_MMS121B1_AddProdDtCol.ts",
+    "path": "h5/scripts/sales-and-distribution/GC_MMS121B1_AddProdDtCol.ts",
     "m3Program": "MMS121",
     "author": "Nethum Ariyarathna",
     "summary": "H5 Script for MMS121/B1 panel to add a Production Date column for sorting order 1. Fetches production date (IDDT) from MMS060MI API and formats it based on user date format (DMY...",
@@ -793,7 +793,7 @@
   {
     "file": "MMS100B_MWS300B_AutomationOfPositiveRO.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MMS100B_MWS300B_AutomationOfPositiveRO.ts",
+    "path": "h5/scripts/sales-and-distribution/MMS100B_MWS300B_AutomationOfPositiveRO.ts",
     "m3Program": "MMS100",
     "author": "Nethum Ariyarathna",
     "summary": "Script checks if a single selected row in M3’s MWA300BC or MMA100BC panels is a positive Return Order (RO) by validating its order type (TRTP) using the CRS200MI API. If the RO ...",
@@ -805,7 +805,7 @@
   {
     "file": "MMS100E_Apply_UserRole_Validation.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MMS100E_Apply_UserRole_Validation.ts",
+    "path": "h5/scripts/sales-and-distribution/MMS100E_Apply_UserRole_Validation.ts",
     "m3Program": "MMS100",
     "author": "ShaleenW (Fortude)",
     "summary": "Keep Authorize enabled for valid user roles only | Place this H5script in MMS100/E panel",
@@ -817,7 +817,7 @@
   {
     "file": "MMS101B1_PreventLineDeletion.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MMS101B1_PreventLineDeletion.ts",
+    "path": "h5/scripts/sales-and-distribution/MMS101B1_PreventLineDeletion.ts",
     "m3Program": "MMS101",
     "author": "Nethum Ariyarathna",
     "summary": "Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MMS101B panel.",
@@ -829,7 +829,7 @@
   {
     "file": "MMS121_DisplayShelfLife.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MMS121_DisplayShelfLife.ts",
+    "path": "h5/scripts/sales-and-distribution/MMS121_DisplayShelfLife.ts",
     "m3Program": "MMS121",
     "author": "Fortude",
     "summary": "Functional Specification FTD_M3_FS 2072 (SAFCO ELEV8 Implementation). MMS121/B (MMA121BC) - Calculates and displays remaining Shelf Life Percentage in a custom grid column ('Shl...",
@@ -842,7 +842,7 @@
   {
     "file": "MWS068_DisplayNumberOfPacks.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MWS068_DisplayNumberOfPacks.ts",
+    "path": "h5/scripts/sales-and-distribution/MWS068_DisplayNumberOfPacks.ts",
     "m3Program": "MWS068",
     "author": "Nethum Ariyarathna",
     "summary": "H5 Script for MWS068/B panel to display number of packs (raw materials) in Lot Ref 2 (MLBRE2) and KG value for livestock FG in Indonesia WHs in Main Attribute 3 (MLATV3). Calcul...",
@@ -855,7 +855,7 @@
   {
     "file": "MWS301B1_PreventLineDeletion.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MWS301B1_PreventLineDeletion.ts",
+    "path": "h5/scripts/sales-and-distribution/MWS301B1_PreventLineDeletion.ts",
     "m3Program": "MWS301",
     "author": "Nethum Ariyarathna",
     "summary": "Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MWS301B panel.",
@@ -867,7 +867,7 @@
   {
     "file": "MWS410B_MOsCostingStatus.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MWS410B_MOsCostingStatus.ts",
+    "path": "h5/scripts/sales-and-distribution/MWS410B_MOsCostingStatus.ts",
     "m3Program": "MWS410",
     "author": "Rahul Killedar (Fortude)",
     "summary": "Validates Costing status for bulk MOs in MWS410/B before allowing option 32. Calls MWS150MI.SelSupplyChain and MDBREADMI.GetMWOHED55 to validate.",
@@ -878,7 +878,7 @@
   {
     "file": "MWS410_RestrictDOPrint.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/MWS410_RestrictDOPrint.ts",
+    "path": "h5/scripts/sales-and-distribution/MWS410_RestrictDOPrint.ts",
     "m3Program": "MWS410",
     "author": "Nethum Ariyarathna",
     "summary": "This Script prevents actions 15, 21, 27, 28 when PGRS is below 90.",
@@ -890,7 +890,7 @@
   {
     "file": "OIS101CreditBalance.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS101CreditBalance.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS101CreditBalance.ts",
     "m3Program": "OIS101",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for OIS101 panel to display customer credit information during order entry. Retrieves Credit Limit, Outstanding Balance (SUM_BSOUAC + SUM_OBLNAM), Remaining Credit Bal...",
@@ -902,7 +902,7 @@
   {
     "file": "OIS105_date.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS105_date.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS105_date.ts",
     "m3Program": "OIS105",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script displays today's date (formatted per user settings) in a message when panel OIS105/B is loaded. Column header updates are not supported in H5.",
@@ -911,7 +911,7 @@
   {
     "file": "OIS180_RestrictFields.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS180_RestrictFields.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS180_RestrictFields.ts",
     "m3Program": "OIS180",
     "author": "Rahul Killedar (Fortude)",
     "summary": "Disables Invoice Date and Accounting Date fields on OIS180/E",
@@ -920,7 +920,7 @@
   {
     "file": "OIS300JS.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300JS.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300JS.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "Adds a \"MÁY TÍNH\"( Vietnamese Calculate) button and Total Net Weight, Total Value, and Total Amount textboxes on the OIA300BC panel to compute totals for selected customer order...",
@@ -932,7 +932,7 @@
   {
     "file": "OIS300JSCN.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300JSCN.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300JSCN.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "Adds a \"Calculate\" button and displays total net weight and total net value for selected Customer Orders on the OIA300BC panel. Button is enabled only for China views (CN-VIEW1,...",
@@ -944,7 +944,7 @@
   {
     "file": "OIS300_InvoiceReportLink.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300_InvoiceReportLink.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300_InvoiceReportLink.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for OIS300/B panel to open the Abaqa Invoice Report Link for the selected customer order (ORNO). Checks for single selection, handles no/multiple selections with messa...",
@@ -955,7 +955,7 @@
   {
     "file": "OIS300_OAOBLC_VALIDATION.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300_OAOBLC_VALIDATION.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300_OAOBLC_VALIDATION.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "This script prevents users from executing specific list options (such as Change, Delete, or Line Entry) in the OIS300/B panel (OIA300BC) when the selected order lines have block...",
@@ -966,7 +966,7 @@
   {
     "file": "OIS300_OrderConfirmationReportLink.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300_OrderConfirmationReportLink.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300_OrderConfirmationReportLink.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for OIS300/B panel to open the Abaqa Order Confirmation Report for the selected customer order (ORNO). Checks for single selection, handles no/multiple selections with...",
@@ -977,7 +977,7 @@
   {
     "file": "OIS300_SalesReportLink.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300_SalesReportLink.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300_SalesReportLink.ts",
     "m3Program": "OIS300",
     "author": "Nethum Ariyarathna",
     "summary": "H5 script for OIS300/B panel to open the Abaqa Sales Contract report for the selected customer order (ORNO). Checks for single selection, handles no/multiple selections with mes...",
@@ -988,7 +988,7 @@
   {
     "file": "OIS300_WEARLO_VALIDATION.ts",
     "category": "sales-and-distribution",
-    "path": "scripts/sales-and-distribution/OIS300_WEARLO_VALIDATION.ts",
+    "path": "h5/scripts/sales-and-distribution/OIS300_WEARLO_VALIDATION.ts",
     "m3Program": "OIS300",
     "author": "Rahul Killedar",
     "summary": "This script validates the 'BLRO' (Backlog Amount) field on the OIS300/B panel. If any selected row contains a negative BLRO value, the script cancels the execution of list optio...",
@@ -999,7 +999,7 @@
   {
     "file": "EntryModeSetter.ts",
     "category": "utilities",
-    "path": "scripts/utilities/EntryModeSetter.ts",
+    "path": "h5/scripts/utilities/EntryModeSetter.ts",
     "m3Program": "General / Framework",
     "author": "Kelum Ganegoda (Fortude)",
     "summary": "This script is standard one in ISO. There is no equivalent H5 scripts. Perhaps this is not required in MT. However, I uplifted it.",
@@ -1008,7 +1008,7 @@
   {
     "file": "TestIssue.ts",
     "category": "utilities",
-    "path": "scripts/utilities/TestIssue.ts",
+    "path": "h5/scripts/utilities/TestIssue.ts",
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "Script initialization function.",

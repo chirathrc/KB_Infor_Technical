@@ -22,7 +22,7 @@ This document provides a technical and functional index of the DES-020 Design Sp
 ---
 
 ## AI Agent Retrieval Guidance
-- When asked to create or modify scripts for **Accounts Payable (`APS120`, `APS131`)**, refer to the relevant `DES-020_APS*` document and matching script in `scripts/finance/`.
-- When asked about **Production / Manufacturing Orders (`PMS100`, `PMS060`)**, refer to `DES-020_pms100Js.docx` and `DES-020_GC_PMS060_DisplayTotal.docx` and matching scripts in `scripts/manufacturing-and-purchasing/`.
+- When asked to create or modify scripts for **Accounts Payable (`APS120`, `APS131`)**, refer to the relevant `DES-020_APS*` document and matching script in `h5/scripts/finance/`.
+- When asked about **Production / Manufacturing Orders (`PMS100`, `PMS060`)**, refer to `DES-020_pms100Js.docx` and `DES-020_GC_PMS060_DisplayTotal.docx` and matching scripts in `h5/scripts/manufacturing-and-purchasing/`.
 - For standard documentation templates when documenting a new script, use `Template/DES-020_Design_Specification H5 Template.docx`.
 

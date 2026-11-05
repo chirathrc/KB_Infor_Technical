@@ -4,20 +4,22 @@
 ## Key Files & Catalogs
 - [README.md](README.md): Master catalog, domain tables, and retrieval guidelines
 - [KB_INDEX.json](KB_INDEX.json): Machine-readable index of all 89 scripts with summaries and API usage
-- [mi-swagger/MI_CATALOG.md](mi-swagger/MI_CATALOG.md): Complete directory of 1,311 standard Infor M3 MI API programs
-- [api-reference/API_QUICK_REFERENCE.md](api-reference/API_QUICK_REFERENCE.md): H5 Scripting classes, interfaces, and lifecycle cheat sheet
-- [docs/STANDARDS_AND_CONVENTIONS.md](docs/STANDARDS_AND_CONVENTIONS.md): Coding guidelines and required JSDoc header template
-- [design-specifications/SPECS_SUMMARY.md](design-specifications/SPECS_SUMMARY.md): Summary of DES-020 technical design specifications
+- [m3-api/mi-swagger/MI_CATALOG.md](m3-api/mi-swagger/MI_CATALOG.md): Complete directory of 1,311 standard Infor M3 MI API programs
+- [h5/sdk-reference/API_QUICK_REFERENCE.md](h5/sdk-reference/API_QUICK_REFERENCE.md): H5 Scripting classes, interfaces, and lifecycle cheat sheet
+- [h5/guides/STANDARDS_AND_CONVENTIONS.md](h5/guides/STANDARDS_AND_CONVENTIONS.md): Coding guidelines and required JSDoc header template
+- [h5/design-specs/SPECS_SUMMARY.md](h5/design-specs/SPECS_SUMMARY.md): Summary of DES-020 technical design specifications
 
 ## Code Folders
-- [scripts/finance/](scripts/finance/): Accounts Payable (APS), Accounts Receivable (ARS), Fixed Assets (FAS), General Ledger (GLS)
-- [scripts/sales-and-distribution/](scripts/sales-and-distribution/): Customer (CRS), Orders (OIS), Material (MMS), Warehouse (MWS)
-- [scripts/manufacturing-and-purchasing/](scripts/manufacturing-and-purchasing/): Production Orders (PMS), Purchase Orders (PPS)
-- [scripts/infor-samples/](scripts/infor-samples/): Infor SDK samples demonstrating specific H5 features
-- [scripts/utilities/](scripts/utilities/): Shared tools and entry mode setters
+- [h5/scripts/finance/](h5/scripts/finance/): Accounts Payable (APS), Accounts Receivable (ARS), Fixed Assets (FAS), General Ledger (GLS)
+- [h5/scripts/sales-and-distribution/](h5/scripts/sales-and-distribution/): Customer (CRS), Orders (OIS), Material (MMS), Warehouse (MWS)
+- [h5/scripts/manufacturing-and-purchasing/](h5/scripts/manufacturing-and-purchasing/): Production Orders (PMS), Purchase Orders (PPS)
+- [h5/scripts/infor-samples/](h5/scripts/infor-samples/): Infor SDK samples demonstrating specific H5 features
+- [h5/scripts/utilities/](h5/scripts/utilities/): Shared tools and entry mode setters
 
 
 ## MEC Knowledge
 - [mec/README.md](mec/README.md): MEC mapping guides, MI reference, tools and 80 sample .zap files by subject
 - [mec/MEC_INDEX.json](mec/MEC_INDEX.json): Machine-readable index of MEC samples
+
+- [mec/README.md](mec/README.md): MEC section (already listed) / top-level layout: h5/, mec/, m3-api/
 
