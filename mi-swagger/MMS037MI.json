@@ -1,0 +1,2999 @@
+{
+  "info": {
+    "version": "6403",
+    "title": "MMS037MI - Planning Policy",
+    "description": "Planning Policy"
+  },
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json; charset=UTF-8"
+  ],
+  "basePath": "/ZSRS8S9P7FNWUDGC_TRN/M3/m3api-rest/v2/execute/MMS037MI",
+  "swagger": "2.0",
+  "definitions": {
+    "BulkResponseResult": {
+      "type": "object",
+      "properties": {
+        "transaction": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "errorMessage": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "errorCfg": {
+          "type": "string"
+        },
+        "errorField": {
+          "type": "string"
+        },
+        "errorType": {
+          "type": "string",
+          "enum": [
+            "BackendInternalError",
+            "InputFieldTooLong",
+            "InternalError",
+            "InvalidLanguage",
+            "InvalidPositionKey",
+            "InvalidSystemConfiguration",
+            "InvalidTenant",
+            "InvalidUser",
+            "InvalidUserConoDivi",
+            "MalformedRequest",
+            "MandatoryInputFieldNotFound",
+            "RequestIOError",
+            "RunAsNotAllowed",
+            "RunAsTenantNotAllowed",
+            "ServerReturnedNOK",
+            "ServiceNotAvailable",
+            "TransactionNotFound"
+          ],
+          "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+        },
+        "notProcessed": {
+          "type": "boolean",
+          "example": false
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "positionKey": {
+          "type": "string"
+        }
+      }
+    },
+    "BulkResponse": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "transaction": {
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "errorMessage": {
+                "type": "string"
+              },
+              "errorCode": {
+                "type": "string"
+              },
+              "errorCfg": {
+                "type": "string"
+              },
+              "errorField": {
+                "type": "string"
+              },
+              "errorType": {
+                "type": "string",
+                "enum": [
+                  "BackendInternalError",
+                  "InputFieldTooLong",
+                  "InternalError",
+                  "InvalidLanguage",
+                  "InvalidPositionKey",
+                  "InvalidSystemConfiguration",
+                  "InvalidTenant",
+                  "InvalidUser",
+                  "InvalidUserConoDivi",
+                  "MalformedRequest",
+                  "MandatoryInputFieldNotFound",
+                  "RequestIOError",
+                  "RunAsNotAllowed",
+                  "RunAsTenantNotAllowed",
+                  "ServerReturnedNOK",
+                  "ServiceNotAvailable",
+                  "TransactionNotFound"
+                ],
+                "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+              },
+              "notProcessed": {
+                "type": "boolean",
+                "example": false
+              },
+              "records": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "positionKey": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "wasTerminated": {
+          "type": "boolean",
+          "example": false
+        },
+        "terminationReason": {
+          "type": "string"
+        },
+        "nrOfSuccessfullTransactions": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        },
+        "nrOfNotProcessedTransactions": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nrOfFailedTransactions": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "terminationErrorType": {
+          "type": "string"
+        },
+        "bulkJobId": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/LstPlanPolicy": {
+      "get": {
+        "summary": "List planning policy",
+        "description": "List planning policy",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "LstPlanPolicy"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {
+                          "PLCD": "Planning policy(2)"
+                        }
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "CONO": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Company(3)"
+                            },
+                            "PLCD": {
+                              "type": "string",
+                              "description": "Planning policy(2)"
+                            },
+                            "TX15": {
+                              "type": "string",
+                              "description": "Name(15)"
+                            },
+                            "TX40": {
+                              "type": "string",
+                              "description": "Description(40)"
+                            },
+                            "PUSL": {
+                              "type": "string",
+                              "description": "Default Status - purchase order(2)"
+                            },
+                            "WHST": {
+                              "type": "string",
+                              "description": "Default Status - manufacturing order(2)"
+                            },
+                            "TRSL": {
+                              "type": "string",
+                              "description": "Default Status - DO(2)"
+                            },
+                            "WHSM": {
+                              "type": "string",
+                              "description": "Default Status - work order(2)"
+                            },
+                            "STN1": {
+                              "type": "string",
+                              "description": "Release status - planned orders A1(2)"
+                            },
+                            "RSC9": {
+                              "type": "string",
+                              "description": "Reschedule(1)"
+                            },
+                            "STNP": {
+                              "type": "string",
+                              "description": "Release status - planned orders(2)"
+                            },
+                            "FQPP": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Firm qty if planned order is within PTF(1)"
+                            },
+                            "EXPM": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Explode pl order for master scheduled(1)"
+                            },
+                            "AFUH": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Automatic firm up horizon(2)"
+                            },
+                            "CHMP": {
+                              "type": "string",
+                              "description": "Re-explode planned MO in status 20(1)"
+                            },
+                            "UMMO": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Update material on MO(1)"
+                            },
+                            "DRIM": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Time filter - reschedule to earlier date(2)"
+                            },
+                            "DROM": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Time filter - reschedule to later date(2)"
+                            },
+                            "ALEA": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Amount filter - reschedule to later date(17)"
+                            },
+                            "GODM": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Should AM order delay be generated(1)"
+                            },
+                            "DODN": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Time filter - AM order delayed(2)"
+                            },
+                            "GOWD": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Should AM delay warnings be generated(1)"
+                            },
+                            "DODM": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Time filter - AM order delay(2)"
+                            },
+                            "ORMH": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "AM order release prior to release date(2)"
+                            },
+                            "RCLQ": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Recalculate qty for order policy 15(1)"
+                            },
+                            "SSPF": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Comp SS and proj ohb at planning fence(1)"
+                            },
+                            "RPTA": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Compare RoP and available total(1)"
+                            },
+                            "RPCA": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Comp RoP and proj ohb at planning fence(1)"
+                            },
+                            "SRAC": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Should (RoP - avail at LT) > EOQ create(1)"
+                            },
+                            "SQOQ": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Shortage qty included in ordered qty(1)"
+                            },
+                            "NREP": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Not repr reserv within lt reduce ohb(1)"
+                            },
+                            "UPPR": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Priority values generate planned orders(1)"
+                            },
+                            "MXDR": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Excess generates DO return(1)"
+                            },
+                            "MRPS": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Plan method 2 can be 1 at simulation(1)"
+                            },
+                            "FXRC": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Fixed reorder cycle(1)"
+                            },
+                            "LS90": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Amount limit - release planned orders(17)"
+                            },
+                            "FACH": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Forecast alarm consideration(1)"
+                            },
+                            "MPI6": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Stop items with manual planning values(1)"
+                            },
+                            "ARCO": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "File closed planned orders(1)"
+                            },
+                            "ATPA": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "ATP calculation horizon adjustment(2)"
+                            },
+                            "SUPO": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Sum pland ord within PTF for ord plcy 12(1)"
+                            },
+                            "APPC": {
+                              "type": "string",
+                              "description": "APP synchronization(1)"
+                            },
+                            "RRMC": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Re-calculate run-out time at mtrl pl chg(1)"
+                            },
+                            "RPPH": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Remove pl orders outside pl horizon(1)"
+                            },
+                            "PRPT": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Proposed time for order policy 15(1)"
+                            },
+                            "CSHL": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Consider shelf life in MRP(1)"
+                            },
+                            "IAPS": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Integrate APS planning(1)"
+                            },
+                            "PLVL": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Planning level(1)"
+                            },
+                            "DRED": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Days to delay release after last issue(2)"
+                            },
+                            "LPHZ": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Long-term planning horizon(5)"
+                            },
+                            "PLHA": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Planning horizon adjustment(1)"
+                            },
+                            "IMOQ": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Ignore maximum order quantity(1)"
+                            },
+                            "SAGR": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Agreement search for alternate supplier(1)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "CONO": "Company(3)",
+                            "PLCD": "Planning policy(2)",
+                            "TX15": "Name(15)",
+                            "TX40": "Description(40)",
+                            "PUSL": "Default Status - purchase order(2)",
+                            "WHST": "Default Status - manufacturing order(2)",
+                            "TRSL": "Default Status - DO(2)",
+                            "WHSM": "Default Status - work order(2)",
+                            "STN1": "Release status - planned orders A1(2)",
+                            "RSC9": "Reschedule(1)",
+                            "STNP": "Release status - planned orders(2)",
+                            "FQPP": "Firm qty if planned order is within PTF(1)",
+                            "EXPM": "Explode pl order for master scheduled(1)",
+                            "AFUH": "Automatic firm up horizon(2)",
+                            "CHMP": "Re-explode planned MO in status 20(1)",
+                            "UMMO": "Update material on MO(1)",
+                            "DRIM": "Time filter - reschedule to earlier date(2)",
+                            "DROM": "Time filter - reschedule to later date(2)",
+                            "ALEA": "Amount filter - reschedule to later date(17)",
+                            "GODM": "Should AM order delay be generated(1)",
+                            "DODN": "Time filter - AM order delayed(2)",
+                            "GOWD": "Should AM delay warnings be generated(1)",
+                            "DODM": "Time filter - AM order delay(2)",
+                            "ORMH": "AM order release prior to release date(2)",
+                            "RCLQ": "Recalculate qty for order policy 15(1)",
+                            "SSPF": "Comp SS and proj ohb at planning fence(1)",
+                            "RPTA": "Compare RoP and available total(1)",
+                            "RPCA": "Comp RoP and proj ohb at planning fence(1)",
+                            "SRAC": "Should (RoP - avail at LT) > EOQ create(1)",
+                            "SQOQ": "Shortage qty included in ordered qty(1)",
+                            "NREP": "Not repr reserv within lt reduce ohb(1)",
+                            "UPPR": "Priority values generate planned orders(1)",
+                            "MXDR": "Excess generates DO return(1)",
+                            "MRPS": "Plan method 2 can be 1 at simulation(1)",
+                            "FXRC": "Fixed reorder cycle(1)",
+                            "LS90": "Amount limit - release planned orders(17)",
+                            "FACH": "Forecast alarm consideration(1)",
+                            "MPI6": "Stop items with manual planning values(1)",
+                            "ARCO": "File closed planned orders(1)",
+                            "ATPA": "ATP calculation horizon adjustment(2)",
+                            "SUPO": "Sum pland ord within PTF for ord plcy 12(1)",
+                            "APPC": "APP synchronization(1)",
+                            "RRMC": "Re-calculate run-out time at mtrl pl chg(1)",
+                            "RPPH": "Remove pl orders outside pl horizon(1)",
+                            "PRPT": "Proposed time for order policy 15(1)",
+                            "CSHL": "Consider shelf life in MRP(1)",
+                            "IAPS": "Integrate APS planning(1)",
+                            "PLVL": "Planning level(1)",
+                            "DRED": "Days to delay release after last issue(2)",
+                            "LPHZ": "Long-term planning horizon(5)",
+                            "PLHA": "Planning horizon adjustment(1)",
+                            "IMOQ": "Ignore maximum order quantity(1)",
+                            "SAGR": "Agreement search for alternate supplier(1)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "PLCD",
+            "description": "Planning policy(2)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/FpwVersion": {
+      "get": {
+        "summary": "Returns the current FPW version number",
+        "description": "Returns the current FPW version number",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "FpwVersion"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "VER": {
+                              "type": "string",
+                              "description": "Version number in the form 2.0.0(10)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "VER": "Version number in the form 2.0.0(10)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetCurrentUser": {
+      "get": {
+        "summary": "Get principal user information",
+        "description": "Get principal user information",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetCurrentUser"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "TEID": {
+                              "type": "string",
+                              "description": "Tenant ID(21)"
+                            },
+                            "USER": {
+                              "type": "string",
+                              "description": "M3 User(10)"
+                            },
+                            "PRUS": {
+                              "type": "string",
+                              "description": "Principal User(60)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "TEID": "Tenant ID(21)",
+                            "USER": "M3 User(10)",
+                            "PRUS": "Principal User(60)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetFieldHeading": {
+      "get": {
+        "summary": "Retrieve description for a general word",
+        "description": "Retrieve description for a general word",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetFieldHeading"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {
+                          "MS15": "General word(5)",
+                          "SUFF": "Suffix(2)",
+                          "LNCD": "Language(2)",
+                          "LNFP": "Language file prefix(3)"
+                        }
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "TX40": {
+                              "type": "string",
+                              "description": "Description(40)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "TX40": "Description(40)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "in": "query",
+            "type": "string",
+            "name": "MS15",
+            "description": "General word(5)"
+          },
+          {
+            "required": true,
+            "in": "query",
+            "type": "string",
+            "name": "SUFF",
+            "description": "Suffix(2)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "LNCD",
+            "description": "Language(2)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "LNFP",
+            "description": "Language file prefix(3)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetFixLevel": {
+      "get": {
+        "summary": "GetFixLevel",
+        "description": "GetFixLevel",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetFixLevel"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {
+                          "FIXL": "Fix level, Jira action number(15)"
+                        }
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "SLVL": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Supports fix level(1)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "SLVL": "Supports fix level(1)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "in": "query",
+            "type": "string",
+            "name": "FIXL",
+            "description": "Fix level, Jira action number(15)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetMIBuild": {
+      "get": {
+        "summary": "Get build data for MI-program",
+        "description": "Get build data for MI-program",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetMIBuild"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "VERS": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Version(2)"
+                            },
+                            "PTFS": {
+                              "type": "string",
+                              "description": "Release(1)"
+                            },
+                            "MBLD": {
+                              "type": "string",
+                              "description": "Build number(15)"
+                            },
+                            "SYID": {
+                              "type": "string",
+                              "description": "System(6)"
+                            },
+                            "PGNM": {
+                              "type": "string",
+                              "description": "Program name(10)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "VERS": "Version(2)",
+                            "PTFS": "Release(1)",
+                            "MBLD": "Build number(15)",
+                            "SYID": "System(6)",
+                            "PGNM": "Program name(10)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetMessageText": {
+      "get": {
+        "summary": "Get message text",
+        "description": "Get message text",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetMessageText"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {
+                          "MSID": "Message ID(7)",
+                          "LNCD": "Language(2)",
+                          "LNFP": "Optional language file prefix(3)",
+                          "PARM": "Parameter value(132)"
+                        }
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "MSGT": {
+                              "type": "string",
+                              "description": "Message text(132)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "MSGT": "Message text(132)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": true,
+            "in": "query",
+            "type": "string",
+            "name": "MSID",
+            "description": "Message ID(7)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "LNCD",
+            "description": "Language(2)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "LNFP",
+            "description": "Optional language file prefix(3)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "PARM",
+            "description": "Parameter value(132)"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetServerTime": {
+      "get": {
+        "summary": "Get current date and time from server",
+        "description": "Get current date and time from server",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetServerTime"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "DATE": {
+                              "type": "string",
+                              "format": "mvxdate",
+                              "description": "Date YYYYMMDD(10)"
+                            },
+                            "TIME": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Time 6 digits(6)"
+                            },
+                            "LMTS": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Number of milliseconds(18)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "DATE": "Date YYYYMMDD(10)",
+                            "TIME": "Time 6 digits(6)",
+                            "LMTS": "Number of milliseconds(18)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/GetUserInfo": {
+      "get": {
+        "summary": "Get user information",
+        "description": "Get user information",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "GetUserInfo"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "ZZUSID": {
+                              "type": "string",
+                              "description": "User(10)"
+                            },
+                            "ZDCONO": {
+                              "type": "string",
+                              "format": "numeric",
+                              "description": "Company(3)"
+                            },
+                            "ZDDIVI": {
+                              "type": "string",
+                              "description": "Division(3)"
+                            },
+                            "ZDFACI": {
+                              "type": "string",
+                              "description": "Facility(3)"
+                            },
+                            "ZZWHLO": {
+                              "type": "string",
+                              "description": "Warehouse(3)"
+                            },
+                            "ZDAUPF": {
+                              "type": "string",
+                              "description": "User group-function access(10)"
+                            },
+                            "ZDREPF": {
+                              "type": "string",
+                              "description": "Display item name in own language(1)"
+                            },
+                            "ZDLANC": {
+                              "type": "string",
+                              "description": "System language(2)"
+                            },
+                            "ZDDTFM": {
+                              "type": "string",
+                              "description": "Date format(3)"
+                            },
+                            "DSEP": {
+                              "type": "string",
+                              "description": "Date separator(1)"
+                            },
+                            "TSEP": {
+                              "type": "string",
+                              "description": "Time separator(1)"
+                            },
+                            "TIZO": {
+                              "type": "string",
+                              "description": "Time zone(5)"
+                            },
+                            "USFN": {
+                              "type": "string",
+                              "description": "User full name(40)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "ZZUSID": "User(10)",
+                            "ZDCONO": "Company(3)",
+                            "ZDDIVI": "Division(3)",
+                            "ZDFACI": "Facility(3)",
+                            "ZZWHLO": "Warehouse(3)",
+                            "ZDAUPF": "User group-function access(10)",
+                            "ZDREPF": "Display item name in own language(1)",
+                            "ZDLANC": "System language(2)",
+                            "ZDDTFM": "Date format(3)",
+                            "DSEP": "Date separator(1)",
+                            "TSEP": "Time separator(1)",
+                            "TIZO": "Time zone(5)",
+                            "USFN": "User full name(40)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    },
+    "/ServerTimeZone": {
+      "get": {
+        "summary": "Returns server time with timezone",
+        "description": "Returns server time with timezone",
+        "responses": {
+          "200": {
+            "description": "The transaction was executed as requested",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "transaction": {
+                        "type": "string",
+                        "example": "ServerTimeZone"
+                      },
+                      "parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        },
+                        "example": {}
+                      },
+                      "errorMessage": {
+                        "type": "string"
+                      },
+                      "errorCode": {
+                        "type": "string"
+                      },
+                      "errorCfg": {
+                        "type": "string"
+                      },
+                      "errorField": {
+                        "type": "string"
+                      },
+                      "errorType": {
+                        "type": "string",
+                        "enum": [
+                          "BackendInternalError",
+                          "InputFieldTooLong",
+                          "InternalError",
+                          "InvalidLanguage",
+                          "InvalidPositionKey",
+                          "InvalidSystemConfiguration",
+                          "InvalidTenant",
+                          "InvalidUser",
+                          "InvalidUserConoDivi",
+                          "MalformedRequest",
+                          "MandatoryInputFieldNotFound",
+                          "RequestIOError",
+                          "RunAsNotAllowed",
+                          "RunAsTenantNotAllowed",
+                          "ServerReturnedNOK",
+                          "ServiceNotAvailable",
+                          "TransactionNotFound"
+                        ],
+                        "description": "BackendInternalError - An unexpected error attributed to the job execution occurred\nInputFieldTooLong - A given input field value was longer than allowed\nInternalError - An unexpected error attributed to the transport layer occurred\nInvalidLanguage - The resolved language is not supported\nInvalidPositionKey - The resolved positionKey is invalid\nInvalidSystemConfiguration - The resolved company/division is not configured with a valid system configuration\nInvalidTenant - Unable to resolve a valid tenant\nInvalidUser - The resolved user is invalid\nInvalidUserConoDivi - The resolved company/division does not exist or the user does not have access to it\nMalformedRequest - Invalid request format\nMandatoryInputFieldNotFound - Mandatory field not included in request\nRequestIOError - Error when reading request\nRunAsNotAllowed - The user is not allowed to run as another user\nRunAsTenantNotAllowed - The user is not allowed to run as another tenant\nServerReturnedNOK - Transaction executed with result NOK\nServiceNotAvailable - There is a temporary problem connecting to an internal service or communicating with the job itself\nTransactionNotFound - Program or transaction not found"
+                      },
+                      "notProcessed": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "records": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "TMTZ": {
+                              "type": "string",
+                              "description": "Date/time with time zone(30)"
+                            },
+                            "UTCT": {
+                              "type": "string",
+                              "description": "UTC time(30)"
+                            }
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "example": {
+                            "TMTZ": "Date/time with time zone(30)",
+                            "UTCT": "UTC time(30)"
+                          }
+                        }
+                      },
+                      "positionKey": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "wasTerminated": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "terminationReason": {
+                  "type": "string"
+                },
+                "nrOfSuccessfullTransactions": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 1
+                },
+                "nrOfNotProcessedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "nrOfFailedTransactions": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "terminationErrorType": {
+                  "type": "string"
+                },
+                "bulkJobId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "cono",
+            "description": "The company context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "divi",
+            "description": "The division context to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "lanc",
+            "description": "The language code to use. Defaults to user default"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "locale",
+            "description": "The locale to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "timeZone",
+            "description": "The time zone to use"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "maxrecs",
+            "description": "Max number of records returned. 0 is unlimited"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "dateformat",
+            "description": "Date format to use",
+            "default": "YMD8",
+            "enum": [
+              "YMD8",
+              "YMD6",
+              "MDY6",
+              "DMY6",
+              "YWD5",
+              "YMD8-"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "excludeempty",
+            "description": "When true, empty fields are omitted in response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "righttrim",
+            "description": "When true, all values are right trimmed in response",
+            "default": "true"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "returncols",
+            "description": "A comma separated list of column names that should be included in the response. Defaults to all columns"
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "format",
+            "description": "Controls output JSON format",
+            "default": "PRETTY",
+            "enum": [
+              "UNFORMATTED",
+              "COMPACT",
+              "PRETTY"
+            ]
+          },
+          {
+            "required": false,
+            "in": "query",
+            "type": "string",
+            "name": "extendedresult",
+            "description": "Show transaction parameters in the response",
+            "default": "false"
+          },
+          {
+            "required": false,
+            "in": "header",
+            "type": "string",
+            "name": "positionkey",
+            "description": "The position in a table to start reading from"
+          }
+        ]
+      }
+    }
+  }
+}

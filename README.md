@@ -1,6 +1,6 @@
-# Infor M3 H5 Scripting Technical Knowledge Base
+# Infor M3 Technical & H5 Scripting Knowledge Base
 
-Welcome to the **Infor M3 H5 Scripting Technical Knowledge Base**. This repository is specifically curated and structured for AI agents, developers, and technical architects to perform semantic search, retrieval-augmented generation (RAG), and rapid reference lookup for Infor CloudSuite M3 H5 client-side scripting.
+Welcome to the **Infor M3 Technical Knowledge Base**. This repository is specifically curated and structured for AI agents, developers, and technical architects to perform semantic search, retrieval-augmented generation (RAG), and rapid reference lookup for Infor CloudSuite M3 client-side scripting and standard M3 MI APIs.
 
 ## Knowledge Base Architecture
 
@@ -13,6 +13,10 @@ KB_Infor_Technical/
 |   |-- infor.controls.d.ts        # Infor SoHo / controls type definitions
 |   |-- jquery.d.ts                # jQuery type definitions
 |   `-- API_QUICK_REFERENCE.md     # High-density markdown API cheat sheet for LLMs
+|-- mi-swagger/                    # Standard Infor M3 MI (Machine Interface) API Catalog
+|   |-- MI_CATALOG.md              # Markdown quick-search index of 1,311 standard MI APIs
+|   |-- MI_CATALOG.json            # Machine-readable catalog with transactions and descriptions
+|   `-- <PROGRAM>MI.json           # 1,311 Swagger JSON schemas (MMS200MI, OIS100MI, etc.)
 |-- docs/                          # Guides, standards, and change logs
 |   |-- H5ScriptDevelopersGuide.pdf# Official Infor H5 Script Developers Guide
 |   |-- STANDARDS_AND_CONVENTIONS.md # Naming, formatting, JSDoc, coding rules
@@ -20,7 +24,7 @@ KB_Infor_Technical/
 |-- design-specifications/         # Functional & technical specifications (DES-020)
 |   |-- SPECS_SUMMARY.md           # Markdown cross-reference of all functional specs
 |   `-- DES-020_*.docx             # Original Word specification documents
-`-- scripts/                       # 88 Curated TypeScript scripts categorized by domain
+`-- scripts/                       # 89 Curated TypeScript scripts categorized by domain
     |-- finance/                   # Accounts Payable (APS), Accounts Receivable (ARS), Fixed Assets (FAS), General Ledger (GLS)
     |-- sales-and-distribution/    # Customer (CRS), Orders (OIS), Materials (MMS), Warehouse (MWS)
     |-- manufacturing-and-purchasing/ # Production Orders (PMS), Purchase Orders (PPS)
@@ -30,12 +34,18 @@ KB_Infor_Technical/
 
 ## AI Agent Retrieval & Usage Guide
 
-When serving user queries about Infor M3 H5 scripts, follow this systematic lookup pattern:
-1. **Identify the M3 Program**: Check the M3 program code (e.g. `MMS100`, `OIS300`, `PPS200`, `APS120`) in the tables below or in `KB_INDEX.json`.
-2. **Locate Real-World Reference Implementations**: Read scripts in `scripts/<category>/` corresponding to that program to understand existing business logic, validation patterns, and event bindings.
-3. **Verify API Signatures**: Consult `api-reference/API_QUICK_REFERENCE.md` or `api-reference/h5.script.d.ts` for exact method names, arguments, and interface contracts.
+When answering user queries or generating code for Infor M3, follow this systematic lookup pattern:
+1. **Look Up Standard M3 MI APIs**: Check `mi-swagger/MI_CATALOG.md` to identify the correct MI program (e.g. `MMS200MI` for Items, `OIS100MI` for Orders, `CRS610MI` for Customers) and inspect `mi-swagger/<PROGRAM>MI.json` for transaction input/output field definitions.
+2. **Locate Real-World Reference Implementations**: Find matching programs in `scripts/<category>/` or `KB_INDEX.json` to understand existing business logic, validation patterns, and event bindings.
+3. **Verify API Signatures**: Consult `api-reference/API_QUICK_REFERENCE.md` or `api-reference/h5.script.d.ts` for client-side H5 controller methods, events, and UI element models.
 4. **Check Coding Standards**: Always adhere to `docs/STANDARDS_AND_CONVENTIONS.md` for header formats, class naming, and TypeScript typing conventions.
 5. **Review Design Specifications**: Check `design-specifications/SPECS_SUMMARY.md` when functional context or business rules are requested.
+
+## Standard Infor M3 MI Swagger Library (1,311 Programs)
+
+The `mi-swagger/` directory contains complete OpenAPI/Swagger JSON specifications for all 1,311 Infor M3 MI programs.
+- **[MI_CATALOG.md](mi-swagger/MI_CATALOG.md)**: Searchable index with descriptions and sample transactions.
+- **[MI_CATALOG.json](mi-swagger/MI_CATALOG.json)**: Machine-readable index for automated lookup.
 
 ## Financials (AP, AR, FAS, GLS) (21 Scripts)
 
@@ -88,7 +98,7 @@ When serving user queries about Infor M3 H5 scripts, follow this systematic look
 | [`OIS300_SalesReportLink.ts`](scripts/sales-and-distribution/OIS300_SalesReportLink.ts) | `OIS300` | H5 script for OIS300/B panel to open the Abaqa Sales Contract report for the selected customer order (ORNO). Checks for single selection, handles no/multiple selections with mes... | Grid / List Control |
 | [`OIS300_WEARLO_VALIDATION.ts`](scripts/sales-and-distribution/OIS300_WEARLO_VALIDATION.ts) | `OIS300` | This script validates the 'BLRO' (Backlog Amount) field on the OIS300/B panel. If any selected row contains a negative BLRO value, the script cancels the execution of list optio... | Grid / List Control |
 
-## Manufacturing & Purchasing (PMS, PPS) (22 Scripts)
+## Manufacturing & Purchasing (PMS, PPS) (23 Scripts)
 
 | Script Name | M3 Program | Summary / Purpose | Key APIs Used |
 | :--- | :--- | :--- | :--- |
@@ -110,6 +120,7 @@ When serving user queries about Infor M3 H5 scripts, follow this systematic look
 | [`PPS201B_ValidatePOApproval.ts`](scripts/manufacturing-and-purchasing/PPS201B_ValidatePOApproval.ts) | `PPS201` | Prevents unauthorized execution in PPS201/B1 if TEOR (line-level approval) is already set. | MIService (M3 API), Hook: RequestCompleted |
 | [`PPS215.ts`](scripts/manufacturing-and-purchasing/PPS215.ts) | `PPS215` | Disables WWOVCD and WWCEVA fields on PPS215/E | DOM / Standard API |
 | [`PPS220B_ValidatePOApproval.ts`](scripts/manufacturing-and-purchasing/PPS220B_ValidatePOApproval.ts) | `PPS220` | Prevents list option 2 or 35 execution in PPS220/B if line-level approval (TEOR) is already set. | MIService (M3 API), Hook: RequestCompleted, Grid / List Control |
+| [`PPS220I1_PPS270E_DisableQtyAndValidation.ts`](scripts/manufacturing-and-purchasing/PPS220I1_PPS270E_DisableQtyAndValidation.ts) | `PPS220` | Validate the qty entered in PPA270/E and disable Qty to Notify column in PPS220/L1. | Hook: RequestCompleted, Grid / List Control |
 | [`PPS300E_GRNWSP.ts`](scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts) | `PPS300` | Adds an Auto-GRN button on PPS300/E panel to process selected purchase order lines using PPS001MI.Receipt API. Supports multilingual (English/Chinese) messages and validates loc... | MIService (M3 API), Grid / List Control, Dynamic UI Elements |
 | [`PPS300_VehicleNo_V1.ts`](scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V1.ts) | `PPS300` | Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/ | MIService (M3 API), Grid / List Control |
 | [`PPS300_VehicleNo_V2.ts`](scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V2.ts) | `PPS300` | Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/ | MIService (M3 API), ConfirmDialog, IonApiService (ION API), Grid / List Control |

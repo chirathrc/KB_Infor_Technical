@@ -109,3 +109,4 @@ export class MyCustomScript {
 ### M3 API Invocations (`MIService`)
 - Always execute M3 MI transactions asynchronously using `MIService.Current.Execute(...)` or `MIService.Current.ExecuteRequest(...)`.
 - Always handle errors gracefully with rejection handlers and display user-friendly messages via `controller.ShowMessage(...)` or `ConfirmDialog`.
+

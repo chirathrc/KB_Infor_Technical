@@ -691,6 +691,18 @@
     ]
   },
   {
+    "file": "PPS220I1_PPS270E_DisableQtyAndValidation.ts",
+    "category": "manufacturing-and-purchasing",
+    "path": "scripts/manufacturing-and-purchasing/PPS220I1_PPS270E_DisableQtyAndValidation.ts",
+    "m3Program": "PPS220",
+    "author": "Chirath Rothila (Fortude)",
+    "summary": "Validate the qty entered in PPA270/E and disable Qty to Notify column in PPS220/L1.",
+    "keyApis": [
+      "Hook: RequestCompleted",
+      "Grid / List Control"
+    ]
+  },
+  {
     "file": "PPS300E_GRNWSP.ts",
     "category": "manufacturing-and-purchasing",
     "path": "scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts",
