@@ -1,0 +1,16 @@
+# Visual Studio & IDE
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Build & compiled outputs
+obj/
+bin/
+*.js.map
+
+# Temporary files & logs
+*.log
+*.tmp
+thumbs.db
+.DS_Store
