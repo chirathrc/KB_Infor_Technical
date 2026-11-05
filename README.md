@@ -161,3 +161,5 @@ The `m3-api/mi-swagger/` directory contains complete OpenAPI/Swagger JSON specif
 ## MEC Knowledge
 MEC mappings, guides, MI references and 80 sample .zap files are in [mec/](mec/README.md), organised by subject. Index: [mec/MEC_INDEX.json](mec/MEC_INDEX.json).
 
+#   K B _ I n f o r _ T e c h n i c a l  
+ 
