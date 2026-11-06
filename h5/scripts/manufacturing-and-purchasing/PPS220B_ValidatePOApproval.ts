@@ -44,22 +44,22 @@ class PPS220B_ValidatePOApproval {
     this.detachRequested = this.controller.RequestCompleted.On((e) => this.onRequested(e));
   }
 
-  //   private onRowSelected(): void {
-  //     this.TEORValidated = false;
+//   private onRowSelected(): void {
+//     this.TEORValidated = false;
 
-  //     // const selectedRows = this.list.getSelectedGridRows();
-  //     // if (selectedRows) {
-  //     //   this.selectedPUNO = selectedRows["PUNO"]?.trim() || "";
-  //     //   this.selectedPNLI = selectedRows["PNLI"]?.trim() || "";
-  //     // }
+//     // const selectedRows = this.list.getSelectedGridRows();
+//     // if (selectedRows) {
+//     //   this.selectedPUNO = selectedRows["PUNO"]?.trim() || "";
+//     //   this.selectedPNLI = selectedRows["PNLI"]?.trim() || "";
+//     // }
 
-  //     const selectedRows = this.list.getSelectedGridRows();
-  //     if (selectedRows && selectedRows.length > 0) {
-  //     const row = selectedRows[0];
-  //     this.selectedPUNO = row["PUNO"]?.trim() || "";
-  //     this.selectedPNLI = row["PNLI"]?.trim() || "";
-  //     }
-  //   }
+//     const selectedRows = this.list.getSelectedGridRows();
+//     if (selectedRows && selectedRows.length > 0) {
+//     const row = selectedRows[0];
+//     this.selectedPUNO = row["PUNO"]?.trim() || "";
+//     this.selectedPNLI = row["PNLI"]?.trim() || "";
+//     }
+//   }
 
   private onRequesting(args: CancelRequestEventArgs): void {
     const panelHeader = this.controller.GetPanelName();
@@ -77,12 +77,12 @@ class PPS220B_ValidatePOApproval {
     const selectedRows = this.list.getSelectedGridRows();
     if (selectedRows && selectedRows.length > 0) {
       for (const selected of selectedRows) {
-        const data = selected.data;
+        const data = selected.data;  
         this.selectedPUNO = data["IBPUNO"]?.trim() || "";
       }
     }
     if (
-      (panelHeader == "PPA220BC") &&
+      (panelHeader =="PPA220BC") &&
       commandType === "LSTOPT" &&
       (commandValue === "2" || commandValue === "35")
     ) {
@@ -92,7 +92,7 @@ class PPS220B_ValidatePOApproval {
         // this.setWaitCursor(true);
         this.callMDBREADMI_GetMPHEAD0001(); // updated function
         console.log(this.selectedPUNO);
-      }
+      } 
     }
   }
 
@@ -115,59 +115,59 @@ class PPS220B_ValidatePOApproval {
   }
 
   private handleTEORResponse(response: IMIResponse): void {
-    if (response.hasError()) {
-      this.log.Error("MI Error: " + response.errorMessage);
-      return;
-    }
-
-    const record = response.items?.[0] || response.item;
-    if (!record) {
-      this.log.Error("No MI record returned");
-      return;
-    }
-
-    this.TEOR = record["TEOR"];
-    this.TEORValidated = true;
-
-    if (this.TEOR === "1") {
-      let errMsg = "";
-      switch (this.LANG) {
-        case "CS":
-          errMsg = "采购订单批准 进度 - 不允许更改";
-          break;
-        case "VI":
-          errMsg = "Phê duyệt PO trong Tiến độ - Thay đổi không được phép";
-          break;
-        default:
-          errMsg = "PO Approval in Progress – Changes not allowed";
-      }
-      this.controller.ShowMessage(errMsg);
-    } else {
-      // Prevent recursive crash
-      if (this.detachRequesting) this.detachRequesting();
-      if (this.detachRequested) this.detachRequested();
-
-      // Trigger original list option safely
-      setTimeout(() => {
-        this.controller.ListOption(this.pressedKey);
-      }, 200);
-    }
+  if (response.hasError()) {
+    this.log.Error("MI Error: " + response.errorMessage);
+    return;
   }
+
+  const record = response.items?.[0] || response.item;
+  if (!record) {
+    this.log.Error("No MI record returned");
+    return;
+  }
+
+  this.TEOR = record["TEOR"];
+  this.TEORValidated = true;
+
+  if (this.TEOR === "1") {
+    let errMsg = "";
+    switch (this.LANG) {
+      case "CS":
+        errMsg = "采购订单批准 进度 - 不允许更改";
+        break;
+      case "VI":
+        errMsg = "Phê duyệt PO trong Tiến độ - Thay đổi không được phép";
+        break;
+      default:
+        errMsg = "PO Approval in Progress – Changes not allowed";
+    }
+    this.controller.ShowMessage(errMsg);
+  } else {
+    // Prevent recursive crash
+    if (this.detachRequesting) this.detachRequesting();
+    if (this.detachRequested) this.detachRequested();
+
+    // Trigger original list option safely
+    setTimeout(() => {
+      this.controller.ListOption(this.pressedKey);
+    }, 200);
+  }
+}
 
 
   private onRequested(args: RequestEventArgs): void {
-    this.log.Info("RequestCompleted event triggered");
+        this.log.Info("RequestCompleted event triggered");
 
-    if (this.detachRequesting) this.detachRequesting();
-    if (this.detachRequested) this.detachRequested();
-  }
+        if (this.detachRequesting) this.detachRequesting();
+        if (this.detachRequested) this.detachRequested();
+    }
 
-  //   private setWaitCursor(wait: boolean): void {
-  //     const host = this.controller.GetHost();
-  //     const impl = host?.Implementation;
-  //     if (impl) {
-  //       impl.Cursor = wait ? "wait" : "default";
-  //       impl.ForceCursor = wait;
-  //     }
-  //   }
+//   private setWaitCursor(wait: boolean): void {
+//     const host = this.controller.GetHost();
+//     const impl = host?.Implementation;
+//     if (impl) {
+//       impl.Cursor = wait ? "wait" : "default";
+//       impl.ForceCursor = wait;
+//     }
+//   }
 }

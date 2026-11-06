@@ -402,7 +402,7 @@ class APS100F_HSBC_Pre_Validation_VN {
                 if (this.IsReadyToProcess && this.attemptingNext) {
                     this.attemptingNext = false;
                     console.log("All validations passed - Proceeding to next panel");
-                    setTimeout(() => this.controller.PressKey("ENTER"), 100);
+                    setTimeout(() => this.controller.PressKey("ENTER"), 500);
                 } else this.attemptingNext = false;
             },
             buttons: dialogButtons

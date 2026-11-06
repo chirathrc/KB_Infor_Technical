@@ -6,7 +6,8 @@
  * Version Log :
  * Changed By  | Date       | Summary of the change
  * ------------|------------|-----------------------------
- * NimeshaPa    | 30/06/2025 | Initial script creation
+ * NimeshaPa   | 30/06/2025 | Initial script creation
+ * ChirathRO   | 19/06/2026 | Modified to work for sorting order 1 as well  
  */
 
 class GC_PMS060_DisplayTotal {
@@ -52,27 +53,27 @@ class GC_PMS060_DisplayTotal {
     $btn.click(() => this.onClick());
   }
 
-    private onClick(): void {
+  private onClick(): void {
     const grid = this.controller.GetGrid();
     if (!grid) {
-        this.log.Error("Datagrid not found.");
-        return;
+      this.log.Error("Datagrid not found.");
+      return;
     }
 
     // Get the current sorting order field (WWQTTP)
     const sortingField = this.controller.GetValue("WWQTTP")?.toString().trim();
     console.log(sortingField);
 
-    if (sortingField !== "7") {
-        this.log.Info(`Calculation only available for sorting order '7-Qty by schd no./process code'. Current: ${sortingField}`);
-        this.textBox.Value = "";  // prevent misleading zero
-        return;
+    if (sortingField !== "7" && sortingField !== "1") {
+      this.log.Info(`Calculation only available for sorting order '7-Qty & 1 by schd no./process code'. Current: ${sortingField}`);
+      this.textBox.Value = "";  // prevent misleading zero
+      return;
     }
 
     const rows = grid.getData();
     if (!rows || rows.length === 0) {
-        this.log.Info("No rows found.");
-        return;
+      this.log.Info("No rows found.");
+      return;
     }
 
     // let total = 0;
@@ -85,20 +86,20 @@ class GC_PMS060_DisplayTotal {
 
     let total = 0;
     for (const row of rows) {
-        // 27/06/2025 -- NimeshaPa -- In the original Jscript, value "RQTA".Changed for testing purposes.
-        const rawValue = row["S7RQTA"];
-        let cleanedValue = rawValue?.toString();
+      // 27/06/2025 -- NimeshaPa -- In the original Jscript, value "RQTA".Changed for testing purposes.
+      const rawValue = row["S7RQTA"] || row["S1RQTA"];
+      let cleanedValue = rawValue?.toString();
 
-        // Handle both scenarios: comma and dot decimal separators
-        if (cleanedValue?.includes(",")) {
-            cleanedValue = cleanedValue.replace(",", ".");
-        }
+      // Handle both scenarios: comma and dot decimal separators
+      if (cleanedValue?.includes(",")) {
+        cleanedValue = cleanedValue.replace(",", ".");
+      }
 
-        if (cleanedValue && !isNaN(Number(cleanedValue))) {
+      if (cleanedValue && !isNaN(Number(cleanedValue))) {
         total += parseFloat(cleanedValue);
-        }
+      }
     }
 
     this.textBox.Value = total.toFixed(2);
-    }
+  }
 }

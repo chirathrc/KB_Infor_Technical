@@ -11,8 +11,7 @@
  * Changed By        | Date       | Summary of the change
  * ------------------|------------|-----------------------------
  * Nethum Ariyarathna| 2025-10-03 | Initial script creation
- *                   | 2025-06-17 | Validation Update
- * 
+ * Chirath Rothila   | 2026-06-17 | Validation changes
  */
 class CustomerOrderChargesOIS103 {
     private controller: IInstanceController;
@@ -71,7 +70,17 @@ class CustomerOrderChargesOIS103 {
         //     return;
         // }
 
-        if ((this.ORNO.startsWith("004") || this.ORNO.startsWith("0081") || this.ORNO.startsWith("00649"))) {
+        // if ((this.ORNO.startsWith("004") || this.ORNO.startsWith("0081") || this.ORNO.startsWith("00649"))) {
+        //     this.log.Info(`Order ${this.ORNO} does start with 004, 0081, or 00649, skipping`);
+        //     return;
+        // }
+
+        //Updated Validation Logic
+        if (
+            this.ORNO.indexOf("004") === 0 ||
+            this.ORNO.indexOf("0081") === 0 ||
+            this.ORNO.indexOf("00649") === 0
+        ) {
             this.log.Info(`Order ${this.ORNO} does start with 004, 0081, or 00649, skipping`);
             return;
         }
@@ -173,6 +182,7 @@ class CustomerOrderChargesOIS103 {
     }
 
     private onGLS210Response(response: IMIResponse, cuno: string): void {
+        console.log("onGLS210Response-----------" + response.items + "Length" + response.items.length);
         try {
             this.log.Info(`Processing CMS100MI.LstDiscountLedg response for ${cuno}`);
             if (response.hasError()) {
@@ -200,40 +210,56 @@ class CustomerOrderChargesOIS103 {
         }
     }
 
+    // private getDiscountInvoicesOIS350(cuno: string): void {
+    //     const request = new MIRequest();
+    //     request.program = "CMS100MI";
+    //     request.transaction = "LstDiscountInv";
+    //     //request.record = { UTCONO: this.CONO, UTDIVI: this.DIVI, UTCUNO: cuno, UTIVTP: "60", UTIVRF: "DIS_AC", UHVONO: "0" };
+    //     request.record = { cono: this.CONO, UTDIVI: this.DIVI, UTCUNO: cuno, UTIVTP: "60", UTIVRF: "DIS_AC" };
+    //     request.outputFields = ["UTACAM"];
+    //     request.maxReturnedRecords = 10000;
+
+    //     this.log.Info(`Calling CMS100MI.LstDiscountInv for ${cuno}, CONO: ${this.CONO}, DIVI: ${this.DIVI}`);
+    //     this.miService.executeRequestV2(request).then(response => this.onOIS350Response(response, cuno)).catch(error => {
+    //         this.onApiError(error, "CMS100MI.LstDiscountInv", cuno);
+    //     });
+    // }
+
+    //New Update - Chirath 26/08/21
     private getDiscountInvoicesOIS350(cuno: string): void {
         const request = new MIRequest();
         request.program = "CMS100MI";
-        request.transaction = "LstDiscountInv";
+        request.transaction = "LstDiscountIVal";
         //request.record = { UTCONO: this.CONO, UTDIVI: this.DIVI, UTCUNO: cuno, UTIVTP: "60", UTIVRF: "DIS_AC", UHVONO: "0" };
-        request.record = { cono: this.CONO, UTDIVI: this.DIVI, UTCUNO: cuno, UTIVTP: "60", UTIVRF: "DIS_AC" };
-        request.outputFields = ["UTACAM"];
+        request.record = { UHDIVI: this.DIVI, UHPYNO: cuno };
+        request.outputFields = ["IVAM"];
         request.maxReturnedRecords = 10000;
 
-        this.log.Info(`Calling CMS100MI.LstDiscountInv for ${cuno}, CONO: ${this.CONO}, DIVI: ${this.DIVI}`);
+        this.log.Info(`Calling CMS100MI.LstDiscountIVal for ${cuno}, CONO: ${this.CONO}, DIVI: ${this.DIVI}`);
         this.miService.executeRequestV2(request).then(response => this.onOIS350Response(response, cuno)).catch(error => {
-            this.onApiError(error, "CMS100MI.LstDiscountInv", cuno);
+            this.onApiError(error, "CMS100MI.LstDiscountIVal", cuno);
         });
     }
 
     private onOIS350Response(response: IMIResponse, cuno: string): void {
         try {
-            this.log.Info(`Processing CMS100MI.LstDiscountInv response for ${cuno}`);
+            this.log.Info(`Processing CMS100MI.LstDiscountIVal response for ${cuno}`);
             if (response.hasError()) {
-                this.log.Error(`CMS100MI.LstDiscountInv error for ${cuno}: ${response.errorMessage} (Code: ${response.errorCode})`);
+                this.log.Error(`CMS100MI.LstDiscountIVal error for ${cuno}: ${response.errorMessage} (Code: ${response.errorCode})`);
                 this.apiCallsCompleted++;
                 this.checkAllApisCompleted();
                 return;
             }
             let amount = 0;
             if (response.items && response.items.length > 0) {
-                this.log.Info(`CMS100MI.LstDiscountInv raw data: ${JSON.stringify(response.items)}`);
+                this.log.Info(`CMS100MI.LstDiscountIVal raw data: ${JSON.stringify(response.items)}`);
                 amount = response.items.reduce((sum, item) => {
                     const value = parseFloat(item["UTACAM"] || "0");
                     return sum + (isNaN(value) ? 0 : value);
                 }, 0);
             }
             this.totalAccruedDiscount += amount;
-            this.log.Info(`CMS100MI.LstDiscountInv discount invoices: ${amount.toFixed(2)}`);
+            this.log.Info(`CMS100MI.LstDiscountIVal discount invoices: ${amount.toFixed(2)}`);
             this.apiCallsCompleted++;
             this.checkAllApisCompleted();
         } catch (ex) {

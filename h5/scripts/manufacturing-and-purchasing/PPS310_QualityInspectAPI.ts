@@ -1,13 +1,15 @@
-/**
- * Author      : Nimesha Pawani
- * Created on  : 12/08/2025
- * Summary     : Added "Confirm All" button to PPS310/A to inspect all GRN lines via PPS001MI.Inspect.
- *
- * Version Log :
- * Changed By  | Date       | Summary of the change
- * ------------|------------|-----------------------------------------------------
- * [Your Name] | 12/08/2025 | Initial TypeScript conversion & updated to spec: 
- *                           LstReceivedPO + PPS001MI.Inspect
+/** 
+ * Author      : Nimesha Pawani 
+ * Created on  : 12/08/2025 
+ * Summary     : Added "Confirm All" button to PPS310/A to inspect all GRN lines via PPS001MI.Inspect. 
+ * 
+ * Version Log : 
+ * Changed By  | Date       | Summary of the change 
+ * ------------|------------|----------------------------------------------------- 
+ * NimeshaP | 12/08/2025    | Initial TypeScript conversion & updated to spec:  
+ *                           LstReceivedPO + PPS001MI.Inspect 
+ * ChirathR | 20/08/2026    | Updated to pass the current date (YYYYMMDD) with 
+ *                           PPS310MI.QualityInspPO as per new requirement.
  */
 
 class PPS310_QualityInspectAPI {
@@ -54,15 +56,15 @@ class PPS310_QualityInspectAPI {
       this.button.Position.Top = 12;
       this.button.Position.Left = 40;
       this.button.Position.Width = 7;
-      
+
       const $btn = this.contentElement.AddElement(this.button);
       $btn.click(() => this.onClick());
 
-        // Set tooltip via the HTML title attribute
-        $btn.attr(
+      // Set tooltip via the HTML title attribute
+      $btn.attr(
         "title",
         this.LANG === "CS" ? "已经检测试所有收货单行" : "Inspect all GRN Lines"
-        ); 
+      );
     }
   }
 
@@ -116,7 +118,7 @@ class PPS310_QualityInspectAPI {
       this.log.Error("Error in Confirm All process: " + err);
       this.showMessage(
         this.LANG === "CS"
-          ? "无效数据 - 请联系M3获取支持!" 
+          ? "无效数据 - 请联系M3获取支持!"
           : "Invalid Data - M3!"
       );
     } finally {
@@ -145,28 +147,37 @@ class PPS310_QualityInspectAPI {
 
     // return response.items || [];
     try {
-    const response = await this.miService.executeRequestV2(request);
-    console.log("MI Response (LstReceivedPO):", response);
+      const response = await this.miService.executeRequestV2(request);
+      console.log("MI Response (LstReceivedPO):", response);
 
-    if (response.hasError()) {
-      const errMsg = response.errorMessage || "Unknown MI error in LstReceivedPO";
-      this.log.Error(`MI error in LstReceivedPO for PUNO=${poNumber}: ${errMsg}`);
-      throw new Error(errMsg);
+      if (response.hasError()) {
+        const errMsg = response.errorMessage || "Unknown MI error in LstReceivedPO";
+        this.log.Error(`MI error in LstReceivedPO for PUNO=${poNumber}: ${errMsg}`);
+        throw new Error(errMsg);
+      }
+
+      if (!response.items || response.items.length === 0) {
+        this.log.Info(`No GRN lines returned for PUNO=${poNumber}`);
+        return [];
+      }
+
+      return response.items;
+    } catch (err) {
+      this.log.Error(`Exception in getGRNLines for PUNO=${poNumber}: ${err}`);
+      throw err;
     }
-
-    if (!response.items || response.items.length === 0) {
-      this.log.Info(`No GRN lines returned for PUNO=${poNumber}`);
-      return [];
-    }
-
-    return response.items;
-  } catch (err) {
-    this.log.Error(`Exception in getGRNLines for PUNO=${poNumber}: ${err}`);
-    throw err;
   }
-}
 
   private async inspectGRNLine(line: any): Promise<void> {
+
+    var d = new Date();
+    var currentDate =
+      d.getFullYear() +
+      ("0" + (d.getMonth() + 1)).slice(-2) +
+      ("0" + d.getDate()).slice(-2);
+
+    this.log.Info("CurrentDate - " + currentDate); //YYYYMMDD
+
     const request = new MIRequest();
     request.program = "PPS310MI";
     request.transaction = "QualityInspPO";
@@ -174,24 +185,25 @@ class PPS310_QualityInspectAPI {
       REPN: line.REPN,       // Receiving Number
       RESP: this.USER,       // Logged-in User
       QCRA: "1",             // QIResult
-      AQTY: line.RVQA         // Receiving Qty
+      AQTY: line.RVQA,         // Receiving Qty
+      TRDT: currentDate      //Current Date - new update 26/08/20
     };
 
     try {
-    const response = await this.miService.executeRequestV2(request);
-    console.log("MI Response (Inspect):", response);
+      const response = await this.miService.executeRequestV2(request);
+      console.log("MI Response (Inspect):", response);
 
-    if (response.hasError()) {
-      const errMsg = response.errorMessage || "Unknown MI error in Inspect";
-      this.log.Error(`MI error inspecting REPN=${line.REPN}: ${errMsg}`);
-      throw new Error(errMsg);
+      if (response.hasError()) {
+        const errMsg = response.errorMessage || "Unknown MI error in Inspect";
+        this.log.Error(`MI error inspecting REPN=${line.REPN}: ${errMsg}`);
+        throw new Error(errMsg);
+      }
+
+      this.log.Info(`REPN=${line.REPN} inspected successfully`);
+    } catch (err) {
+      this.log.Error(`Exception in inspectGRNLine for REPN=${line.REPN}: ${err}`);
+      throw err;
     }
-
-    this.log.Info(`REPN=${line.REPN} inspected successfully`);
-  } catch (err) {
-    this.log.Error(`Exception in inspectGRNLine for REPN=${line.REPN}: ${err}`);
-    throw err;
-  }
   }
 
   private disableButton(disable: boolean): void {

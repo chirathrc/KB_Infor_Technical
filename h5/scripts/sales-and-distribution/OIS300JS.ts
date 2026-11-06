@@ -14,19 +14,20 @@
  */
 
 class OIS300JS {
-    private controller: IInstanceController; 
-    private log: IScriptLog; 
-    private grid: IActiveGrid; 
-    private calculateButton: ButtonElement; 
-    private weightLabel: LabelElement; 
+    private controller: IInstanceController;
+    private log: IScriptLog;
+    private grid: IActiveGrid;
+    private calculateButton: ButtonElement;
+    private weightLabel: LabelElement;
     private amountLabel: LabelElement;
-    private paymentLabel: LabelElement; 
-    private weightDisplay: TextBoxElement; 
-    private amountDisplay: TextBoxElement; 
-    private paymentDisplay: TextBoxElement; 
+    private paymentLabel: LabelElement;
+    private weightDisplay: TextBoxElement;
+    private amountDisplay: TextBoxElement;
+    private paymentDisplay: TextBoxElement;
     private isCalculating: boolean = false;
     private WOPAVR: string;
     private isVNView: boolean = false;
+    private devider = ScriptUtil.GetUserContext().DCFM;
 
     constructor(scriptArgs: IScriptArgs) {
         // Initialize controller, logger, and grid from script arguments
@@ -72,9 +73,9 @@ class OIS300JS {
                 this.calculateButton.Name = "CalculateBtn";
                 this.calculateButton.Value = "MÁY TÍNH"; // Set button text to Vietnamese "Calculate"
                 this.calculateButton.Position = new PositionElement();
-                this.calculateButton.Position.Top = 2; 
-                this.calculateButton.Position.Left = 85; 
-                this.calculateButton.Position.Width = 15; 
+                this.calculateButton.Position.Top = 2;
+                this.calculateButton.Position.Left = 85;
+                this.calculateButton.Position.Width = 15;
                 this.calculateButton.IsEnabled = false; // Start disabled
                 const buttonElement = this.controller.GetContentElement().AddElement(this.calculateButton);
                 console.log("Button element added to content, checking event attachment");
@@ -92,17 +93,17 @@ class OIS300JS {
                 this.weightLabel.Name = "WeightLabel";
                 this.weightLabel.Value = "SỐ LƯỢNG : "; // Vietnamese for "Total Net Weight"
                 this.weightLabel.Position = new PositionElement();
-                this.weightLabel.Position.Top = 3; 
-                this.weightLabel.Position.Left = 75; 
-                this.weightLabel.Position.Width = 10; 
+                this.weightLabel.Position.Top = 3;
+                this.weightLabel.Position.Left = 75;
+                this.weightLabel.Position.Width = 10;
                 this.controller.GetContentElement().AddElement(this.weightLabel);
 
                 this.weightDisplay = new TextBoxElement();
                 this.weightDisplay.Name = "WeightDisplay";
                 this.weightDisplay.Position = new PositionElement();
-                this.weightDisplay.Position.Top = 3; 
-                this.weightDisplay.Position.Left = 85; 
-                this.weightDisplay.Position.Width = 15; 
+                this.weightDisplay.Position.Top = 3;
+                this.weightDisplay.Position.Left = 85;
+                this.weightDisplay.Position.Width = 15;
                 this.controller.GetContentElement().AddElement(this.weightDisplay);
 
                 // Create and configure the Amount label and display
@@ -111,17 +112,17 @@ class OIS300JS {
                 this.amountLabel.Name = "AmountLabel";
                 this.amountLabel.Value = "THÀNH TIỀN : "; // Vietnamese for "Total Value"
                 this.amountLabel.Position = new PositionElement();
-                this.amountLabel.Position.Top = 4; 
+                this.amountLabel.Position.Top = 4;
                 this.amountLabel.Position.Left = 75;
-                this.amountLabel.Position.Width = 10; 
+                this.amountLabel.Position.Width = 10;
                 this.controller.GetContentElement().AddElement(this.amountLabel);
 
                 this.amountDisplay = new TextBoxElement();
                 this.amountDisplay.Name = "AmountDisplay";
                 this.amountDisplay.Position = new PositionElement();
-                this.amountDisplay.Position.Top = 4; 
-                this.amountDisplay.Position.Left = 85; 
-                this.amountDisplay.Position.Width = 15; 
+                this.amountDisplay.Position.Top = 4;
+                this.amountDisplay.Position.Left = 85;
+                this.amountDisplay.Position.Width = 15;
                 this.controller.GetContentElement().AddElement(this.amountDisplay);
 
                 // Create and configure the Payment label and display
@@ -130,17 +131,17 @@ class OIS300JS {
                 this.paymentLabel.Name = "PaymentLabel";
                 this.paymentLabel.Value = "TIỀN THANH TOÁN : "; // Vietnamese for "Total Amount to be Paid"
                 this.paymentLabel.Position = new PositionElement();
-                this.paymentLabel.Position.Top = 5; 
-                this.paymentLabel.Position.Left = 75; 
+                this.paymentLabel.Position.Top = 5;
+                this.paymentLabel.Position.Left = 75;
                 this.paymentLabel.Position.Width = 10;
                 this.controller.GetContentElement().AddElement(this.paymentLabel);
 
                 this.paymentDisplay = new TextBoxElement();
                 this.paymentDisplay.Name = "PaymentDisplay";
                 this.paymentDisplay.Position = new PositionElement();
-                this.paymentDisplay.Position.Top = 5; 
-                this.paymentDisplay.Position.Left = 85; 
-                this.paymentDisplay.Position.Width = 15; 
+                this.paymentDisplay.Position.Top = 5;
+                this.paymentDisplay.Position.Left = 85;
+                this.paymentDisplay.Position.Width = 15;
                 this.controller.GetContentElement().AddElement(this.paymentDisplay);
                 console.log("UI elements creation completed");
 
@@ -187,8 +188,8 @@ class OIS300JS {
         if (this.calculateButton) {
             this.calculateButton.IsEnabled = true;
         }
-        $('#CalculateBtn').prop('disabled', false).css({ 
-            'pointer-events': 'auto', 
+        $('#CalculateBtn').prop('disabled', false).css({
+            'pointer-events': 'auto',
             'opacity': '1',
             'cursor': 'pointer'
         });
@@ -199,12 +200,38 @@ class OIS300JS {
         if (this.calculateButton) {
             this.calculateButton.IsEnabled = false;
         }
-        $('#CalculateBtn').prop('disabled', true).css({ 
-            'pointer-events': 'none', 
+        $('#CalculateBtn').prop('disabled', true).css({
+            'pointer-events': 'none',
             'opacity': '0.5',
             'cursor': 'not-allowed'
         });
     }
+
+
+    ///////Update
+    private normalizeNumber(value: string): string {
+
+        console.log("Input = " + value +"---- Devider = "+this.devider)
+
+        if (this.devider == "") {
+            console.log("Exiting function without any calculation")
+            return value;
+        }
+
+        // Handle trailing negative sign
+        if (value && value.indexOf("-") === value.length - 1) {
+            value = "-" + value.slice(0, -1);
+        }
+
+        if (this.devider === ".") {
+            // 1,234,567.89 → 1234567.89
+            return value.replace(/,/g, "");
+        }
+
+        // 1.234.567,89 → 1234567.89
+        return value.replace(/\./g, "").replace(/,/g, ".");
+    }
+
 
     private onCalculateClick(): void {
         // Set flag to prevent multiple calculations
@@ -230,44 +257,92 @@ class OIS300JS {
         console.log(`Number of selected rows: ${selectedRows.length}`);
 
         // Process each selected row to calculate totals
+        // for (let row of selectedRows) {
+        //     console.log(`Processing row data: ${JSON.stringify(row)}`);
+        //     const data = row.data; // Access data directly from the row object
+        //     console.log(`Row data retrieved: ${JSON.stringify(data)}`);
+
+        //     let amountStr = data.OANTLA || "0"; // Use OANTLA for amount
+        //     console.log(`Amount string for row: ${amountStr}`);
+        //     if (amountStr && amountStr.indexOf("-") === amountStr.length - 1) {
+        //         amountStr = "-" + amountStr.slice(0, -1); // Handle negative values
+        //         console.log(`Adjusted amount for negative: ${amountStr}`);
+        //     }
+        //     let amount = parseFloat(amountStr) || 0;
+        //     totalAmount += amount;
+        //     console.log(`Current total amount: ${totalAmount}`);
+
+        //     let weightStr = data.OANEWE || "0"; // Use OANEWE for weight
+        //     console.log(`Weight string for row: ${weightStr}`);
+        //     if (weightStr && weightStr.indexOf("-") === weightStr.length - 1) {
+        //         weightStr = "-" + weightStr.slice(0, -1); // Handle negative values
+        //         console.log(`Adjusted weight for negative: ${weightStr}`);
+        //     }
+        //     let weight = parseFloat(weightStr) || 0;
+        //     totalWeight += weight;
+        //     console.log(`Current total weight: ${totalWeight}`);
+
+        //     let paymentStr = data.OABLRO || "0"; // Use OABLRO for payment
+        //     console.log(`Payment string for row: ${paymentStr}`);
+        //     if (paymentStr && paymentStr.indexOf("-") === paymentStr.length - 1) {
+        //         paymentStr = "-" + paymentStr.slice(0, -1); // Handle negative values
+        //         console.log(`Adjusted payment for negative: ${paymentStr}`);
+        //     }
+        //     let payment = parseFloat(paymentStr) || 0;
+        //     totalPayment += payment;
+        //     console.log(`Current total payment: ${totalPayment}`);
+        // }
+
         for (let row of selectedRows) {
             console.log(`Processing row data: ${JSON.stringify(row)}`);
-            const data = row.data; // Access data directly from the row object
+
+            const data = row.data;
             console.log(`Row data retrieved: ${JSON.stringify(data)}`);
 
-            let amountStr = data.OANTLA || "0"; // Use OANTLA for amount
-            console.log(`Amount string for row: ${amountStr}`);
-            if (amountStr && amountStr.indexOf("-") === amountStr.length - 1) {
-                amountStr = "-" + amountStr.slice(0, -1); // Handle negative values
-                console.log(`Adjusted amount for negative: ${amountStr}`);
-            }
-            let amount = parseFloat(amountStr) || 0;
+            // AMOUNT
+            let amountStr = data.OANTLA || "0";
+            console.log(`Original amount: ${amountStr}`);
+
+            amountStr = this.normalizeNumber(amountStr);
+            console.log(`Normalized amount: ${amountStr}`);
+
+            const amount = parseFloat(amountStr) || 0;
             totalAmount += amount;
+
             console.log(`Current total amount: ${totalAmount}`);
 
-            let weightStr = data.OANEWE || "0"; // Use OANEWE for weight
-            console.log(`Weight string for row: ${weightStr}`);
-            if (weightStr && weightStr.indexOf("-") === weightStr.length - 1) {
-                weightStr = "-" + weightStr.slice(0, -1); // Handle negative values
-                console.log(`Adjusted weight for negative: ${weightStr}`);
-            }
-            let weight = parseFloat(weightStr) || 0;
+
+
+            // WEIGHT
+            let weightStr = data.OANEWE || "0";
+            console.log(`Original weight: ${weightStr}`);
+
+            weightStr = this.normalizeNumber(weightStr);
+            console.log(`Normalized weight: ${weightStr}`);
+
+            const weight = parseFloat(weightStr) || 0;
             totalWeight += weight;
+
             console.log(`Current total weight: ${totalWeight}`);
 
-            let paymentStr = data.OABLRO || "0"; // Use OABLRO for payment
-            console.log(`Payment string for row: ${paymentStr}`);
-            if (paymentStr && paymentStr.indexOf("-") === paymentStr.length - 1) {
-                paymentStr = "-" + paymentStr.slice(0, -1); // Handle negative values
-                console.log(`Adjusted payment for negative: ${paymentStr}`);
-            }
-            let payment = parseFloat(paymentStr) || 0;
+
+
+            // PAYMENT
+            let paymentStr = data.OABLRO || "0";
+            console.log(`Original payment: ${paymentStr}`);
+
+            paymentStr = this.normalizeNumber(paymentStr);
+            console.log(`Normalized payment: ${paymentStr}`);
+
+            const payment = parseFloat(paymentStr) || 0;
             totalPayment += payment;
+
             console.log(`Current total payment: ${totalPayment}`);
         }
 
         // Update display textboxes with calculated totals
         console.log(`Updating display textboxes with totals - Weight: ${totalWeight}, Amount: ${totalAmount}, Payment: ${totalPayment}`);
+        console.log(ScriptUtil.GetUserContext());
         this.weightDisplay.Value = this.formatNumber(totalWeight); // Display total net weight
         this.amountDisplay.Value = this.formatNumber(totalAmount); // Display total order value
         this.paymentDisplay.Value = this.formatNumber(totalPayment); // Display total amount to be paid

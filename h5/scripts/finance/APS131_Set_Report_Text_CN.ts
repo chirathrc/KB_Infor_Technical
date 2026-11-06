@@ -14,6 +14,7 @@ class APS131_Set_Report_Text_CN {
   private log: IScriptLog;
   private contentElement: IContentElement;
   private isDataSelected: boolean = false;
+  private selectedData: string = "";
 
   private detachRequesting: Function;
   private detachRequested: Function;
@@ -32,8 +33,11 @@ class APS131_Set_Report_Text_CN {
     console.clear();
     this.log.Info("APS131F_SetReportText_CN script initialized");
 
+    // this.detachRequesting = this.controller.Requesting.On((e) => this.onRequesting(e));
+    // this.detachRequested = this.controller.RequestCompleted.On((e) => this.onRequested(e));
+
     this.detachRequesting = this.controller.Requesting.On((e) => this.onRequesting(e));
-    this.detachRequested = this.controller.RequestCompleted.On((e) => this.onRequested(e));
+    this.detachRequested = this.controller.Requested.On((e) => this.onRequested(e));
 
     const currentDivi = "CN"; // Simulated division for CN
     this.log.Info("CurrentDivi: " + currentDivi);
@@ -47,7 +51,10 @@ class APS131_Set_Report_Text_CN {
   private onRequesting(e: CancelRequestEventArgs): void {
     this.log.Info("onRequesting");
     if (e.commandType === "KEY" && e.commandValue === "ENTER") {
-      if (!this.isDataSelected) {
+      if (!this.isDataSelected || this.selectedData === "" || this.selectedData == "--") {
+        console.log("Approval status for next panle  :" + this.isDataSelected);
+        console.log("Approval status for next panle  :" + this.selectedData);
+
         this.controller.ShowMessage("Please select a payment type!");
         e.cancel = true;
       }
@@ -61,6 +68,8 @@ class APS131_Set_Report_Text_CN {
   }
 
   private setReportText(text: string): void {
+    console.log("Report Text :" + text);
+    this.selectedData = text;
     const $field = $("#WRLITX");
     if ($field.length) {
       $field.val(text);
@@ -72,8 +81,8 @@ class APS131_Set_Report_Text_CN {
     const comboBox = new ComboBoxElement();
     comboBox.Name = "cmbPaymentMethod";
     comboBox.Position = new PositionElement();
-    comboBox.Position.Top = 3;
-    comboBox.Position.Left = 50;
+    comboBox.Position.Top = 24;
+    comboBox.Position.Left = 60;
     comboBox.Position.Width = 15;
 
     const items = [

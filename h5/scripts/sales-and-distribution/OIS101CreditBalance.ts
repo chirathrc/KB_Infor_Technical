@@ -3,13 +3,14 @@
  * Created on  : 2025-09-29
  * Summary     : H5 script for OIS101 panel to display customer credit information during order entry.
  *               Retrieves Credit Limit, Outstanding Balance (SUM_BSOUAC + SUM_OBLNAM), 
- *               Remaining Credit Balance (CRL3 - Outstanding), and Outstanding Days
+ *               Remaining Credit Balance (CRL3 - Outstandng), and Outstanding Days
  *               when navigated from OIS300. Uses CMS100MI APIs instead of SQL.
  *
  * Version Log :
  * Changed By        | Date       | Summary of the change
  * ------------------|------------|-----------------------------
  * Nethum Ariyarathna| 2025-09-29 | Initial script creation
+ * Chirath Rothila   | 2026-08-18  | Spec Update - Did a calculation change on the script as script update.  
  */
 class OIS101CreditBalance {
     private controller: IInstanceController;
@@ -294,8 +295,9 @@ class OIS101CreditBalance {
         const request = new MIRequest();
         request.program = "CMS100MI";
         request.transaction = "LstOutsInvoices";
-        request.record = { BSPYNO: cuno, CONO: "100", DIVI: this.DIVI };
-        request.outputFields = ["BSOUAC"];
+        request.record = { BSPYNO: cuno, BSCUNO: cuno, BSDIVI: this.DIVI };
+        request.maxReturnedRecords = 0;
+        request.outputFields = ["BSOUAC", "BSACYP"];
         this.log.Info(`Calling CMS100MI.LstOutsInvoices for ${cuno}, DIVI: ${this.DIVI}`);
         this.miService.executeRequestV2(request).then(response => this.onOutstandingInvoiceResponse(response, cuno)).catch(error => {
             this.onApiError(error, "CMS100MI.LstOutsInvoices", cuno);
@@ -303,6 +305,7 @@ class OIS101CreditBalance {
     }
 
     private onOutstandingInvoiceResponse(response: IMIResponse, cuno: string): void {
+        console.log("Data - " + response.items);
         try {
             this.log.Info(`Processing CMS100MI.LstOutsInvoices response for ${cuno}`);
             if (response.hasError()) {
@@ -317,7 +320,25 @@ class OIS101CreditBalance {
             this.outstandingInvoiceAmount = 0;
             if (response.items && response.items.length > 0) {
                 this.log.Info(`Outstanding Invoices raw data: ${JSON.stringify(response.items)}`);
-                this.outstandingInvoiceAmount = response.items.reduce((sum, item) => sum + parseFloat(item["BSOUAC"] || "0"), 0);
+                // this.outstandingInvoiceAmount = response.items.reduce((sum, item) => sum + parseFloat(item["BSOUAC"] || "0"), 0);
+                //NEw Update - Sachinthi
+                // this.outstandingInvoiceAmount = response.items
+                //     .filter(item => !item["BSACYP"].endsWith("00"))
+                //     .reduce(
+                //         (sum, item) => sum + parseFloat(item["BSOUAC"] || "0"),
+                //         0
+                //     );
+                const validItems = response.items.filter(item => {
+                    const bsacyp = item["BSACYP"] || "";
+                    return !bsacyp.endsWith("00");
+                });
+
+                const totalCents = validItems.reduce((sum, item) => {
+                    const amount = parseFloat(item["BSOUAC"] || "0");
+                    return sum + Math.round(amount * 100);
+                }, 0);
+
+                this.outstandingInvoiceAmount = totalCents / 100;
             } else {
                 this.log.Info("No outstanding invoices found");
             }
@@ -389,6 +410,7 @@ class OIS101CreditBalance {
                 return;
             }
             const totalOutstanding = (this.outstandingInvoiceAmount + this.openOrderAmount).toFixed(2);
+            // const totalOutstanding = (this.outstandingInvoiceAmount).toFixed(2);
             const lblText2 = isNaN(parseFloat(totalOutstanding)) ? "N/A" : totalOutstanding;
             this.addOutstandingLabels(lblText2);
             this.log.Info(`Outstanding Balance set to: ${lblText2} (SUM_BSOUAC: ${this.outstandingInvoiceAmount.toFixed(2)}, SUM_OBLNAM: ${this.openOrderAmount.toFixed(2)})`);
@@ -417,7 +439,7 @@ class OIS101CreditBalance {
             if (response.hasError()) {
                 this.log.Error(`CMS100MI.LstOutsDays error for ${cuno}: ${response.errorMessage} (Code: ${response.errorCode})`);
                 this.addOutstandingDaysLabels("N/A");
-               this.apiCallsCompleted++;
+                this.apiCallsCompleted++;
                 this.checkAllApisCompleted();
                 return;
             }
@@ -432,7 +454,7 @@ class OIS101CreditBalance {
         } catch (ex) {
             this.log.Error(`Error in onOutstandingDaysResponse: ${ex}`);
             this.addOutstandingDaysLabels("N/A");
-           this.apiCallsCompleted++;
+            this.apiCallsCompleted++;
             this.checkAllApisCompleted();
         }
     }
@@ -480,7 +502,7 @@ class OIS101CreditBalance {
     private checkAllApisCompleted(): void {
         if (this.apiCallsCompleted >= this.totalApiCalls) {
             this.hideBusyIndicator();
-            this.log.Info("All API calls completed");
+            this.log.Info("All API calls completed"); 
         }
     }
 }

@@ -9,6 +9,7 @@
  * Changed By        | Date       | Summary of the change
  * ------------------|------------|-----------------------------
  * Nethum Ariyarathna| 2025-08-11 | Initial script creation
+ * ChirathRO         | 2025-08-26 | Added uppercase conversion for Lot Number
  */
 
 class PPS300E_GRNWSP {
@@ -27,6 +28,7 @@ class PPS300E_GRNWSP {
     private firstPOLine: string = "";
     private lastPOLine: string = "";
     private isBusyIndicatorSupported: boolean = true;
+    private readonly selector: string = 'input#LottBox';
 
     constructor(scriptArgs: IScriptArgs) {
         this.controller = scriptArgs.controller;
@@ -57,6 +59,14 @@ class PPS300E_GRNWSP {
             try {
                 this.addLocation();
                 this.addLotNo();
+                //Update by Chirath 
+                document.body.addEventListener('input', (event: Event) => {
+                    const target = event.target as HTMLInputElement;
+
+                    if (target && target.matches(this.selector)) {
+                        this.handleTransform(target);
+                    }
+                }, true);
                 const autoGRNBtn = this.createButtonElement(
                     "GRNbutton",
                     this.LANG === "CS" ? "自动收货" : "Auto-GRN",
@@ -75,6 +85,27 @@ class PPS300E_GRNWSP {
             }
         } else {
             this.log.Info(`Not on PPS300/E panel, current: ${panelName}`);
+        }
+    }
+
+    //Update by Chirath 
+    private handleTransform(input: HTMLInputElement): void {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const originalValue = input.value;
+        const upperValue = originalValue.toUpperCase();
+
+        // Only update if changes are necessary to prevent infinite loops or redundant renders
+        if (originalValue !== upperValue) {
+            input.value = upperValue;
+
+            // Restore cursor position to prevent jumping to the end of the string
+            if (start !== null && end !== null) {
+                input.setSelectionRange(start, end);
+            }
+
+            // Trigger a new input event so Angular/React model bindings detect the change
+            input.dispatchEvent(new Event('input', { bubbles: true }));
         }
     }
 
@@ -223,7 +254,7 @@ class PPS300E_GRNWSP {
                 this.log.Error("Required columns (PNLI/S1PNLI, PNLS/S1PNLS, RVQA/WSRVQA) not found.");
                 this.controller.ShowMessage(
                     this.LANG === "CS" ? "缺少必要字段（PNLI/S1PNLI, PNLS/S1PNLS, RVQA/WSRVQA）。请更改排序顺序。" :
-                                         "Required columns (PNLI/S1PNLI, PNLS/S1PNLS, RVQA/WSRVQA) not found. Please change sorting order."
+                        "Required columns (PNLI/S1PNLI, PNLS/S1PNLS, RVQA/WSRVQA) not found. Please change sorting order."
                 );
                 return;
             }
@@ -240,7 +271,13 @@ class PPS300E_GRNWSP {
 
             // Retrieve data for each selected row
             this.items = [];
+            console.log("Selected Rows :" + JSON.stringify(selectedRows));
             for (const row of selectedRows) {
+                if (!row.data || (!row.data.PNLI && !row.data.S1PNLI)) {
+                    this.log.Info("Skipping invalid/sub row");
+                    continue;
+                }
+
                 const pnli = row.data?.S1PNLI?.trim() || row.data?.PNLI?.trim() || "";
                 const pnls = row.data?.S1PNLS?.trim() || row.data?.PNLS?.trim() || "";
                 const rvqa = row.data?.WSRVQA?.trim()?.replace(",", ".") || row.data?.RVQA?.trim()?.replace(",", ".") || "0";
@@ -253,7 +290,7 @@ class PPS300E_GRNWSP {
                     this.log.Error(`Invalid or missing PNLI/PNLS/RVQA for row: ${JSON.stringify(row)}`);
                     this.controller.ShowMessage(
                         this.LANG === "CS" ? `无效的行数据（PNLI: ${pnli}, PNLS: ${pnls}, RVQA: ${rvqa}）。请检查数据或联系支持团队。` :
-                                             `Invalid row data (PNLI: ${pnli}, PNLS: ${pnls}, RVQA: ${rvqa}). Please check data or contact support.`
+                            `Invalid row data (PNLI: ${pnli}, PNLS: ${pnls}, RVQA: ${rvqa}). Please check data or contact support.`
                     );
                 }
             }
@@ -271,7 +308,7 @@ class PPS300E_GRNWSP {
             this.firstPOLine = this.items[0].Item.PNLS || "";
             this.lastPOLine = this.items[this.itemsCount - 1].Item.PNLS || "";
             this.log.Info(`Processing PO Sub Lines from ${this.firstPOLine} to ${this.lastPOLine}`);
-            
+
             // Show processing indicator
             this.showProcessingIndicator();
             this.processPPS001MI();
@@ -290,7 +327,7 @@ class PPS300E_GRNWSP {
             this.hideProcessingIndicator();
             this.controller.ShowMessage(
                 this.LANG === "CS" ? `已更新订单行 - ${this.firstPOLine} 给 ${this.lastPOLine}` :
-                                     `Updated PO Sub Lines - ${this.firstPOLine} to ${this.lastPOLine}`
+                    `Updated PO Sub Lines - ${this.firstPOLine} to ${this.lastPOLine}`
             );
             this.log.Info("Final message displayed");
             // Delay F5 to ensure final message is visible
@@ -305,6 +342,9 @@ class PPS300E_GRNWSP {
         const purchaseOrderLine = item.Item.PNLI || "";
         const purchaseOrderNoSubLine = item.Item.PNLS || "";
         const receivedQuantity = item.Item.RVQA || "0";
+        this.lot = this.lot.toUpperCase();
+        console.log("Lot Number after uppercased : " + this.lot);
+
 
         const request = new MIRequest();
         request.program = "PPS001MI";
@@ -330,7 +370,7 @@ class PPS300E_GRNWSP {
                 this.hideProcessingIndicator();
                 this.controller.ShowMessage(
                     this.LANG === "CS" ? `无效！错误（PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}）: ${errorMsg}` :
-                                         `Invalid! Error (PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}): ${errorMsg}`
+                        `Invalid! Error (PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}): ${errorMsg}`
                 );
             } else {
                 this.log.Info(`Processed line PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}`);
@@ -344,7 +384,7 @@ class PPS300E_GRNWSP {
             this.hideProcessingIndicator();
             this.controller.ShowMessage(
                 this.LANG === "CS" ? `无效！错误（PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}）: ${errorMsg}` :
-                                     `Invalid! Error (PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}): ${errorMsg}`
+                    `Invalid! Error (PNLI: ${purchaseOrderLine}, PNLS: ${purchaseOrderNoSubLine}): ${errorMsg}`
             );
             this.processPPS001MI();
         });

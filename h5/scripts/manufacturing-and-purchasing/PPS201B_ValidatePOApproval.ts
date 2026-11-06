@@ -56,7 +56,7 @@ class PPS201B_ValidatePOApproval {
 
     if (
       panelHeader === "PPA201BC" &&
-      ((commandType === "LSTOPT" && ["2", "3", "4", "12","5"].indexOf(commandValue) !== -1))) {
+      ((commandType === "LSTOPT" && ["2", "3", "4", "12"].indexOf(commandValue) !== -1))) { //Remove command value 5
       if (!this.TEORValidated) {
         this.pressedKey = commandValue;
         args.cancel = true;

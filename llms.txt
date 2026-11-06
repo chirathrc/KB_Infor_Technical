@@ -1,25 +1,22 @@
 # Infor M3 Technical & H5 Scripting Knowledge Base
-> Centralized knowledge base containing 89 Infor M3 H5 production scripts, complete TypeScript typings, and 1,311 standard M3 MI Swagger definitions.
+> Centralized knowledge base containing 92 Infor M3 H5 production & SDK sample scripts (H5 Script SDK 10.4.1 / v2.0+), complete TypeScript typings, 80 MEC mappings, and 1,311 standard M3 MI Swagger definitions.
 
 ## Key Files & Catalogs
 - [README.md](README.md): Master catalog, domain tables, and retrieval guidelines
-- [KB_INDEX.json](KB_INDEX.json): Machine-readable index of all 89 scripts with summaries and API usage
+- [KB_INDEX.json](KB_INDEX.json): Machine-readable index of all 92 H5 scripts with summaries and API usage
 - [m3-api/mi-swagger/MI_CATALOG.md](m3-api/mi-swagger/MI_CATALOG.md): Complete directory of 1,311 standard Infor M3 MI API programs
-- [h5/sdk-reference/API_QUICK_REFERENCE.md](h5/sdk-reference/API_QUICK_REFERENCE.md): H5 Scripting classes, interfaces, and lifecycle cheat sheet
-- [h5/guides/STANDARDS_AND_CONVENTIONS.md](h5/guides/STANDARDS_AND_CONVENTIONS.md): Coding guidelines and required JSDoc header template
+- [h5/sdk-reference/h5.script.d.ts](h5/sdk-reference/h5.script.d.ts): Full H5 Script SDK 10.4.1 / v2.0+ TypeScript ambient definitions (including `IonApiService`, `executeRequestV2`, `IActiveGrid` IDS web components, `DatePickerElement`, `RadioGroupElement`)
+- [h5/sdk-reference/API_QUICK_REFERENCE.md](h5/sdk-reference/API_QUICK_REFERENCE.md): H5 Scripting classes, interfaces, and lifecycle quick reference
+- [h5/guides/STANDARDS_AND_CONVENTIONS.md](h5/guides/STANDARDS_AND_CONVENTIONS.md): Coding guidelines, required Fortude JSDoc header, locale (`DCFM`/`DTFM`) formatting, and IDS `<ids-data-grid>` Shadow DOM patterns
 - [h5/design-specs/SPECS_SUMMARY.md](h5/design-specs/SPECS_SUMMARY.md): Summary of DES-020 technical design specifications
 
-## Code Folders
-- [h5/scripts/finance/](h5/scripts/finance/): Accounts Payable (APS), Accounts Receivable (ARS), Fixed Assets (FAS), General Ledger (GLS)
-- [h5/scripts/sales-and-distribution/](h5/scripts/sales-and-distribution/): Customer (CRS), Orders (OIS), Material (MMS), Warehouse (MWS)
-- [h5/scripts/manufacturing-and-purchasing/](h5/scripts/manufacturing-and-purchasing/): Production Orders (PMS), Purchase Orders (PPS)
-- [h5/scripts/infor-samples/](h5/scripts/infor-samples/): Infor SDK samples demonstrating specific H5 features
-- [h5/scripts/utilities/](h5/scripts/utilities/): Shared tools and entry mode setters
-
+## H5 Script Folders (92 Scripts)
+- [h5/scripts/finance/](h5/scripts/finance/): Accounts Payable (APS), Accounts Receivable (ARS), Fixed Assets (FAS), General Ledger (GLS) — 23 scripts
+- [h5/scripts/sales-and-distribution/](h5/scripts/sales-and-distribution/): Customer (CRS), Orders (OIS), Material (MMS), Warehouse (MWS) — 21 scripts
+- [h5/scripts/manufacturing-and-purchasing/](h5/scripts/manufacturing-and-purchasing/): Production Orders (PMS), Purchase Orders (PPS) — 23 scripts
+- [h5/scripts/infor-samples/](h5/scripts/infor-samples/): Official Infor SDK samples demonstrating H5 features — 23 scripts
+- [h5/scripts/utilities/](h5/scripts/utilities/): Shared tools and entry mode setters — 2 scripts
 
 ## MEC Knowledge
-- [mec/README.md](mec/README.md): MEC mapping guides, MI reference, tools and 80 sample .zap files by subject
+- [mec/README.md](mec/README.md): MEC mapping guides, MI reference, tools, and 80 sample `.zap` files by subject
 - [mec/MEC_INDEX.json](mec/MEC_INDEX.json): Machine-readable index of MEC samples
-
-- [mec/README.md](mec/README.md): MEC section (already listed) / top-level layout: h5/, mec/, m3-api/
-

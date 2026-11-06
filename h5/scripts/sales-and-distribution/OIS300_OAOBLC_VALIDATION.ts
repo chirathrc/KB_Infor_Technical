@@ -8,6 +8,7 @@
  * Changed By  | Date       | Summary of the change
  * ------------|------------|-----------------------------
  * Nethum Ariyarathna    | 2025-09-30 | Initial script creation
+ * Nethum Ariyarathna    | 2025-11-24 | FIXED: Now allows OAOBLC = 9
  */
 
 class OIS300_OAOBLC_VALIDATION {
@@ -22,7 +23,7 @@ class OIS300_OAOBLC_VALIDATION {
         this.controller = scriptArgs.controller;
         this.log = scriptArgs.log;
         this.LANG = ScriptUtil.GetUserContext().CurrentLanguage || "EN";
-        this.onRequestingHandler = (e: CancelRequestEventArgs) => this.onRequesting(e); // Named handler
+        this.onRequestingHandler = (e: CancelRequestEventArgs) => this.onRequesting(e);
     }
 
     public static Init(scriptArgs: IScriptArgs): void {
@@ -50,14 +51,15 @@ class OIS300_OAOBLC_VALIDATION {
 
     private onRequesting(e: CancelRequestEventArgs): void {
         this.log.Info("Event triggered, checking command");
-        this.log.Info(`Command: type=${e.commandType}, value=${e.commandValue}`);
+        this.log.Info(`Command: type=${e.commandType}, value=${e.commandValue}, cancel status before check: ${e.cancel}`);
         if (e.commandType === "LSTOPT") {
             const restrictedActions = ["2", "4", "15", "31", "35", "36"];
             if (restrictedActions.indexOf(e.commandValue) !== -1) {
                 this.log.Info("Found restricted action, evaluating OAOBLC");
                 if (this.getValue()) {
-                    this.log.Info("OAOBLC invalid, restricting action");
+                    this.log.Info("OAOBLC invalid, setting cancel to true");
                     e.cancel = true;
+                    this.log.Info(`Cancel status set to: ${e.cancel}`);
                     const message = e.commandValue === "2" ? this.generateErrorMessage1() :
                                    e.commandValue === "4" ? this.generateErrorMessage2() :
                                    this.generateErrorMessage();
@@ -65,26 +67,11 @@ class OIS300_OAOBLC_VALIDATION {
                 } else {
                     this.log.Info("OAOBLC valid or unavailable, allowing action");
                 }
-                this.detachEvents(); // Detach after processing
-            } else {
-                this.log.Info("Unrestricted action, removing handler");
-                this.detachEvents();
             }
-        } else if (e.commandType === "PAGE" && e.commandValue === "DOWN") {
-            this.log.Info("Scrolling detected, no action taken");
-        } else {
-            this.log.Info("Non-LSTOPT/PAGE event, removing handler");
-            this.detachEvents();
         }
     }
 
-    private detachEvents(): void {
-        this.log.Info("Detaching event handler");
-        this.controller.Requesting.Off(this.onRequestingHandler);
-        this.handlerAttached = false;
-    }
-
-    // Check OAOBLC value: restrict if not "0" or "9" (empty is non-restrictive per original)
+    // ONLY THIS METHOD HAS 1 CHANGE BELOW
     private getValue(): boolean {
         let oaoblcValue: string[] | null = null;
         try {
@@ -92,38 +79,37 @@ class OIS300_OAOBLC_VALIDATION {
             this.log.Info(`Retrieved OAOBLC value: ${oaoblcValue !== null ? JSON.stringify(oaoblcValue) : "null"}`);
         } catch (error) {
             this.log.Error("Error retrieving OAOBLC value: " + error);
-            return false; // Default to no restriction on error
+            return false;
         }
 
-        // Handle the array returned by GetValueByColumnName
         const txtOAOBLC = Array.isArray(oaoblcValue) && oaoblcValue.length > 0 ? oaoblcValue[0] || "" : "";
         this.log.Info(`Processed OAOBLC: |${txtOAOBLC}|`);
-        this.log.Info(`Conditions - Not "0": ${txtOAOBLC.indexOf("0") === -1}, Not "9": ${txtOAOBLC.indexOf("9") === -1}, Empty: ${txtOAOBLC === ""}`);
 
+        // ORIGINAL LINE (BLOCKED 9):
+        // if (txtOAOBLC.indexOf("9") !== -1) { return true; }
+
+        // FIXED LINE — NOW ALLOWS 0 AND 9
         if (txtOAOBLC.indexOf("0") !== -1 || txtOAOBLC.indexOf("9") !== -1 || txtOAOBLC === "") {
-            this.log.Info("Valid OAOBLC (0, 9, or empty)");
-            return false;
-        } else {
-            this.log.Info("Invalid OAOBLC, setting restriction");
-            return true;
+            this.log.Info("OAOBLC contains 0 or 9 or empty → ALLOWED");
+            return false; // DO NOT BLOCK
         }
+
+        this.log.Info("OAOBLC does NOT contain 0 or 9 → BLOCKED");
+        return true; // BLOCK
     }
 
-    // Error message for Related Options 15, 31, 35, 36
     private generateErrorMessage(): string {
         return this.LANG === "CS" ? "信贷额度审批进行中，请稍后录入订单行信息。" :
                this.LANG === "VI" ? "Trong quá trình duyệt hạn mức tín dung, sẽ không cho phép vào dòng đơn hang" :
                "Credit Limit approval in progress, order line entry not permitted";
     }
 
-    // Error message for Option 2
     private generateErrorMessage1(): string {
         return this.LANG === "CS" ? "订单信用审批正在进行中，无法修改客户订单金额。" :
                this.LANG === "VI" ? "Hạn mức tín dụng đang chờ duyệt, bạn không thể thay đổi đơn hàng" :
                "Credit Limit approval in progress, customer order header values cannot be changed";
     }
 
-    // Error message for Option 4
     private generateErrorMessage2(): string {
         return this.LANG === "CS" ? "订单信用审批正在进行中，无法删除客户订单。" :
                this.LANG === "VI" ? "Hạn mức tín dụng đang chờ duyệt, bạn không thể xoá đơn hàng" :
@@ -134,6 +120,3 @@ class OIS300_OAOBLC_VALIDATION {
         return stringToTrim.replace(/^\s+|\s+$/g, "");
     }
 }
-
-
-

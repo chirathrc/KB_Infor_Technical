@@ -1,41 +1,5 @@
 [
   {
-    "file": "APS100F_HSBC_Pre_Validation.ts",
-    "category": "finance",
-    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation.ts",
-    "m3Program": "APS100",
-    "author": "Nethum Ariyarathna",
-    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
-    "keyApis": [
-      "MIService (M3 API)",
-      "Hook: RequestCompleted"
-    ]
-  },
-  {
-    "file": "APS100F_HSBC_Pre_Validation_CN.ts",
-    "category": "finance",
-    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_CN.ts",
-    "m3Program": "APS100",
-    "author": "Nethum Ariyarathna",
-    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
-    "keyApis": [
-      "MIService (M3 API)",
-      "Hook: RequestCompleted"
-    ]
-  },
-  {
-    "file": "APS100F_HSBC_Pre_Validation_VN.ts",
-    "category": "finance",
-    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_VN.ts",
-    "m3Program": "APS100",
-    "author": "Nethum Ariyarathna",
-    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
-    "keyApis": [
-      "MIService (M3 API)",
-      "Hook: RequestCompleted"
-    ]
-  },
-  {
     "file": "APS100_Approver.ts",
     "category": "finance",
     "path": "h5/scripts/finance/APS100_Approver.ts",
@@ -51,10 +15,72 @@
     "category": "finance",
     "path": "h5/scripts/finance/APS100_exrate.ts",
     "m3Program": "APS100",
-    "author": "Fortude",
-    "summary": "H5 script for APS100/F panel to automatically retrieve and update the exchange rate (WWARAT) for a purchase order (WWPUNO). Calls MDBREADMI.GetMPHEAD00 to fetch CUTE, AGRA, and ...",
+    "author": "Nethum Ariyarathna / Safwan A / ChirathRo (Fortude)",
+    "summary": "Automatically retrieves and updates the exchange rate (WWARAT) on APS100/F (APA100F0) from MDBREADMI.GetMPHEAD00 (AGRA, CUCD), converting decimal separators according to user MNS150 DCFM.",
     "keyApis": [
       "MIService (M3 API)"
+    ]
+  },
+  {
+    "file": "APS100_R_D.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS100_R_D.ts",
+    "m3Program": "APS100",
+    "author": "NimeshaPa (Fortude)",
+    "summary": "Auto-fills the Approver Code (WEAPCD) on APS100/E (APA100EC) by reading CSYPAR00 parameter (STCO=APS905) via MDBREADMI.GetCSYPAR00 with delayed panel field population.",
+    "keyApis": [
+      "MIService (M3 API)"
+    ]
+  },
+  {
+    "file": "APS100_RD.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS100_RD.ts",
+    "m3Program": "APS100",
+    "author": "Chirath Rothila (Fortude)",
+    "summary": "Formats S1CUAM currency amounts across IDS `ids-data-grid` Shadow DOM cells in APS100 according to user MNS150 decimal separator (DCFM), using MutationObserver to persist formatting across virtual scrolling and panel loads.",
+    "keyApis": [
+      "Grid / List Control",
+      "MutationObserver (IDS / Soho DOM)"
+    ]
+  },
+  {
+    "file": "APS100F_HSBC_Pre_Validation_CN.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_CN.ts",
+    "m3Program": "APS100",
+    "author": "Nethum Ariyarathna",
+    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
+    "keyApis": [
+      "MIService (M3 API)",
+      "Hook: Requesting",
+      "Hook: RequestCompleted"
+    ]
+  },
+  {
+    "file": "APS100F_HSBC_Pre_Validation_VN.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation_VN.ts",
+    "m3Program": "APS100",
+    "author": "Nethum Ariyarathna",
+    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
+    "keyApis": [
+      "MIService (M3 API)",
+      "Hook: Requesting",
+      "Hook: RequestCompleted"
+    ]
+  },
+  {
+    "file": "APS100F_HSBC_Pre_Validation.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS100F_HSBC_Pre_Validation.ts",
+    "m3Program": "APS100",
+    "author": "Nethum Ariyarathna",
+    "summary": "Initiates pre-validation on APA100F0 panel when user clicks \"ENTER\". Validates CRS692 (bank accounts), CRS623 (purpose code via CRS620MI.LstSupplierRef), and CRS622 (addresses v...",
+    "keyApis": [
+      "MIService (M3 API)",
+      "Hook: Requesting",
+      "Hook: RequestCompleted"
     ]
   },
   {
@@ -66,19 +92,8 @@
     "summary": "H5 script for APS120/F1 to validate invoice approval during advance payment reconciliation. Calls APS200MI.GetInvTotInfo to check APRV for each invoice in the grid. Displays err...",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Grid / List Control"
-    ]
-  },
-  {
-    "file": "APS131_Set_Report_Text.ts",
-    "category": "finance",
-    "path": "h5/scripts/finance/APS131_Set_Report_Text.ts",
-    "m3Program": "APS131",
-    "author": "NimeshaPa (Fortude)",
-    "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices.",
-    "keyApis": [
-      "Hook: RequestCompleted",
-      "Dynamic UI Elements"
     ]
   },
   {
@@ -89,6 +104,7 @@
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for several divisions.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -101,6 +117,7 @@
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for CN.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -113,6 +130,7 @@
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for ID.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -125,6 +143,7 @@
     "author": "NimeshaPa (Fortude)",
     "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices for MY.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -137,6 +156,20 @@
     "author": "Nethum Ariyarathna (Fortude)",
     "summary": "This script adds custom dropdowns on APS131 to help users correctly fill in the Report Text (WRLITX) field. It ensures that: // * The payment method is selected based on the div...",
     "keyApis": [
+      "Hook: Requesting",
+      "Hook: RequestCompleted",
+      "Dynamic UI Elements"
+    ]
+  },
+  {
+    "file": "APS131_Set_Report_Text.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/APS131_Set_Report_Text.ts",
+    "m3Program": "APS131",
+    "author": "NimeshaPa (Fortude)",
+    "summary": "Adds dynamic payment type selection with conditional transaction type input and updates a read-only report field based on user choices.",
+    "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -150,6 +183,7 @@
     "summary": "H5 Script to add a \"Special Remark\" field to APA160E0 and persist it via CUSEXTMI AddFieldValue. Captures additional remarks for Chinese purchase-related transactions.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Dynamic UI Elements"
     ]
   },
@@ -162,6 +196,7 @@
     "summary": "H5 script for ARS110 panel to display the Payment Term (TEPY) for a customer (CUNO) using CMS100MI.LstPaymentTerm API. Displays a label with \"Payment Term: [TEPY]\" (multilingual...",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Dynamic UI Elements"
     ]
   },
@@ -173,18 +208,10 @@
     "author": "ShaleenW (Fortude)",
     "summary": "Adds custom text fields to ARS112/F for combining temporary receipt number and voucher text, and sets the result in the voucher field.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
-  },
-  {
-    "file": "CheckInvoice.ts",
-    "category": "finance",
-    "path": "h5/scripts/finance/CheckInvoice.ts",
-    "m3Program": "General / Framework",
-    "author": "Rahul Killedar (Fortude)",
-    "summary": "The purpose of this script is to enforce validation on Invoice Date (WDIDAT) and Accounting Date (WDACDT) in panel OIS180/E, based on specific order types (WFORTP, WTORTP). It e...",
-    "keyApis": []
   },
   {
     "file": "CheckInvoice_ARS120.ts",
@@ -193,7 +220,9 @@
     "m3Program": "ARS120",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in ARS120\\E.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "CheckInvoice_FAS130.ts",
@@ -202,7 +231,9 @@
     "m3Program": "FAS130",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in FAS130\\E.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "CheckInvoice_MFS100.ts",
@@ -211,7 +242,20 @@
     "m3Program": "MFS100",
     "author": "Rahul Killedar",
     "summary": "Validates that invoice date (WWIVDT) and accounting date (WWACDT) match the current date in FAS130\\E.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
+  },
+  {
+    "file": "CheckInvoice.ts",
+    "category": "finance",
+    "path": "h5/scripts/finance/CheckInvoice.ts",
+    "m3Program": "OIS180",
+    "author": "Rahul Killedar (Fortude)",
+    "summary": "The purpose of this script is to enforce validation on Invoice Date (WDIDAT) and Accounting Date (WDACDT) in panel OIS180/E, based on specific order types (WFORTP, WTORTP). It e...",
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "FAS130_RestrictFields.ts",
@@ -220,7 +264,9 @@
     "m3Program": "FAS130",
     "author": "Nethum Ariyarathna",
     "summary": "Validates the input format of field WWYREF on the FAS130/F panel. Ported from on-prem JScript (Andrea Devica, 20250801). - Trigger : Runs on Enter key press on FAS130/F panel. -...",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "GLS015_field_hide.ts",
@@ -229,7 +275,9 @@
     "m3Program": "GLS015",
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script automatically sets the field WWVDSC (Voucher Description) to the value \"转账凭证\" (translated: Transfer Voucher) on panel GLS015. It is triggered during Enter key action...",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "H5SampleAddElements.ts",
@@ -249,7 +297,9 @@
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "H5SampleCurrencyXML.ts",
@@ -259,8 +309,7 @@
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
     "keyApis": [
-      "Grid / List Control",
-      "Dynamic UI Elements"
+      "Grid / List Control"
     ]
   },
   {
@@ -282,7 +331,9 @@
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "Script initialization function.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "H5SampleDrillback.ts",
@@ -419,8 +470,7 @@
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
     "keyApis": [
-      "Grid / List Control",
-      "Dynamic UI Elements"
+      "Grid / List Control"
     ]
   },
   {
@@ -430,7 +480,9 @@
     "m3Program": "General / Framework",
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "H5SampleRequestTracer.ts",
@@ -440,6 +492,7 @@
     "author": "Infor / Unknown",
     "summary": "H5 Script SDK sample.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   },
@@ -503,8 +556,8 @@
     "category": "manufacturing-and-purchasing",
     "path": "h5/scripts/manufacturing-and-purchasing/GC_PMS060_DisplayTotal.ts",
     "m3Program": "PMS060",
-    "author": "NimeshaPa (Fortude)",
-    "summary": "This script adds a button and textbox to the PMS060 panel to calculate and display the total reported quantity (RQTA) from the list/grid view.",
+    "author": "NimeshaPa / ChirathRo (Fortude)",
+    "summary": "Adds a button and textbox on PMS060 (including sorting order 1) to calculate and display total reported quantity (RQTA) from the grid view.",
     "keyApis": [
       "Grid / List Control",
       "Dynamic UI Elements"
@@ -518,6 +571,7 @@
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script enforces order integrity in the PMS086 program by restricting Change (option 2) and Delete (option 4) list options when the order status is \"90\". It is designed to p...",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   },
@@ -538,6 +592,7 @@
     "author": "Rahul Killedar (Fortude)",
     "summary": "This script enforces business logic for Medipack items (Item Type = G06) in the PMS101 program by restricting the use of the F12 (Previous) key. The rule ensures that users do n...",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   },
@@ -570,6 +625,7 @@
     "author": "Rahul Killedar (Fortude)",
     "summary": "Calculates bags for Medi Pack item based on yield and item type",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   },
@@ -633,9 +689,9 @@
     ]
   },
   {
-    "file": "PPS200E_M3POApproval.ts",
+    "file": "PPS200E_M3POApproval_V2.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval_V2.ts",
     "m3Program": "PPS200",
     "author": "NimeshaPa (Fortude)",
     "summary": "Added a button in Change mode to submit POs with status 12 for approval by updating TEOR via PPS200MI.",
@@ -645,9 +701,9 @@
     ]
   },
   {
-    "file": "PPS200E_M3POApproval_V2.ts",
+    "file": "PPS200E_M3POApproval.ts",
     "category": "manufacturing-and-purchasing",
-    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval_V2.ts",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS200E_M3POApproval.ts",
     "m3Program": "PPS200",
     "author": "NimeshaPa (Fortude)",
     "summary": "Added a button in Change mode to submit POs with status 12 for approval by updating TEOR via PPS200MI.",
@@ -662,9 +718,10 @@
     "path": "h5/scripts/manufacturing-and-purchasing/PPS201B_ValidatePOApproval.ts",
     "m3Program": "PPS201",
     "author": "NimeshaPa (Fortude)",
-    "summary": "Prevents unauthorized execution in PPS201/B1 if TEOR (line-level approval) is already set.",
+    "summary": "Prevents unauthorized list options (2, 3, 4, 12) on PPS201/B1 (PPA201BC) if line-level approval (TEOR) is already set via PPS200MI.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   },
@@ -686,6 +743,7 @@
     "summary": "Prevents list option 2 or 35 execution in PPS220/B if line-level approval (TEOR) is already set.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Grid / List Control"
     ]
@@ -698,21 +756,10 @@
     "author": "Chirath Rothila (Fortude)",
     "summary": "Validate the qty entered in PPA270/E and disable Qty to Notify column in PPS220/L1.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
-      "Grid / List Control"
-    ]
-  },
-  {
-    "file": "PPS300E_GRNWSP.ts",
-    "category": "manufacturing-and-purchasing",
-    "path": "h5/scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts",
-    "m3Program": "PPS300",
-    "author": "Nethum Ariyarathna",
-    "summary": "Adds an Auto-GRN button on PPS300/E panel to process selected purchase order lines using PPS001MI.Receipt API. Supports multilingual (English/Chinese) messages and validates loc...",
-    "keyApis": [
-      "MIService (M3 API)",
       "Grid / List Control",
-      "Dynamic UI Elements"
+      "MutationObserver (IDS / Soho DOM)"
     ]
   },
   {
@@ -720,10 +767,11 @@
     "category": "manufacturing-and-purchasing",
     "path": "h5/scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V1.ts",
     "m3Program": "PPS300",
-    "author": "Infor / Unknown",
-    "summary": "Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/",
+    "author": "Rahul Killedar (Fortude)",
+    "summary": "Adds a custom grid column on PPS300 to display Vehicle Number fetched via MI API.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Grid / List Control"
     ]
   },
@@ -732,13 +780,27 @@
     "category": "manufacturing-and-purchasing",
     "path": "h5/scripts/manufacturing-and-purchasing/PPS300_VehicleNo_V2.ts",
     "m3Program": "PPS300",
-    "author": "Infor / Unknown",
-    "summary": "Developed By : Rahul Killedar Developed On : 26/05/2025 Description : Adding extra column to display Vehicle Number ************************************/",
+    "author": "Rahul Killedar (Fortude)",
+    "summary": "Adds a custom Vehicle Number column on PPS300 with IFS role verification via IonApiService and MI API lookups.",
     "keyApis": [
       "MIService (M3 API)",
       "ConfirmDialog",
       "IonApiService (ION API)",
+      "Hook: Requesting",
       "Grid / List Control"
+    ]
+  },
+  {
+    "file": "PPS300E_GRNWSP.ts",
+    "category": "manufacturing-and-purchasing",
+    "path": "h5/scripts/manufacturing-and-purchasing/PPS300E_GRNWSP.ts",
+    "m3Program": "PPS300",
+    "author": "Nethum Ariyarathna / ChirathRo (Fortude)",
+    "summary": "Adds an Auto-GRN button on PPS300/E to receive selected PO lines via PPS001MI.Receipt with uppercase lot conversion, busy indicator handling, and multilingual messages.",
+    "keyApis": [
+      "MIService (M3 API)",
+      "Grid / List Control",
+      "Dynamic UI Elements"
     ]
   },
   {
@@ -746,8 +808,8 @@
     "category": "manufacturing-and-purchasing",
     "path": "h5/scripts/manufacturing-and-purchasing/PPS310_QualityInspectAPI.ts",
     "m3Program": "PPS310",
-    "author": "Nimesha Pawani",
-    "summary": "Added \"Confirm All\" button to PPS310/A to inspect all GRN lines via PPS001MI.Inspect.",
+    "author": "Nimesha Pawani / ChirathR (Fortude)",
+    "summary": "Adds a \"Confirm All\" button on PPS310/A to inspect received GRN lines using PPS310MI.QualityInspPO with the current date (YYYYMMDD).",
     "keyApis": [
       "MIService (M3 API)",
       "Dynamic UI Elements"
@@ -758,21 +820,24 @@
     "category": "sales-and-distribution",
     "path": "h5/scripts/sales-and-distribution/CRS610_CustomerControl.ts",
     "m3Program": "CRS610",
-    "author": "Rahul Killedar (Fortude)",
-    "summary": "This script customizes behavior for users accessing the CRS610 program. It restricts specific function keys based on user role and interaction mode, and also disables or pre-set...",
+    "author": "Rahul Killedar / Chirath Rothila (Fortude)",
+    "summary": "Restricts function keys by user role and mode in CRS610 and disables status/finance dropdowns and fields on CRA610E0 and CRA610J0 via [componentname] scoped CSS, ARIA state, and MutationObserver.",
     "keyApis": [
-      "Hook: RequestCompleted"
+      "Hook: Requesting",
+      "Hook: RequestCompleted",
+      "MutationObserver (IDS / Soho DOM)"
     ]
   },
   {
     "file": "CustomerOrderChargesOIS103.ts",
     "category": "sales-and-distribution",
     "path": "h5/scripts/sales-and-distribution/CustomerOrderChargesOIS103.ts",
-    "m3Program": "General / Framework",
-    "author": "Nethum Ariyarathna",
-    "summary": "H5 script for OIS103/E panel to calculate and display total accrued discount for a customer and restrict negative charge entries (WRCRAM) to be less than or equal to the accrued...",
+    "m3Program": "OIS103",
+    "author": "Nethum Ariyarathna / Chirath Rothila (Fortude)",
+    "summary": "Calculates and displays total accrued customer discount (SUMACAM) on OIS103/E and validates negative charge entries (WRCRAM) on ENTER/ROLLUP/ROLLDOWN.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Dynamic UI Elements"
     ]
@@ -799,6 +864,7 @@
     "summary": "Script checks if a single selected row in M3’s MWA300BC or MMA100BC panels is a positive Return Order (RO) by validating its order type (TRTP) using the CRS200MI API. If the RO ...",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Grid / List Control"
     ]
   },
@@ -822,6 +888,7 @@
     "author": "Nethum Ariyarathna",
     "summary": "Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MMS101B panel.",
     "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Grid / List Control"
     ]
@@ -860,6 +927,20 @@
     "author": "Nethum Ariyarathna",
     "summary": "Disables Delete Button for orders with status ‘29’, ‘39’, ‘49’, ‘69’, ‘99’ on MWS301B panel.",
     "keyApis": [
+      "Hook: Requesting",
+      "Hook: RequestCompleted",
+      "Grid / List Control"
+    ]
+  },
+  {
+    "file": "MWS410_RestrictDOPrint.ts",
+    "category": "sales-and-distribution",
+    "path": "h5/scripts/sales-and-distribution/MWS410_RestrictDOPrint.ts",
+    "m3Program": "MWS410",
+    "author": "Nethum Ariyarathna",
+    "summary": "This Script prevents actions 15, 21, 27, 28 when PGRS is below 90.",
+    "keyApis": [
+      "Hook: Requesting",
       "Hook: RequestCompleted",
       "Grid / List Control"
     ]
@@ -872,19 +953,8 @@
     "author": "Rahul Killedar (Fortude)",
     "summary": "Validates Costing status for bulk MOs in MWS410/B before allowing option 32. Calls MWS150MI.SelSupplyChain and MDBREADMI.GetMWOHED55 to validate.",
     "keyApis": [
-      "MIService (M3 API)"
-    ]
-  },
-  {
-    "file": "MWS410_RestrictDOPrint.ts",
-    "category": "sales-and-distribution",
-    "path": "h5/scripts/sales-and-distribution/MWS410_RestrictDOPrint.ts",
-    "m3Program": "MWS410",
-    "author": "Nethum Ariyarathna",
-    "summary": "This Script prevents actions 15, 21, 27, 28 when PGRS is below 90.",
-    "keyApis": [
-      "Hook: RequestCompleted",
-      "Grid / List Control"
+      "MIService (M3 API)",
+      "Hook: Requesting"
     ]
   },
   {
@@ -892,8 +962,8 @@
     "category": "sales-and-distribution",
     "path": "h5/scripts/sales-and-distribution/OIS101CreditBalance.ts",
     "m3Program": "OIS101",
-    "author": "Nethum Ariyarathna",
-    "summary": "H5 script for OIS101 panel to display customer credit information during order entry. Retrieves Credit Limit, Outstanding Balance (SUM_BSOUAC + SUM_OBLNAM), Remaining Credit Bal...",
+    "author": "Nethum Ariyarathna / Chirath Rothila (Fortude)",
+    "summary": "Displays Customer Credit Limit, Outstanding Balance, Remaining Credit Balance, and Outstanding Days on OIS101 during order entry using CMS100MI APIs.",
     "keyApis": [
       "MIService (M3 API)",
       "Dynamic UI Elements"
@@ -904,8 +974,8 @@
     "category": "sales-and-distribution",
     "path": "h5/scripts/sales-and-distribution/OIS105_date.ts",
     "m3Program": "OIS105",
-    "author": "Rahul Killedar (Fortude)",
-    "summary": "This script displays today's date (formatted per user settings) in a message when panel OIS105/B is loaded. Column header updates are not supported in H5.",
+    "author": "Rahul Killedar / Nethum Ariyarathna / Chirath Rothila (Fortude)",
+    "summary": "Auto-fills W2OBKV (IPDT) and displays today's date on OIS105/B (OIA105BC) formatted according to user MNS150 date format (DTFM).",
     "keyApis": []
   },
   {
@@ -916,30 +986,6 @@
     "author": "Rahul Killedar (Fortude)",
     "summary": "Disables Invoice Date and Accounting Date fields on OIS180/E",
     "keyApis": []
-  },
-  {
-    "file": "OIS300JS.ts",
-    "category": "sales-and-distribution",
-    "path": "h5/scripts/sales-and-distribution/OIS300JS.ts",
-    "m3Program": "OIS300",
-    "author": "Nethum Ariyarathna",
-    "summary": "Adds a \"MÁY TÍNH\"( Vietnamese Calculate) button and Total Net Weight, Total Value, and Total Amount textboxes on the OIA300BC panel to compute totals for selected customer order...",
-    "keyApis": [
-      "Grid / List Control",
-      "Dynamic UI Elements"
-    ]
-  },
-  {
-    "file": "OIS300JSCN.ts",
-    "category": "sales-and-distribution",
-    "path": "h5/scripts/sales-and-distribution/OIS300JSCN.ts",
-    "m3Program": "OIS300",
-    "author": "Nethum Ariyarathna",
-    "summary": "Adds a \"Calculate\" button and displays total net weight and total net value for selected Customer Orders on the OIA300BC panel. Button is enabled only for China views (CN-VIEW1,...",
-    "keyApis": [
-      "Grid / List Control",
-      "Dynamic UI Elements"
-    ]
   },
   {
     "file": "OIS300_InvoiceReportLink.ts",
@@ -957,9 +1003,10 @@
     "category": "sales-and-distribution",
     "path": "h5/scripts/sales-and-distribution/OIS300_OAOBLC_VALIDATION.ts",
     "m3Program": "OIS300",
-    "author": "Nethum Ariyarathna",
-    "summary": "This script prevents users from executing specific list options (such as Change, Delete, or Line Entry) in the OIS300/B panel (OIA300BC) when the selected order lines have block...",
+    "author": "Nethum Ariyarathna (Fortude)",
+    "summary": "Blocks list options (2, 4, 15, 31, 35, 36) on OIS300/B (OIA300BC) when selected order lines have blocking codes (OBLC) other than 0, 9, or empty, keeping Requesting active after cancellation.",
     "keyApis": [
+      "Hook: Requesting",
       "Grid / List Control"
     ]
   },
@@ -993,7 +1040,32 @@
     "author": "Rahul Killedar",
     "summary": "This script validates the 'BLRO' (Backlog Amount) field on the OIS300/B panel. If any selected row contains a negative BLRO value, the script cancels the execution of list optio...",
     "keyApis": [
+      "Hook: Requesting",
       "Grid / List Control"
+    ]
+  },
+  {
+    "file": "OIS300JS.ts",
+    "category": "sales-and-distribution",
+    "path": "h5/scripts/sales-and-distribution/OIS300JS.ts",
+    "m3Program": "OIS300",
+    "author": "Nethum Ariyarathna (Fortude)",
+    "summary": "Adds a Vietnamese Calculate (\"MÁY TÍNH\") button and Total Net Weight, Total Value, and Total Amount displays on OIA300BC for 2+ selected rows in VN-VIEW1, normalizing numbers per user DCFM.",
+    "keyApis": [
+      "Grid / List Control",
+      "Dynamic UI Elements"
+    ]
+  },
+  {
+    "file": "OIS300JSCN.ts",
+    "category": "sales-and-distribution",
+    "path": "h5/scripts/sales-and-distribution/OIS300JSCN.ts",
+    "m3Program": "OIS300",
+    "author": "Nethum Ariyarathna",
+    "summary": "Adds a \"Calculate\" button and displays total net weight and total net value for selected Customer Orders on the OIA300BC panel. Button is enabled only for China views (CN-VIEW1,...",
+    "keyApis": [
+      "Grid / List Control",
+      "Dynamic UI Elements"
     ]
   },
   {
@@ -1003,7 +1075,9 @@
     "m3Program": "General / Framework",
     "author": "Kelum Ganegoda (Fortude)",
     "summary": "This script is standard one in ISO. There is no equivalent H5 scripts. Perhaps this is not required in MT. However, I uplifted it.",
-    "keyApis": []
+    "keyApis": [
+      "Hook: Requesting"
+    ]
   },
   {
     "file": "TestIssue.ts",
@@ -1014,6 +1088,7 @@
     "summary": "Script initialization function.",
     "keyApis": [
       "MIService (M3 API)",
+      "Hook: Requesting",
       "Hook: RequestCompleted"
     ]
   }

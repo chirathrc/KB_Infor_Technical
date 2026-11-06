@@ -2,7 +2,7 @@
  * Author      : Kelum Ganegoda (Fortude)
  * Created on  : 2025-06-20
  * Summary     : This script is standard one in ISO. There is no equivalent H5 scripts. Perhaps this is not required in MT.
- *              However, I uplifted it.
+ *              However, I uplifted it. Did not follow the Naming convention, as this could be common script. 
  *
  * Version Log :
  * Changed By  | Date       | Summary of the change
@@ -33,6 +33,7 @@ class EntryModeSetter {
     public run(): void {
         console.clear();
         this.log.Info("Script Initializing.");
+        console.log("In the Run Method FTD2");
         // Subscribe to Instance Controller events
         this.attachEvents(this.controller);
         ;

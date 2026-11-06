@@ -23,8 +23,6 @@ class GC_MMS121B1_AddProdDtCol {
     private miService;
     private columnId = "C999";
     private gridRowIndex = 0;
-    private plpnColumnIndex = -1;
-    private plpsColumnIndex = -1;
     private itno = "";
     private whlo = "";
     private unsubscribeScroll;
@@ -35,8 +33,8 @@ class GC_MMS121B1_AddProdDtCol {
         this.log = scriptArgs.log;
         this.miService = MIService.Current;
         this.company = ScriptUtil.GetUserContext("CONO") || "";
-        this.dateFormat = ScriptUtil.GetUserContext("DTFM")|| "YMD" ;
-        
+        this.dateFormat = ScriptUtil.GetUserContext("DTFM") || "YMD";
+
         this.sortingOrder = parseInt(this.controller.GetSortingOrder() || "0");
     }
 
@@ -48,12 +46,11 @@ class GC_MMS121B1_AddProdDtCol {
         console.clear();
         this.log.Info("Script Initializing for MMS121/B1 ");
         this.log.Info("Company: " + this.company, " Date Format: " + this.dateFormat + " Sorting Order: " + this.sortingOrder);
-       // console.log("User Context:", ScriptUtil.GetUserContext());
         this.list = this.controller.GetGrid();
 
         if (this.sortingOrder !== 1) {
             this.log.Info("Sorting order is not 1, unloading script");
-            this.unloadScript();
+           // this.unloadScript();
             return;
         }
 
@@ -62,10 +59,7 @@ class GC_MMS121B1_AddProdDtCol {
             this.itno = ScriptUtil.GetFieldValue("MMITNO", this.controller) || "";
             this.whlo = ScriptUtil.GetFieldValue("MWWHLO", this.controller) || "";
             console.log(`ITNO: ${this.itno}, WHLO: ${this.whlo}`);
-            
-            this.plpnColumnIndex = this.getColumnIndex("S1WHSL");
-            this.plpsColumnIndex = this.getColumnIndex("S1BANO");
-            console.log(`PLPN Column Index: ${this.plpnColumnIndex}, PLPS Column Index: ${this.plpsColumnIndex}`);
+   
             this.controller.ShowBusyIndicator();
             this.populateData(0, this.list.getData()?.length - 1 || 0);
             this.attachScrollEvent();
@@ -90,10 +84,6 @@ class GC_MMS121B1_AddProdDtCol {
         }
     }
 
-    private getColumnIndex(columnName) {
-        return ListControl.GetColumnIndexByName(columnName, this.controller);
-    }
-
     private async populateData(fromRow, toRow) {
         if (fromRow > toRow || toRow < 0) {
             this.log.Info("Invalid row range, skipping population");
@@ -110,8 +100,8 @@ class GC_MMS121B1_AddProdDtCol {
                 continue;
             }
 
-             const whslValue = this.getRowValue(row, "S1WHSL"); 
-             const banoValue = this.getRowValue(row, "S1BANO"); 
+            const whslValue = this.getRowValue(row, "S1WHSL");
+            const banoValue = this.getRowValue(row, "S1BANO");
             console.log(`Row ${i}: WHSL=${whslValue}, BANO=${banoValue}`);
             if (whslValue && banoValue) {
                 this.log.Info("Processing row " + i + ": WHSL=" + whslValue + ", BANO=" + banoValue);
@@ -127,11 +117,11 @@ class GC_MMS121B1_AddProdDtCol {
         this.controller.HideBusyIndicator();
     }
 
-      /**
-     * Gets a field value from a row, handling different H5 versions.
-     * @param row The row object
-     * @param fieldName The field name (e.g., "MLSTQT")
-     */
+    /**
+   * Gets a field value from a row, handling different H5 versions.
+   * @param row The row object
+   * @param fieldName The field name (e.g., "MLSTQT")
+   */
     private getRowValue(row: any, fieldName: string): string {
         if (ScriptUtil.version >= 2.0) {
             const value = row[fieldName] || "";

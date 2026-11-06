@@ -9,6 +9,7 @@
  * ---------------|------------|-----------------------------
  * Rahul Killedar | 2025-07-07 | Initial script creation
  * Nethum Ariyarathna | 2025-11-24 | OIS105/B (OIA105BC) → Auto-fill W2OBKV (IPDT) with today's date (YYYYMMDD)
+ * Chirath Rothila | 2025-06-19 | OIS105/B → Fix date format according to user pref. in MNS150.
  */
 
 class OIS105_date {
@@ -45,7 +46,7 @@ class OIS105_date {
     private fillUsingSetFieldValue(): void {
         this.log.Info("Filling invoice date in YYMMDD format...");
 
-        const todayYYMMDD = this.getTodayYYMMDD();
+        const todayYYMMDD = this.getTodayDate();
 
         let filled = false;
 
@@ -75,17 +76,33 @@ class OIS105_date {
         }
     }
 
-    // Returns date as YYMMDD → e.g., 251124
-    private getTodayYYMMDD(): string {
+    private getTodayDate(): string {
         const d = new Date();
-        const year = d.getFullYear() % 100;   // last 2 digits → 25
-        const month = d.getMonth() + 1;       // 1-12
-        const day = d.getDate();              // 1-31
 
-        const yy = year < 10 ? "0" + year : year.toString();
-        const mm = month < 10 ? "0" + month : month.toString();
-        const dd = day < 10 ? "0" + day : day.toString();
+        let dd = d.getDate().toString();
+        let mm = (d.getMonth() + 1).toString();
 
-        return yy + mm + dd; // → 251124
+        let yy = (d.getFullYear() % 100).toString();
+        if (yy.length < 2) yy = "0" + yy;
+
+        if (dd.length < 2) dd = "0" + dd;
+        if (mm.length < 2) mm = "0" + mm;
+
+        const dtfm = ScriptUtil.GetUserContext("DTFM");
+        console.log(dtfm);
+
+        switch (dtfm) {
+            case "DMY":
+                return `${dd}${mm}${yy}`;
+
+            case "MDY":
+                return `${mm}${dd}${yy}`;
+
+            case "YMD":
+                return `${yy}${mm}${dd}`;
+
+            default:
+                return `${dd}${mm}${yy}`;
+        }
     }
 }

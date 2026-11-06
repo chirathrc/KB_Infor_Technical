@@ -179,7 +179,7 @@ class ARS110_PaymentTerm {
                 `CMS100MI Error: ${errorMsg}`
             );
             return;
-        }
+        }                                                                    
 
         if (this.isUnloaded) {
             this.log.Info("Script unloaded, skipping label update");

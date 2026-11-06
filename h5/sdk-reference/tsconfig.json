@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "sourceMap": true,
+        "ignoreDeprecations": "5.0"
+    },
+    "exclude": [
+        "../Nodejs/node_modules"
+    ]
+}
