@@ -20,4 +20,4 @@
 
 ## MEC Knowledge
 - MEC mappings, guides and samples: https://github.com/chirathrc/KB_Infor_Technical/tree/main/mec
-
+- MEC Cloud migration master reference: https://github.com/chirathrc/KB_Infor_Technical/blob/main/mec/guides/10-cloud-migration-master-reference.md (skill: `mec-cloud-migration` at `.agents/skills/mec-cloud-migration/SKILL.md`)

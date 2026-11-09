@@ -1,11 +1,11 @@
-﻿# MEC (Infor Mapping / Enterprise Connector) Knowledge Base
+# MEC (Infor Mapping / Enterprise Connector) Knowledge Base
 
 Subject-wise knowledge for building and reviewing MEC mappings (`.zap`/`.map` format, M3 BODs, FTD file integrations). Imported from IEC_Mapping_KB v0.3. Repository: https://github.com/chirathrc/KB_Infor_Technical
 
 ## Structure
 | Folder | Subject |
 |---|---|
-| `guides/` | 00-09: ZAP/map format, building blocks, mapping families, Java and manifest API, standard snippets, M3 API patterns, MI reference, spec and generator, sample inventory |
+| `guides/` | 00-09: ZAP/map format, building blocks, mapping families, Java and manifest API, standard snippets, M3 API patterns, MI reference, spec and generator, sample inventory. **10: Cloud migration master reference** (on-prem to Cloud MEC rules, EXPORTMI SQL replacement, Pattern F inbound, ION / Infor OS reference) |
 | `mi-reference/` | MI catalog (`mi_catalog.json`, full `.json.gz`), program and module indexes |
 | `examples/` | End-to-end examples with XSDs, `spec.json` and sample XML (item-details-event, item-info, load-in, wb-outbound-1) |
 | `tools/` | Python tooling (map build/dump/model/stats, spec generation, MI lookup, Java checks, round-trip) |
@@ -29,3 +29,4 @@ Subject-wise knowledge for building and reviewing MEC mappings (`.zap`/`.map` fo
 3. `guides/03-mapping-families-and-templates.md`
 4. `guides/05-standard-snippets.md` and `guides/06-m3-api-usage-patterns.md`
 5. Matching sample in `samples/<subject>/`
+6. For on-prem to Cloud migration work: `guides/10-cloud-migration-master-reference.md` (skill: `.agents/skills/mec-cloud-migration/SKILL.md`)

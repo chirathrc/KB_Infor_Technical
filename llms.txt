@@ -20,3 +20,5 @@
 ## MEC Knowledge
 - [mec/README.md](mec/README.md): MEC mapping guides, MI reference, tools, and 80 sample `.zap` files by subject
 - [mec/MEC_INDEX.json](mec/MEC_INDEX.json): Machine-readable index of MEC samples
+- [mec/guides/10-cloud-migration-master-reference.md](mec/guides/10-cloud-migration-master-reference.md): MEC on-prem to Cloud migration master reference (Tier-1 fixes, EXPORTMI SQL replacement, BOD patterns, ION / Infor OS)
+- [.agents/skills/mec-cloud-migration/SKILL.md](.agents/skills/mec-cloud-migration/SKILL.md): MEC Cloud migration skill
