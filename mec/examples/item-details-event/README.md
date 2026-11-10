@@ -12,8 +12,23 @@ Shows:
 - generating the spec from a field map (`gen_spec.py fieldmap.json → spec.json`).
 
 ```bash
+# Spec generation from field map:
 python3 -I examples/item-details-event/gen_spec.py examples/item-details-event      # fieldmap.json -> spec.json
+
+# Build .zap mapping unit package (Node.js or Python):
+node tools/mapbuild.js examples/item-details-event/spec.json examples/item-details-event
+# or:
 python3 -I tools/mapbuild.py examples/item-details-event/spec.json out/
+
+# Verification:
 python3 -I tools/javacheck.py examples/item-details-event/spec.json /tmp/jc
 python3 -I tools/javasim.py examples/item-details-event/spec.json /tmp/sim
 ```
+
+## Generated Artifacts
+- `M3BOD_ItemDetails_Sync_Out_Custom.zap`: Importable mapping unit for Infor MEC / IEC Mapper.
+  - Contains `M3BOD_ItemDetails_Sync_Out_Custom.map` (UTF-16BE + BOM)
+  - Hashed inbound event schema: `EventData_MT_73bfb117.xsd`
+  - Hashed outbound BOD schemas: `BODs-SyncItemDetails_a5ec59df.xsd`, `Nouns-ItemDetails_6563ae2c.xsd`, `Resources-Meta_9d9e4cc9.xsd`
+  - Manifest properties: `mapping.properties`
+
