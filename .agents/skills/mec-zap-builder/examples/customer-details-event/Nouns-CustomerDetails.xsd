@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Noun CustomerDetails: M3 customer master (OCUSMA/CIDMAS) via CRS610MI GetBasicData, GetFinancial, GetOrderInfo, LstAddresses -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schema.infor.com/InforOAGIS/2" targetNamespace="http://schema.infor.com/InforOAGIS/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0.0">
+	<xs:element name="CustomerDetails" type="CustomerDetailsType"/>
+	<xs:complexType name="CustomerDetailsType">
+		<xs:sequence>
+			<xs:element name="CustomerHeader" type="CustomerDetailsHeaderType"/>
+			<xs:element name="Financial" type="CustomerDetailsFinancialType"/>
+			<xs:element name="OrderInfo" type="CustomerDetailsOrderInfoType"/>
+			<xs:element name="Address" type="CustomerDetailsAddressType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerDetailsHeaderType">
+		<xs:sequence>
+			<xs:element name="CustomerNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address3" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address4" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string" minOccurs="0"/>
+			<xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AreaState" type="xs:string" minOccurs="0"/>
+			<xs:element name="CountyID" type="xs:string" minOccurs="0"/>
+			<xs:element name="County" type="xs:string" minOccurs="0"/>
+			<xs:element name="Phone1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Phone2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Fax" type="xs:string" minOccurs="0"/>
+			<xs:element name="Email" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerType" type="xs:string" minOccurs="0"/>
+			<xs:element name="SearchKey" type="xs:string" minOccurs="0"/>
+			<xs:element name="YourReference1" type="xs:string" minOccurs="0"/>
+			<xs:element name="YourReference2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:string" minOccurs="0"/>
+			<xs:element name="Currency" type="xs:string" minOccurs="0"/>
+			<xs:element name="Language" type="xs:string" minOccurs="0"/>
+			<xs:element name="Division" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerOrderNumberMandatory" type="xs:string" minOccurs="0"/>
+			<xs:element name="OurSupplierNumberAtCustomer" type="xs:string" minOccurs="0"/>
+			<xs:element name="EANLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField1" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField2" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField3" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField4" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField5" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField6" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField7" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField8" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField9" type="xs:string" minOccurs="0"/>
+			<xs:element name="FreeField10" type="xs:string" minOccurs="0"/>
+			<xs:element name="EntryDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="ChangeDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="ChangeNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerDetailsFinancialType">
+		<xs:sequence>
+			<xs:element name="OrganizationNumber1" type="xs:string" minOccurs="0"/>
+			<xs:element name="OrganizationNumber2" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATRegistrationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditLimit1" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditLimit2" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditLimit3" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditLimit4MaxDays" type="xs:string" minOccurs="0"/>
+			<xs:element name="OverdueInvoiceAmount" type="xs:string" minOccurs="0"/>
+			<xs:element name="OutstandingInvoiceAmount" type="xs:string" minOccurs="0"/>
+			<xs:element name="OrderValueNotInvoiced" type="xs:string" minOccurs="0"/>
+			<xs:element name="OverdueDays" type="xs:string" minOccurs="0"/>
+			<xs:element name="TaxApplicable" type="xs:string" minOccurs="0"/>
+			<xs:element name="TaxCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="TaxExemptionContractNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="TaxExemptionExpiryDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvoiceRecipient" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerStop" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExchangeRateType" type="xs:string" minOccurs="0"/>
+			<xs:element name="CashDiscountTerm" type="xs:string" minOccurs="0"/>
+			<xs:element name="PaymentMethodAR" type="xs:string" minOccurs="0"/>
+			<xs:element name="PaymentInstruction" type="xs:string" minOccurs="0"/>
+			<xs:element name="Collection" type="xs:string" minOccurs="0"/>
+			<xs:element name="PaymentReminderCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="PaymentReminderRule" type="xs:string" minOccurs="0"/>
+			<xs:element name="StatementRule" type="xs:string" minOccurs="0"/>
+			<xs:element name="InterestInvoicing" type="xs:string" minOccurs="0"/>
+			<xs:element name="InterestRule" type="xs:string" minOccurs="0"/>
+			<xs:element name="CompanyGroupCustomer" type="xs:string" minOccurs="0"/>
+			<xs:element name="GroupPayer" type="xs:string" minOccurs="0"/>
+			<xs:element name="DueDateBase" type="xs:string" minOccurs="0"/>
+			<xs:element name="CashCustomer" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditDepartmentReference" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerDetailsOrderInfoType">
+		<xs:sequence>
+			<xs:element name="CustomerGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="OurReference" type="xs:string" minOccurs="0"/>
+			<xs:element name="Salesperson" type="xs:string" minOccurs="0"/>
+			<xs:element name="District" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerOrderType" type="xs:string" minOccurs="0"/>
+			<xs:element name="ServiceModel" type="xs:string" minOccurs="0"/>
+			<xs:element name="ChargeModel" type="xs:string" minOccurs="0"/>
+			<xs:element name="TermsOfDelivery" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeliveryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="Warehouse" type="xs:string" minOccurs="0"/>
+			<xs:element name="Facility" type="xs:string" minOccurs="0"/>
+			<xs:element name="DiscountModel" type="xs:string" minOccurs="0"/>
+			<xs:element name="DiscountGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="DiscountPercent" type="xs:string" minOccurs="0"/>
+			<xs:element name="TermsOfPayment" type="xs:string" minOccurs="0"/>
+			<xs:element name="Payer" type="xs:string" minOccurs="0"/>
+			<xs:element name="InvoicingGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeliveryAddressNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ShipVia" type="xs:string" minOccurs="0"/>
+			<xs:element name="PriceListTable" type="xs:string" minOccurs="0"/>
+			<xs:element name="SummaryInvoice" type="xs:string" minOccurs="0"/>
+			<xs:element name="SeparateInvoices" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATIncluded" type="xs:string" minOccurs="0"/>
+			<xs:element name="DocumentGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="Responsible" type="xs:string" minOccurs="0"/>
+			<xs:element name="StatisticsCustomer" type="xs:string" minOccurs="0"/>
+			<xs:element name="Priority" type="xs:string" minOccurs="0"/>
+			<xs:element name="BackOrder" type="xs:string" minOccurs="0"/>
+			<xs:element name="PartialDelivery" type="xs:string" minOccurs="0"/>
+			<xs:element name="CommissionGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="BonusGroup" type="xs:string" minOccurs="0"/>
+			<xs:element name="TradeAgreementModel" type="xs:string" minOccurs="0"/>
+			<xs:element name="SupplyModel" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerDetailsAddressType">
+		<xs:sequence>
+			<xs:element name="AddressType" type="xs:string" minOccurs="0"/>
+			<xs:element name="AddressNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address3" type="xs:string" minOccurs="0"/>
+			<xs:element name="Address4" type="xs:string" minOccurs="0"/>
+			<xs:element name="PostalCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string" minOccurs="0"/>
+			<xs:element name="CountryCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AreaState" type="xs:string" minOccurs="0"/>
+			<xs:element name="CountyID" type="xs:string" minOccurs="0"/>
+			<xs:element name="County" type="xs:string" minOccurs="0"/>
+			<xs:element name="Phone1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Fax" type="xs:string" minOccurs="0"/>
+			<xs:element name="YourReference" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeliveryMethod" type="xs:string" minOccurs="0"/>
+			<xs:element name="TermsOfDelivery" type="xs:string" minOccurs="0"/>
+			<xs:element name="TaxCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="VATRegistrationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ViaAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="Route" type="xs:string" minOccurs="0"/>
+			<xs:element name="RouteDeparture" type="xs:string" minOccurs="0"/>
+			<xs:element name="UnloadingZone" type="xs:string" minOccurs="0"/>
+			<xs:element name="ValidFrom" type="xs:string" minOccurs="0"/>
+			<xs:element name="ValidTo" type="xs:string" minOccurs="0"/>
+			<xs:element name="AddressCategory" type="xs:string" minOccurs="0"/>
+			<xs:element name="Priority" type="xs:string" minOccurs="0"/>
+			<xs:element name="EANLocation" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

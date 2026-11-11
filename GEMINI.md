@@ -21,3 +21,12 @@
 ## MEC Knowledge
 - MEC mappings, guides and samples: https://github.com/chirathrc/KB_Infor_Technical/tree/main/mec
 - MEC Cloud migration master reference: https://github.com/chirathrc/KB_Infor_Technical/blob/main/mec/guides/10-cloud-migration-master-reference.md (skill: `mec-cloud-migration` at `.agents/skills/mec-cloud-migration/SKILL.md`)
+
+## MEC / ZAP Rules (always on)
+- To create, change or repair any MEC mapping (.zap/.map), activate the skill `mec-zap-builder` (`.agents/skills/mec-zap-builder/SKILL.md`).
+- NEVER write, edit, base64-encode or paste the contents of a .map/.zap. Write `spec.json` + XSDs and compile with
+  `python .agents/skills/mec-zap-builder/scripts/mec_build.py build <spec.json>`; deliver only a file whose last line is `RESULT: PASS`.
+- NEVER call `mec/tools/*.py` directly (catalog path mismatch `mec/mi` vs `mec/mi-reference`); use `mec_build.py`.
+- Look up every M3 API and field with `mec_build.py api show/search/program`; never invent names.
+- State what was NOT verified (Mapper import/Generate/Publish, live event) in every delivery.
+

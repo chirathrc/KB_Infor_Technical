@@ -1,0 +1,1285 @@
+{
+ "name": "M3BOD_CustomerDetails_Sync_Out_Custom",
+ "version": "1.0",
+ "namespace": "M3 BOD",
+ "description": "M3 customer event -> CRS610MI customer details -> custom Sync.CustomerDetails BOD",
+ "schema_in": {
+  "xsd": "EventData_MT.xsd",
+  "name": "EventData_MT",
+  "root": "EventData",
+  "category": "Other"
+ },
+ "schema_out": {
+  "xsd": "BODs-SyncCustomerDetails.xsd",
+  "name": "BODs-SyncCustomerDetails",
+  "root": "SyncCustomerDetails",
+  "category": "BOD"
+ },
+ "properties": [
+  {
+   "type": "CP",
+   "name": "StrictListCheck",
+   "value": "true"
+  }
+ ],
+ "constants": [],
+ "variables": [
+  {
+   "name": "eventData",
+   "type": "java.util.Map<String, String>",
+   "init": "null",
+   "desc": "Event element Name -> Value"
+  },
+  {
+   "name": "CONO",
+   "desc": "Company from the event (formatted)"
+  },
+  {
+   "name": "CUNO",
+   "desc": "Customer number from the event"
+  },
+  {
+   "name": "LANC",
+   "desc": "User language (GetUserInfo)"
+  },
+  {
+   "name": "bodAE",
+   "desc": "Accounting entity of the BOD"
+  },
+  {
+   "name": "tenantID",
+   "desc": "Tenant id (on-premise translation)"
+  },
+  {
+   "name": "LogicalID",
+   "desc": "From logical id"
+  },
+  {
+   "name": "dtGen",
+   "type": "DataTranslator",
+   "init": "null",
+   "desc": "Generic data translator"
+  },
+  {
+   "name": "strictLists",
+   "type": "boolean",
+   "init": "true",
+   "desc": "CP StrictListCheck"
+  },
+  {
+   "name": "g_Adr",
+   "type": "java.util.List<String[]>",
+   "init": "null",
+   "desc": "Collected address rows"
+  },
+  {
+   "name": "g_AdrIt",
+   "type": "java.util.Iterator<String[]>",
+   "init": "null",
+   "desc": "Address iterator"
+  },
+  {
+   "name": "g_Row",
+   "type": "String[]",
+   "init": "null",
+   "desc": "Current output row"
+  }
+ ],
+ "sequence": [
+  {
+   "java": "VersionLog",
+   "desc": "Version log",
+   "code": [
+    "/*",
+    " * M3BOD_CustomerDetails_Sync_Out_Custom",
+    " * FS: M3 customer event -> retrieve customer data by CUNO -> custom Sync.CustomerDetails BOD to ION.",
+    " * v1.0  2026-11-10  Initial version (generated from KB_Infor_Technical mec F4 pattern)",
+    " *   Event (EventData: CUNO/CONO, also OKCUNO/OKCONO from OCUSMA and IDCUNO/IDCONO from CIDMAS)",
+    " *   -> CRS610MI GetBasicData, GetFinancial, GetOrderInfo, LstAddresses",
+    " *   Errors: missing CUNO/CONO, invalid customer, API NOK -> MeCError (no BOD). Delete event -> abort (no BOD).",
+    " */"
+   ]
+  },
+  {
+   "java": "InitEventData",
+   "desc": "Create the event map and the collection lists",
+   "code": [
+    "eventData = new java.util.HashMap<String, String>();",
+    "g_Adr = new java.util.ArrayList<String[]>();"
+   ]
+  },
+  {
+   "loop": "GetEventDataLoop",
+   "cond": "WT",
+   "ctl": "IN:/EventData/Document/ElementData",
+   "desc": "One iteration per event element",
+   "body": [
+    {
+     "java": "GetEventData",
+     "desc": "Store each element Name/Value; CUNO and CONO accepted with or without the OK (OCUSMA) / ID (CIDMAS) table prefix",
+     "in": {
+      "iName": "IN:/EventData/Document/ElementData/Name",
+      "iValue": "IN:/EventData/Document/ElementData/Value"
+     },
+     "code": [
+      "if (iName != null) {",
+      "    String n = iName.trim();",
+      "    String v = (iValue == null) ? \"\" : IONToolbox.rightTrim(iValue);",
+      "    if (n.equals(\"CUNO\") || n.equals(\"OKCUNO\") || n.equals(\"IDCUNO\")) {",
+      "        eventData.put(\"CUNO\", v);            // customer keys keep leading characters",
+      "    } else if (n.equals(\"CONO\") || n.equals(\"OKCONO\") || n.equals(\"IDCONO\")) {",
+      "        eventData.put(\"CONO\", v.trim());",
+      "    } else {",
+      "        eventData.put(n, v.trim());",
+      "    }",
+      "}"
+     ]
+    }
+   ]
+  },
+  {
+   "java": "ManageEventData",
+   "desc": "Validate the event: delete -> abort, missing CUNO/CONO -> MeCError",
+   "in": {
+    "iOperation": "IN:/EventData/Operation",
+    "iDocumentName": "IN:/EventData/DocumentName",
+    "iEventId": "IN:/EventData/EventId"
+   },
+   "out": {
+    "oCONO": [
+     "$CONO"
+    ],
+    "oCUNO": [
+     "$CUNO"
+    ]
+   },
+   "code": [
+    "String op = (iOperation == null) ? \"\" : iOperation.trim().toUpperCase();",
+    "String doc = (iDocumentName == null) ? \"\" : iDocumentName.trim();",
+    "String evt = (iEventId == null) ? \"\" : iEventId.trim();",
+    "oCONO = eventData.get(\"CONO\");",
+    "oCUNO = eventData.get(\"CUNO\");",
+    "oCONO = (oCONO == null) ? \"\" : oCONO.trim();",
+    "oCUNO = (oCUNO == null) ? \"\" : oCUNO;",
+    "",
+    "// Delete events: the customer no longer exists in M3 - end without output",
+    "if (op.equals(\"D\") || op.equals(\"DELETE\")) {",
+    "    logInfo(\"CustomerDetails: delete event \" + evt + \" for customer '\" + oCUNO + \"' - no BOD produced\");",
+    "    abort(\"CustomerDetails: delete event - no Sync.CustomerDetails BOD\");   // ends the mapping, no output",
+    "} else {",
+    "    // Mandatory keys",
+    "    if (IONToolbox.isEmpty(oCUNO)) {",
+    "        throw new MeCError(\"CustomerDetails: customer number (CUNO/OKCUNO/IDCUNO) missing in event \" + evt + \" [\" + doc + \"]\");",
+    "    }",
+    "    if (IONToolbox.isEmpty(oCONO)) {",
+    "        throw new MeCError(\"CustomerDetails: company (CONO/OKCONO/IDCONO) missing in event \" + evt + \" for customer \" + oCUNO);",
+    "    }",
+    "    logDebug(\"CustomerDetails: event \" + evt + \" op=\" + op + \" CONO=\" + oCONO + \" CUNO=\" + oCUNO);",
+    "}"
+   ]
+  },
+  {
+   "java": "GetCONO_DIVI_AE",
+   "desc": "Format company, company-level accounting entity",
+   "in": {
+    "iCONO": "$CONO"
+   },
+   "out": {
+    "oCONO": [
+     "$CONO"
+    ],
+    "oAE": [
+     "$bodAE"
+    ]
+   },
+   "code": [
+    "// Get CONO",
+    "oCONO = IONToolbox.formatCompany(iCONO);",
+    "",
+    "// Customer master is company-level: accounting entity from M3 company only",
+    "oAE = IONToolbox.getAccountingEntityId(oCONO, null);"
+   ]
+  },
+  {
+   "settings": {
+    "Company": "GetCONO_DIVI_AE.oCONO"
+   }
+  },
+  {
+   "java": "Init",
+   "desc": "DataTranslator, tenant id, control properties",
+   "in": {
+    "iCONO": "GetCONO_DIVI_AE.oCONO",
+    "iTenantId": "IN:/EventData/TenantId"
+   },
+   "code": [
+    "// Trim CONO:",
+    "iCONO = iCONO == null ? \"\" : iCONO.trim();",
+    "",
+    "// Instantiate generic DataTranslator",
+    "String blankDIVI = \"\";",
+    "dtGen = new DataTranslator(getManifestMap(), iCONO, blankDIVI, \"ION\", \"1\", \"Generic\");",
+    "",
+    "// Set tenant id",
+    "if (iTenantId == null) {",
+    "    // On-premise: Translate M3 BE company to tenant id",
+    "    tenantID = dtGen.toMessage(\"Generic\", \"TenantID\", iCONO, \"\", \"\", \"CMNCMP\", \"CONO\");",
+    "    setManifestInfo(ManifestConstants.MAP_ION_TENANT_ID, tenantID);",
+    "}",
+    "",
+    "// Control property StrictListCheck (default true): list API failure fails the message",
+    "String strict = getManifestInfo(\"agr:StrictListCheck\");",
+    "strictLists = !(strict != null && strict.trim().equalsIgnoreCase(\"false\"));"
+   ]
+  },
+  {
+   "api": "CRS610MI/GetUserInfo",
+   "mode": "AVM",
+   "in": {},
+   "out": {
+    "ZDLANC": [
+     "$LANC"
+    ]
+   },
+   "desc": "User language for the BOD languageCode"
+  },
+  {
+   "api": "CRS610MI/GetBasicData",
+   "mode": "AVI",
+   "in": {
+    "CUNO": "$CUNO"
+   },
+   "out": {},
+   "desc": "Customer basic data (OCUSMA/CIDMAS) - NOK checked in ValidateCustomer"
+  },
+  {
+   "java": "ValidateCustomer",
+   "desc": "Invalid customer / API failure / empty response -> MeCError (no BOD)",
+   "in": {
+    "iCUNO": "GetBasicData.CUNO"
+   },
+   "code": [
+    "if (!isLastAPICallOK()) {",
+    "    throw new MeCError(\"CustomerDetails: CRS610MI/GetBasicData failed for customer \" + CUNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage());",
+    "}",
+    "String rCUNO = (iCUNO == null) ? \"\" : IONToolbox.rightTrim(iCUNO);",
+    "if (IONToolbox.isEmpty(rCUNO)) {",
+    "    throw new MeCError(\"CustomerDetails: CRS610MI/GetBasicData returned no data for customer \" + CUNO);",
+    "}",
+    "if (!rCUNO.equals(CUNO)) {",
+    "    throw new MeCError(\"CustomerDetails: CRS610MI/GetBasicData returned customer \" + rCUNO + \" for requested customer \" + CUNO);",
+    "}"
+   ]
+  },
+  {
+   "api": "CRS610MI/GetFinancial",
+   "mode": "AVI",
+   "in": {
+    "CUNO": "$CUNO"
+   },
+   "out": {},
+   "desc": "Customer financial data - NOK checked in ValidateFinancial"
+  },
+  {
+   "java": "ValidateFinancial",
+   "desc": "CRS610MI/GetFinancial failure -> MeCError (no BOD)",
+   "code": [
+    "if (!isLastAPICallOK()) {",
+    "    throw new MeCError(\"CustomerDetails: CRS610MI/GetFinancial failed for customer \" + CUNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage());",
+    "}"
+   ]
+  },
+  {
+   "api": "CRS610MI/GetOrderInfo",
+   "mode": "AVI",
+   "in": {
+    "CUNO": "$CUNO"
+   },
+   "out": {},
+   "desc": "Customer order/sales data - NOK checked in ValidateOrderInfo"
+  },
+  {
+   "java": "ValidateOrderInfo",
+   "desc": "CRS610MI/GetOrderInfo failure -> MeCError (no BOD)",
+   "code": [
+    "if (!isLastAPICallOK()) {",
+    "    throw new MeCError(\"CustomerDetails: CRS610MI/GetOrderInfo failed for customer \" + CUNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage());",
+    "}"
+   ]
+  },
+  {
+   "loop": "AddressLoop",
+   "cond": "WT",
+   "desc": "One iteration per CRS610MI/LstAddresses row",
+   "body": [
+    {
+     "api": "CRS610MI/LstAddresses",
+     "mode": "ARI",
+     "in": {
+      "CUNO": "$CUNO"
+     },
+     "out": {},
+     "desc": "List customer addresses (NOK checked in CheckAddress)"
+    },
+    {
+     "java": "CollectAddress",
+     "in": {
+      "iCUNO": "LstAddresses.CUNO",
+      "iADRT": "LstAddresses.ADRT",
+      "iADID": "LstAddresses.ADID",
+      "iCUNM": "LstAddresses.CUNM",
+      "iCUA1": "LstAddresses.CUA1",
+      "iCUA2": "LstAddresses.CUA2",
+      "iCUA3": "LstAddresses.CUA3",
+      "iCUA4": "LstAddresses.CUA4",
+      "iPONO": "LstAddresses.PONO",
+      "iTOWN": "LstAddresses.TOWN",
+      "iCSCD": "LstAddresses.CSCD",
+      "iECAR": "LstAddresses.ECAR",
+      "iFRCO": "LstAddresses.FRCO",
+      "iTXCO": "LstAddresses.TXCO",
+      "iPHNO": "LstAddresses.PHNO",
+      "iTFNO": "LstAddresses.TFNO",
+      "iYREF": "LstAddresses.YREF",
+      "iMODL": "LstAddresses.MODL",
+      "iTEDL": "LstAddresses.TEDL",
+      "iTAXC": "LstAddresses.TAXC",
+      "iVRNO": "LstAddresses.VRNO",
+      "iADVI": "LstAddresses.ADVI",
+      "iROUT": "LstAddresses.ROUT",
+      "iRODN": "LstAddresses.RODN",
+      "iULZO": "LstAddresses.ULZO",
+      "iFVDT": "LstAddresses.FVDT",
+      "iLVDT": "LstAddresses.LVDT",
+      "iADCG": "LstAddresses.ADCG",
+      "iPRIO": "LstAddresses.PRIO",
+      "iEALO": "LstAddresses.EALO"
+     },
+     "out": {},
+     "code": [
+      "// One call per row returned by CRS610MI/LstAddresses. The list is positioned on the customer key,",
+      "// so rows of other customers are skipped; only exact matches are kept.",
+      "String rCUNO = (iCUNO == null) ? \"\" : IONToolbox.rightTrim(iCUNO);",
+      "if (rCUNO.equals(CUNO)) {",
+      "    String[] row = new String[29];",
+      "    row[0] = (iADRT == null) ? \"\" : iADRT.trim();   // AddressType",
+      "    row[1] = (iADID == null) ? \"\" : iADID.trim();   // AddressNumber",
+      "    row[2] = (iCUNM == null) ? \"\" : iCUNM.trim();   // Name",
+      "    row[3] = (iCUA1 == null) ? \"\" : iCUA1.trim();   // Address1",
+      "    row[4] = (iCUA2 == null) ? \"\" : iCUA2.trim();   // Address2",
+      "    row[5] = (iCUA3 == null) ? \"\" : iCUA3.trim();   // Address3",
+      "    row[6] = (iCUA4 == null) ? \"\" : iCUA4.trim();   // Address4",
+      "    row[7] = (iPONO == null) ? \"\" : iPONO.trim();   // PostalCode",
+      "    row[8] = (iTOWN == null) ? \"\" : iTOWN.trim();   // City",
+      "    row[9] = (iCSCD == null) ? \"\" : iCSCD.trim();   // CountryCode",
+      "    row[10] = (iECAR == null) ? \"\" : iECAR.trim();   // AreaState",
+      "    row[11] = (iFRCO == null) ? \"\" : iFRCO.trim();   // CountyID",
+      "    row[12] = (iTXCO == null) ? \"\" : iTXCO.trim();   // County",
+      "    row[13] = (iPHNO == null) ? \"\" : iPHNO.trim();   // Phone1",
+      "    row[14] = (iTFNO == null) ? \"\" : iTFNO.trim();   // Fax",
+      "    row[15] = (iYREF == null) ? \"\" : iYREF.trim();   // YourReference",
+      "    row[16] = (iMODL == null) ? \"\" : iMODL.trim();   // DeliveryMethod",
+      "    row[17] = (iTEDL == null) ? \"\" : iTEDL.trim();   // TermsOfDelivery",
+      "    row[18] = (iTAXC == null) ? \"\" : iTAXC.trim();   // TaxCode",
+      "    row[19] = (iVRNO == null) ? \"\" : iVRNO.trim();   // VATRegistrationNumber",
+      "    row[20] = (iADVI == null) ? \"\" : iADVI.trim();   // ViaAddress",
+      "    row[21] = (iROUT == null) ? \"\" : iROUT.trim();   // Route",
+      "    row[22] = (iRODN == null) ? \"\" : iRODN.trim();   // RouteDeparture",
+      "    row[23] = (iULZO == null) ? \"\" : iULZO.trim();   // UnloadingZone",
+      "    String dFVDT = (iFVDT == null) ? \"\" : iFVDT.trim();",
+      "    if (dFVDT.equals(\"0\") || dFVDT.equals(\"00000000\")) dFVDT = \"\";",
+      "    row[24] = (dFVDT.length() == 8) ? dFVDT.substring(0, 4) + \"-\" + dFVDT.substring(4, 6) + \"-\" + dFVDT.substring(6, 8) : dFVDT;   // ValidFrom",
+      "    String dLVDT = (iLVDT == null) ? \"\" : iLVDT.trim();",
+      "    if (dLVDT.equals(\"0\") || dLVDT.equals(\"00000000\")) dLVDT = \"\";",
+      "    row[25] = (dLVDT.length() == 8) ? dLVDT.substring(0, 4) + \"-\" + dLVDT.substring(4, 6) + \"-\" + dLVDT.substring(6, 8) : dLVDT;   // ValidTo",
+      "    row[26] = (iADCG == null) ? \"\" : iADCG.trim();   // AddressCategory",
+      "    row[27] = (iPRIO == null) ? \"\" : iPRIO.trim();   // Priority",
+      "    row[28] = (iEALO == null) ? \"\" : iEALO.trim();   // EANLocation",
+      "    g_Adr.add(row);",
+      "}"
+     ],
+     "desc": "Keep rows of the event customer in g_Adr"
+    }
+   ]
+  },
+  {
+   "java": "CheckAddress",
+   "code": [
+    "// Runs after the CRS610MI/LstAddresses loop: the last API call is the list call itself.",
+    "if (!isLastAPICallOK()) {",
+    "    String msg = \"CustomerDetails: CRS610MI/LstAddresses failed for customer \" + CUNO + \" (CONO \" + CONO + \"): \" + getLastAPIMessage();",
+    "    if (strictLists) {",
+    "        throw new MeCError(msg);   // never send a BOD with a section silently missing",
+    "    }",
+    "    logWarn(msg + \" - address section omitted (StrictListCheck=false)\");",
+    "    g_Adr.clear();",
+    "}",
+    "logDebug(\"CustomerDetails: \" + g_Adr.size() + \" address record(s) for customer \" + CUNO);"
+   ],
+   "desc": "API failure on CRS610MI/LstAddresses: fail the message (default) or omit the section"
+  },
+  {
+   "java": "SetOutboxHeaderData",
+   "desc": "BOD type, accounting entity, target logical id, document id",
+   "code": [
+    "// BODType, hard coded here",
+    "setManifestInfo(ManifestConstants.MAP_ION_BOD_TYPE, \"Sync.CustomerDetails\"); // \"map:ionBODType\"",
+    "",
+    "// AccountingEntityID",
+    "setManifestInfo(ManifestConstants.MAP_ION_ACCOUNTING_ENTITY, bodAE); // \"map:ionAccountingEntity\"",
+    "",
+    "// ToLogicalId, set from event when present",
+    "if (!IONToolbox.isEmpty(eventData.get(\"ToLogicalId\"))) {",
+    "    setManifestInfo(ManifestConstants.MAP_ION_TO_LOGICAL_ID, eventData.get(\"ToLogicalId\")); // \"map:ionToLogicalId\"",
+    "}",
+    "",
+    "// Document id shown in ION OneView",
+    "setManifestInfo(ManifestConstants.MAP_ION_DOCUMENT_ID, CUNO); // \"map:ionDocumentId\""
+   ]
+  },
+  {
+   "java": "SetHeader",
+   "desc": "BOD root attributes and ApplicationArea",
+   "in": {
+    "iCONO": "$CONO",
+    "iLANC": "$LANC",
+    "iSentTimestamp": "IN:/EventData/SentTimestamp",
+    "iBODID": null
+   },
+   "out": {
+    "oReleaseID": [
+     "OUT:/SyncCustomerDetails[@releaseID]"
+    ],
+    "oVersionID": [
+     "OUT:/SyncCustomerDetails[@versionID]"
+    ],
+    "oSystemEnvironmentCode": [
+     "OUT:/SyncCustomerDetails[@systemEnvironmentCode]"
+    ],
+    "oLanguageCode": [
+     "OUT:/SyncCustomerDetails[@languageCode]"
+    ],
+    "oLogicalID": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/Sender/LogicalID",
+     "$LogicalID"
+    ],
+    "oLogicalID_schemeVersionID": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/Sender/LogicalID[@schemeVersionID]"
+    ],
+    "oComponentID": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/Sender/ComponentID"
+    ],
+    "oComponentID_schemeVersionID": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/Sender/ComponentID[@schemeVersionID]"
+    ],
+    "oConfirmationCode": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/Sender/ConfirmationCode"
+    ],
+    "oCreationDateTime": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/CreationDateTime"
+    ],
+    "oBODID": [
+     "OUT:/SyncCustomerDetails/ApplicationArea/BODID"
+    ]
+   },
+   "code": [
+    "// Set OAGIS release",
+    "oReleaseID = \"9.2\";",
+    "",
+    "// Set version of the given BOD definition",
+    "oVersionID = \"1.0.0\";",
+    "",
+    "// Set \"Test\" or \"Production\" (default) mode",
+    "oSystemEnvironmentCode = getSystemEnvironmentCode();",
+    "",
+    "// Set language for the contents of the BOD",
+    "if (iLANC != null) {",
+    "    oLanguageCode = dtGen.toMessage(\"Generic\", \"languageCode\", iLANC, \"\", \"\", \"CSYTAB\",\"LNCD\");",
+    "}",
+    "",
+    "// Set from logical ID",
+    "oLogicalID = getFromLogicalID();",
+    "",
+    "// Set MEC mapping version",
+    "oLogicalID_schemeVersionID = getMappingVersion();",
+    "",
+    "// Set business application that issued the BOD",
+    "oComponentID = \"M3BE\";",
+    "",
+    "// Set M3 BE version",
+    "oComponentID_schemeVersionID = getBEVersion();",
+    "",
+    "// Set date time stamp that the given instance of the BOD was created (UTC)",
+    "oCreationDateTime = IONToolbox.normalizeXMLDateTime(iSentTimestamp);",
+    "",
+    "// Set GUID that will make each BOD instance uniquely identifiable, default MEC message UUID",
+    "if (iBODID != null) {",
+    "    oBODID = iBODID;",
+    "} else {",
+    "    oBODID = getMapUUID();",
+    "}",
+    "// Set ConfirmationCode",
+    "oConfirmationCode = \"OnError\";"
+   ]
+  },
+  {
+   "java": "SetSync",
+   "desc": "Sync verb: accounting entity, location, action code",
+   "in": {
+    "iCONO": "$CONO",
+    "iOperation": "IN:/EventData/Operation"
+   },
+   "out": {
+    "oAccountingEntityID": [
+     "OUT:/SyncCustomerDetails/DataArea/Sync/AccountingEntityID"
+    ],
+    "oLocationID": [
+     "OUT:/SyncCustomerDetails/DataArea/Sync/LocationID"
+    ],
+    "oActionCode": [
+     "OUT:/SyncCustomerDetails/DataArea/Sync/ActionCriteria/ActionExpression[@actionCode]"
+    ]
+   },
+   "code": [
+    "// Set accounting entity id",
+    "oAccountingEntityID = (!IONToolbox.isEmpty(bodAE)) ? bodAE : \"\";",
+    "",
+    "// Customer master is company-level: no location",
+    "oLocationID = \"\";",
+    "",
+    "// Set action code (C -> Add, U -> Replace)",
+    "oActionCode = IONToolbox.createSyncActionCode(iOperation);"
+   ]
+  },
+  {
+   "java": "SetCustomerHeader",
+   "desc": "Map CRS610MI/GetBasicData to CustomerDetails/CustomerHeader",
+   "in": {
+    "iCUNO": "GetBasicData.CUNO",
+    "iCUNM": "GetBasicData.CUNM",
+    "iCUA1": "GetBasicData.CUA1",
+    "iCUA2": "GetBasicData.CUA2",
+    "iCUA3": "GetBasicData.CUA3",
+    "iCUA4": "GetBasicData.CUA4",
+    "iPONO": "GetBasicData.PONO",
+    "iTOWN": "GetBasicData.TOWN",
+    "iCSCD": "GetBasicData.CSCD",
+    "iECAR": "GetBasicData.ECAR",
+    "iFRCO": "GetBasicData.FRCO",
+    "iTXCO": "GetBasicData.TXCO",
+    "iPHNO": "GetBasicData.PHNO",
+    "iPHN2": "GetBasicData.PHN2",
+    "iTFNO": "GetBasicData.TFNO",
+    "iMAIL": "GetBasicData.MAIL",
+    "iCUTP": "GetBasicData.CUTP",
+    "iALCU": "GetBasicData.ALCU",
+    "iYREF": "GetBasicData.YREF",
+    "iYRE2": "GetBasicData.YRE2",
+    "iSTAT": "GetBasicData.STAT",
+    "iCUCD": "GetBasicData.CUCD",
+    "iLNCD": "GetBasicData.LNCD",
+    "iDIVI": "GetBasicData.DIVI",
+    "iMCOS": "GetBasicData.MCOS",
+    "iCUSU": "GetBasicData.CUSU",
+    "iEALO": "GetBasicData.EALO",
+    "iCFC1": "GetBasicData.CFC1",
+    "iCFC2": "GetBasicData.CFC2",
+    "iCFC3": "GetBasicData.CFC3",
+    "iCFC4": "GetBasicData.CFC4",
+    "iCFC5": "GetBasicData.CFC5",
+    "iCFC6": "GetBasicData.CFC6",
+    "iCFC7": "GetBasicData.CFC7",
+    "iCFC8": "GetBasicData.CFC8",
+    "iCFC9": "GetBasicData.CFC9",
+    "iCFC0": "GetBasicData.CFC0",
+    "iRGDT": "GetBasicData.RGDT",
+    "iLMDT": "GetBasicData.LMDT",
+    "iCHNO": "GetBasicData.CHNO"
+   },
+   "out": {
+    "oCustomerNumber": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/CustomerNumber"
+    ],
+    "oName": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Name"
+    ],
+    "oAddress1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Address1"
+    ],
+    "oAddress2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Address2"
+    ],
+    "oAddress3": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Address3"
+    ],
+    "oAddress4": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Address4"
+    ],
+    "oPostalCode": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/PostalCode"
+    ],
+    "oCity": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/City"
+    ],
+    "oCountryCode": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/CountryCode"
+    ],
+    "oAreaState": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/AreaState"
+    ],
+    "oCountyID": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/CountyID"
+    ],
+    "oCounty": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/County"
+    ],
+    "oPhone1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Phone1"
+    ],
+    "oPhone2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Phone2"
+    ],
+    "oFax": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Fax"
+    ],
+    "oEmail": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Email"
+    ],
+    "oCustomerType": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/CustomerType"
+    ],
+    "oSearchKey": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/SearchKey"
+    ],
+    "oYourReference1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/YourReference1"
+    ],
+    "oYourReference2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/YourReference2"
+    ],
+    "oStatus": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Status"
+    ],
+    "oCurrency": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Currency"
+    ],
+    "oLanguage": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Language"
+    ],
+    "oDivision": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/Division"
+    ],
+    "oCustomerOrderNumberMandatory": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/CustomerOrderNumberMandatory"
+    ],
+    "oOurSupplierNumberAtCustomer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/OurSupplierNumberAtCustomer"
+    ],
+    "oEANLocation": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/EANLocation"
+    ],
+    "oFreeField1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField1"
+    ],
+    "oFreeField2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField2"
+    ],
+    "oFreeField3": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField3"
+    ],
+    "oFreeField4": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField4"
+    ],
+    "oFreeField5": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField5"
+    ],
+    "oFreeField6": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField6"
+    ],
+    "oFreeField7": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField7"
+    ],
+    "oFreeField8": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField8"
+    ],
+    "oFreeField9": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField9"
+    ],
+    "oFreeField10": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/FreeField10"
+    ],
+    "oEntryDate": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/EntryDate"
+    ],
+    "oChangeDate": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/ChangeDate"
+    ],
+    "oChangeNumber": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/CustomerHeader/ChangeNumber"
+    ]
+   },
+   "code": [
+    "// Values from CRS610MI/GetBasicData (validated in ValidateCustomerHeader). Trim; dates yyyyMMdd -> yyyy-MM-dd.",
+    "oCustomerNumber = (iCUNO == null) ? \"\" : IONToolbox.rightTrim(iCUNO);",
+    "oName = (iCUNM == null) ? \"\" : iCUNM.trim();",
+    "oAddress1 = (iCUA1 == null) ? \"\" : iCUA1.trim();",
+    "oAddress2 = (iCUA2 == null) ? \"\" : iCUA2.trim();",
+    "oAddress3 = (iCUA3 == null) ? \"\" : iCUA3.trim();",
+    "oAddress4 = (iCUA4 == null) ? \"\" : iCUA4.trim();",
+    "oPostalCode = (iPONO == null) ? \"\" : iPONO.trim();",
+    "oCity = (iTOWN == null) ? \"\" : iTOWN.trim();",
+    "oCountryCode = (iCSCD == null) ? \"\" : iCSCD.trim();",
+    "oAreaState = (iECAR == null) ? \"\" : iECAR.trim();",
+    "oCountyID = (iFRCO == null) ? \"\" : iFRCO.trim();",
+    "oCounty = (iTXCO == null) ? \"\" : iTXCO.trim();",
+    "oPhone1 = (iPHNO == null) ? \"\" : iPHNO.trim();",
+    "oPhone2 = (iPHN2 == null) ? \"\" : iPHN2.trim();",
+    "oFax = (iTFNO == null) ? \"\" : iTFNO.trim();",
+    "oEmail = (iMAIL == null) ? \"\" : iMAIL.trim();",
+    "oCustomerType = (iCUTP == null) ? \"\" : iCUTP.trim();",
+    "oSearchKey = (iALCU == null) ? \"\" : iALCU.trim();",
+    "oYourReference1 = (iYREF == null) ? \"\" : iYREF.trim();",
+    "oYourReference2 = (iYRE2 == null) ? \"\" : iYRE2.trim();",
+    "oStatus = (iSTAT == null) ? \"\" : iSTAT.trim();",
+    "oCurrency = (iCUCD == null) ? \"\" : iCUCD.trim();",
+    "oLanguage = (iLNCD == null) ? \"\" : iLNCD.trim();",
+    "oDivision = (iDIVI == null) ? \"\" : iDIVI.trim();",
+    "oCustomerOrderNumberMandatory = (iMCOS == null) ? \"\" : iMCOS.trim();",
+    "oOurSupplierNumberAtCustomer = (iCUSU == null) ? \"\" : iCUSU.trim();",
+    "oEANLocation = (iEALO == null) ? \"\" : iEALO.trim();",
+    "oFreeField1 = (iCFC1 == null) ? \"\" : iCFC1.trim();",
+    "oFreeField2 = (iCFC2 == null) ? \"\" : iCFC2.trim();",
+    "oFreeField3 = (iCFC3 == null) ? \"\" : iCFC3.trim();",
+    "oFreeField4 = (iCFC4 == null) ? \"\" : iCFC4.trim();",
+    "oFreeField5 = (iCFC5 == null) ? \"\" : iCFC5.trim();",
+    "oFreeField6 = (iCFC6 == null) ? \"\" : iCFC6.trim();",
+    "oFreeField7 = (iCFC7 == null) ? \"\" : iCFC7.trim();",
+    "oFreeField8 = (iCFC8 == null) ? \"\" : iCFC8.trim();",
+    "oFreeField9 = (iCFC9 == null) ? \"\" : iCFC9.trim();",
+    "oFreeField10 = (iCFC0 == null) ? \"\" : iCFC0.trim();",
+    "String dRGDT = (iRGDT == null) ? \"\" : iRGDT.trim();",
+    "if (dRGDT.equals(\"0\") || dRGDT.equals(\"00000000\")) dRGDT = \"\";",
+    "oEntryDate = (dRGDT.length() == 8) ? dRGDT.substring(0, 4) + \"-\" + dRGDT.substring(4, 6) + \"-\" + dRGDT.substring(6, 8) : dRGDT;",
+    "String dLMDT = (iLMDT == null) ? \"\" : iLMDT.trim();",
+    "if (dLMDT.equals(\"0\") || dLMDT.equals(\"00000000\")) dLMDT = \"\";",
+    "oChangeDate = (dLMDT.length() == 8) ? dLMDT.substring(0, 4) + \"-\" + dLMDT.substring(4, 6) + \"-\" + dLMDT.substring(6, 8) : dLMDT;",
+    "oChangeNumber = (iCHNO == null) ? \"\" : iCHNO.trim();"
+   ]
+  },
+  {
+   "java": "SetFinancial",
+   "desc": "Map CRS610MI/GetFinancial to CustomerDetails/Financial",
+   "in": {
+    "iCORG": "GetFinancial.CORG",
+    "iCOR2": "GetFinancial.COR2",
+    "iVTCD": "GetFinancial.VTCD",
+    "iVRNO": "GetFinancial.VRNO",
+    "iCRLM": "GetFinancial.CRLM",
+    "iCRL2": "GetFinancial.CRL2",
+    "iCRL3": "GetFinancial.CRL3",
+    "iODUD": "GetFinancial.ODUD",
+    "iTDIN": "GetFinancial.TDIN",
+    "iTOIN": "GetFinancial.TOIN",
+    "iTBLG": "GetFinancial.TBLG",
+    "iODUE": "GetFinancial.ODUE",
+    "iTXAP": "GetFinancial.TXAP",
+    "iTAXC": "GetFinancial.TAXC",
+    "iTECN": "GetFinancial.TECN",
+    "iTEEC": "GetFinancial.TEEC",
+    "iINRC": "GetFinancial.INRC",
+    "iBLCD": "GetFinancial.BLCD",
+    "iCRTP": "GetFinancial.CRTP",
+    "iTECD": "GetFinancial.TECD",
+    "iPYCD": "GetFinancial.PYCD",
+    "iPYDI": "GetFinancial.PYDI",
+    "iCLCD": "GetFinancial.CLCD",
+    "iBLPR": "GetFinancial.BLPR",
+    "iRMCT": "GetFinancial.RMCT",
+    "iSTMR": "GetFinancial.STMR",
+    "iBLII": "GetFinancial.BLII",
+    "iIICT": "GetFinancial.IICT",
+    "iCCUS": "GetFinancial.CCUS",
+    "iPYGR": "GetFinancial.PYGR",
+    "iDUCD": "GetFinancial.DUCD",
+    "iCASC": "GetFinancial.CASC",
+    "iCDRC": "GetFinancial.CDRC"
+   },
+   "out": {
+    "oOrganizationNumber1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OrganizationNumber1"
+    ],
+    "oOrganizationNumber2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OrganizationNumber2"
+    ],
+    "oVATCode": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/VATCode"
+    ],
+    "oVATRegistrationNumber": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/VATRegistrationNumber"
+    ],
+    "oCreditLimit1": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CreditLimit1"
+    ],
+    "oCreditLimit2": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CreditLimit2"
+    ],
+    "oCreditLimit3": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CreditLimit3"
+    ],
+    "oCreditLimit4MaxDays": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CreditLimit4MaxDays"
+    ],
+    "oOverdueInvoiceAmount": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OverdueInvoiceAmount"
+    ],
+    "oOutstandingInvoiceAmount": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OutstandingInvoiceAmount"
+    ],
+    "oOrderValueNotInvoiced": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OrderValueNotInvoiced"
+    ],
+    "oOverdueDays": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/OverdueDays"
+    ],
+    "oTaxApplicable": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/TaxApplicable"
+    ],
+    "oTaxCode": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/TaxCode"
+    ],
+    "oTaxExemptionContractNumber": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/TaxExemptionContractNumber"
+    ],
+    "oTaxExemptionExpiryDate": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/TaxExemptionExpiryDate"
+    ],
+    "oInvoiceRecipient": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/InvoiceRecipient"
+    ],
+    "oCustomerStop": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CustomerStop"
+    ],
+    "oExchangeRateType": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/ExchangeRateType"
+    ],
+    "oCashDiscountTerm": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CashDiscountTerm"
+    ],
+    "oPaymentMethodAR": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/PaymentMethodAR"
+    ],
+    "oPaymentInstruction": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/PaymentInstruction"
+    ],
+    "oCollection": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/Collection"
+    ],
+    "oPaymentReminderCode": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/PaymentReminderCode"
+    ],
+    "oPaymentReminderRule": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/PaymentReminderRule"
+    ],
+    "oStatementRule": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/StatementRule"
+    ],
+    "oInterestInvoicing": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/InterestInvoicing"
+    ],
+    "oInterestRule": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/InterestRule"
+    ],
+    "oCompanyGroupCustomer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CompanyGroupCustomer"
+    ],
+    "oGroupPayer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/GroupPayer"
+    ],
+    "oDueDateBase": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/DueDateBase"
+    ],
+    "oCashCustomer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CashCustomer"
+    ],
+    "oCreditDepartmentReference": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Financial/CreditDepartmentReference"
+    ]
+   },
+   "code": [
+    "// Values from CRS610MI/GetFinancial (validated in ValidateFinancial). Trim; dates yyyyMMdd -> yyyy-MM-dd.",
+    "oOrganizationNumber1 = (iCORG == null) ? \"\" : iCORG.trim();",
+    "oOrganizationNumber2 = (iCOR2 == null) ? \"\" : iCOR2.trim();",
+    "oVATCode = (iVTCD == null) ? \"\" : iVTCD.trim();",
+    "oVATRegistrationNumber = (iVRNO == null) ? \"\" : iVRNO.trim();",
+    "oCreditLimit1 = (iCRLM == null) ? \"\" : iCRLM.trim();",
+    "oCreditLimit2 = (iCRL2 == null) ? \"\" : iCRL2.trim();",
+    "oCreditLimit3 = (iCRL3 == null) ? \"\" : iCRL3.trim();",
+    "oCreditLimit4MaxDays = (iODUD == null) ? \"\" : iODUD.trim();",
+    "oOverdueInvoiceAmount = (iTDIN == null) ? \"\" : iTDIN.trim();",
+    "oOutstandingInvoiceAmount = (iTOIN == null) ? \"\" : iTOIN.trim();",
+    "oOrderValueNotInvoiced = (iTBLG == null) ? \"\" : iTBLG.trim();",
+    "oOverdueDays = (iODUE == null) ? \"\" : iODUE.trim();",
+    "oTaxApplicable = (iTXAP == null) ? \"\" : iTXAP.trim();",
+    "oTaxCode = (iTAXC == null) ? \"\" : iTAXC.trim();",
+    "oTaxExemptionContractNumber = (iTECN == null) ? \"\" : iTECN.trim();",
+    "String dTEEC = (iTEEC == null) ? \"\" : iTEEC.trim();",
+    "if (dTEEC.equals(\"0\") || dTEEC.equals(\"00000000\")) dTEEC = \"\";",
+    "oTaxExemptionExpiryDate = (dTEEC.length() == 8) ? dTEEC.substring(0, 4) + \"-\" + dTEEC.substring(4, 6) + \"-\" + dTEEC.substring(6, 8) : dTEEC;",
+    "oInvoiceRecipient = (iINRC == null) ? \"\" : iINRC.trim();",
+    "oCustomerStop = (iBLCD == null) ? \"\" : iBLCD.trim();",
+    "oExchangeRateType = (iCRTP == null) ? \"\" : iCRTP.trim();",
+    "oCashDiscountTerm = (iTECD == null) ? \"\" : iTECD.trim();",
+    "oPaymentMethodAR = (iPYCD == null) ? \"\" : iPYCD.trim();",
+    "oPaymentInstruction = (iPYDI == null) ? \"\" : iPYDI.trim();",
+    "oCollection = (iCLCD == null) ? \"\" : iCLCD.trim();",
+    "oPaymentReminderCode = (iBLPR == null) ? \"\" : iBLPR.trim();",
+    "oPaymentReminderRule = (iRMCT == null) ? \"\" : iRMCT.trim();",
+    "oStatementRule = (iSTMR == null) ? \"\" : iSTMR.trim();",
+    "oInterestInvoicing = (iBLII == null) ? \"\" : iBLII.trim();",
+    "oInterestRule = (iIICT == null) ? \"\" : iIICT.trim();",
+    "oCompanyGroupCustomer = (iCCUS == null) ? \"\" : iCCUS.trim();",
+    "oGroupPayer = (iPYGR == null) ? \"\" : iPYGR.trim();",
+    "oDueDateBase = (iDUCD == null) ? \"\" : iDUCD.trim();",
+    "oCashCustomer = (iCASC == null) ? \"\" : iCASC.trim();",
+    "oCreditDepartmentReference = (iCDRC == null) ? \"\" : iCDRC.trim();"
+   ]
+  },
+  {
+   "java": "SetOrderInfo",
+   "desc": "Map CRS610MI/GetOrderInfo to CustomerDetails/OrderInfo",
+   "in": {
+    "iCUCL": "GetOrderInfo.CUCL",
+    "iOREF": "GetOrderInfo.OREF",
+    "iSMCD": "GetOrderInfo.SMCD",
+    "iSDST": "GetOrderInfo.SDST",
+    "iORTP": "GetOrderInfo.ORTP",
+    "iEXCD": "GetOrderInfo.EXCD",
+    "iCHSY": "GetOrderInfo.CHSY",
+    "iTEDL": "GetOrderInfo.TEDL",
+    "iMODL": "GetOrderInfo.MODL",
+    "iWHLO": "GetOrderInfo.WHLO",
+    "iFACI": "GetOrderInfo.FACI",
+    "iDISY": "GetOrderInfo.DISY",
+    "iDIGC": "GetOrderInfo.DIGC",
+    "iDIPC": "GetOrderInfo.DIPC",
+    "iTEPY": "GetOrderInfo.TEPY",
+    "iPYNO": "GetOrderInfo.PYNO",
+    "iIVGP": "GetOrderInfo.IVGP",
+    "iADID": "GetOrderInfo.ADID",
+    "iADVI": "GetOrderInfo.ADVI",
+    "iPLTB": "GetOrderInfo.PLTB",
+    "iAICD": "GetOrderInfo.AICD",
+    "iADBO": "GetOrderInfo.ADBO",
+    "iTINC": "GetOrderInfo.TINC",
+    "iDOGR": "GetOrderInfo.DOGR",
+    "iRESP": "GetOrderInfo.RESP",
+    "iCUST": "GetOrderInfo.CUST",
+    "iPRIO": "GetOrderInfo.PRIO",
+    "iBCKO": "GetOrderInfo.BCKO",
+    "iPADL": "GetOrderInfo.PADL",
+    "iPRVG": "GetOrderInfo.PRVG",
+    "iBGRP": "GetOrderInfo.BGRP",
+    "iTAGY": "GetOrderInfo.TAGY",
+    "iSPLM": "GetOrderInfo.SPLM"
+   },
+   "out": {
+    "oCustomerGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/CustomerGroup"
+    ],
+    "oOurReference": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/OurReference"
+    ],
+    "oSalesperson": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Salesperson"
+    ],
+    "oDistrict": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/District"
+    ],
+    "oCustomerOrderType": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/CustomerOrderType"
+    ],
+    "oServiceModel": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/ServiceModel"
+    ],
+    "oChargeModel": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/ChargeModel"
+    ],
+    "oTermsOfDelivery": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/TermsOfDelivery"
+    ],
+    "oDeliveryMethod": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DeliveryMethod"
+    ],
+    "oWarehouse": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Warehouse"
+    ],
+    "oFacility": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Facility"
+    ],
+    "oDiscountModel": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DiscountModel"
+    ],
+    "oDiscountGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DiscountGroup"
+    ],
+    "oDiscountPercent": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DiscountPercent"
+    ],
+    "oTermsOfPayment": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/TermsOfPayment"
+    ],
+    "oPayer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Payer"
+    ],
+    "oInvoicingGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/InvoicingGroup"
+    ],
+    "oDeliveryAddressNumber": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DeliveryAddressNumber"
+    ],
+    "oShipVia": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/ShipVia"
+    ],
+    "oPriceListTable": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/PriceListTable"
+    ],
+    "oSummaryInvoice": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/SummaryInvoice"
+    ],
+    "oSeparateInvoices": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/SeparateInvoices"
+    ],
+    "oVATIncluded": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/VATIncluded"
+    ],
+    "oDocumentGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/DocumentGroup"
+    ],
+    "oResponsible": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Responsible"
+    ],
+    "oStatisticsCustomer": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/StatisticsCustomer"
+    ],
+    "oPriority": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/Priority"
+    ],
+    "oBackOrder": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/BackOrder"
+    ],
+    "oPartialDelivery": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/PartialDelivery"
+    ],
+    "oCommissionGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/CommissionGroup"
+    ],
+    "oBonusGroup": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/BonusGroup"
+    ],
+    "oTradeAgreementModel": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/TradeAgreementModel"
+    ],
+    "oSupplyModel": [
+     "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/OrderInfo/SupplyModel"
+    ]
+   },
+   "code": [
+    "// Values from CRS610MI/GetOrderInfo (validated in ValidateOrderInfo). Trim; dates yyyyMMdd -> yyyy-MM-dd.",
+    "oCustomerGroup = (iCUCL == null) ? \"\" : iCUCL.trim();",
+    "oOurReference = (iOREF == null) ? \"\" : iOREF.trim();",
+    "oSalesperson = (iSMCD == null) ? \"\" : iSMCD.trim();",
+    "oDistrict = (iSDST == null) ? \"\" : iSDST.trim();",
+    "oCustomerOrderType = (iORTP == null) ? \"\" : iORTP.trim();",
+    "oServiceModel = (iEXCD == null) ? \"\" : iEXCD.trim();",
+    "oChargeModel = (iCHSY == null) ? \"\" : iCHSY.trim();",
+    "oTermsOfDelivery = (iTEDL == null) ? \"\" : iTEDL.trim();",
+    "oDeliveryMethod = (iMODL == null) ? \"\" : iMODL.trim();",
+    "oWarehouse = (iWHLO == null) ? \"\" : iWHLO.trim();",
+    "oFacility = (iFACI == null) ? \"\" : iFACI.trim();",
+    "oDiscountModel = (iDISY == null) ? \"\" : iDISY.trim();",
+    "oDiscountGroup = (iDIGC == null) ? \"\" : iDIGC.trim();",
+    "oDiscountPercent = (iDIPC == null) ? \"\" : iDIPC.trim();",
+    "oTermsOfPayment = (iTEPY == null) ? \"\" : iTEPY.trim();",
+    "oPayer = (iPYNO == null) ? \"\" : iPYNO.trim();",
+    "oInvoicingGroup = (iIVGP == null) ? \"\" : iIVGP.trim();",
+    "oDeliveryAddressNumber = (iADID == null) ? \"\" : iADID.trim();",
+    "oShipVia = (iADVI == null) ? \"\" : iADVI.trim();",
+    "oPriceListTable = (iPLTB == null) ? \"\" : iPLTB.trim();",
+    "oSummaryInvoice = (iAICD == null) ? \"\" : iAICD.trim();",
+    "oSeparateInvoices = (iADBO == null) ? \"\" : iADBO.trim();",
+    "oVATIncluded = (iTINC == null) ? \"\" : iTINC.trim();",
+    "oDocumentGroup = (iDOGR == null) ? \"\" : iDOGR.trim();",
+    "oResponsible = (iRESP == null) ? \"\" : iRESP.trim();",
+    "oStatisticsCustomer = (iCUST == null) ? \"\" : iCUST.trim();",
+    "oPriority = (iPRIO == null) ? \"\" : iPRIO.trim();",
+    "oBackOrder = (iBCKO == null) ? \"\" : iBCKO.trim();",
+    "oPartialDelivery = (iPADL == null) ? \"\" : iPADL.trim();",
+    "oCommissionGroup = (iPRVG == null) ? \"\" : iPRVG.trim();",
+    "oBonusGroup = (iBGRP == null) ? \"\" : iBGRP.trim();",
+    "oTradeAgreementModel = (iTAGY == null) ? \"\" : iTAGY.trim();",
+    "oSupplyModel = (iSPLM == null) ? \"\" : iSPLM.trim();"
+   ]
+  },
+  {
+   "java": "PrepareOutput",
+   "desc": "Iterator over the collected address rows",
+   "code": [
+    "g_AdrIt = g_Adr.iterator();"
+   ]
+  },
+  {
+   "loop": "EmitAddress",
+   "cond": "WT",
+   "emits": [
+    "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address"
+   ],
+   "desc": "One Address element per collected row",
+   "body": [
+    {
+     "bool": "HasNextAddress",
+     "desc": "Iterator over g_Adr",
+     "code": [
+      "if (g_AdrIt != null && g_AdrIt.hasNext()) {",
+      "    g_Row = g_AdrIt.next();",
+      "    return true;",
+      "}",
+      "return false;"
+     ]
+    },
+    {
+     "java": "SetAddress",
+     "out": {
+      "oAddressType": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/AddressType"
+      ],
+      "oAddressNumber": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/AddressNumber"
+      ],
+      "oName": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Name"
+      ],
+      "oAddress1": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Address1"
+      ],
+      "oAddress2": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Address2"
+      ],
+      "oAddress3": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Address3"
+      ],
+      "oAddress4": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Address4"
+      ],
+      "oPostalCode": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/PostalCode"
+      ],
+      "oCity": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/City"
+      ],
+      "oCountryCode": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/CountryCode"
+      ],
+      "oAreaState": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/AreaState"
+      ],
+      "oCountyID": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/CountyID"
+      ],
+      "oCounty": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/County"
+      ],
+      "oPhone1": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Phone1"
+      ],
+      "oFax": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Fax"
+      ],
+      "oYourReference": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/YourReference"
+      ],
+      "oDeliveryMethod": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/DeliveryMethod"
+      ],
+      "oTermsOfDelivery": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/TermsOfDelivery"
+      ],
+      "oTaxCode": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/TaxCode"
+      ],
+      "oVATRegistrationNumber": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/VATRegistrationNumber"
+      ],
+      "oViaAddress": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/ViaAddress"
+      ],
+      "oRoute": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Route"
+      ],
+      "oRouteDeparture": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/RouteDeparture"
+      ],
+      "oUnloadingZone": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/UnloadingZone"
+      ],
+      "oValidFrom": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/ValidFrom"
+      ],
+      "oValidTo": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/ValidTo"
+      ],
+      "oAddressCategory": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/AddressCategory"
+      ],
+      "oPriority": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/Priority"
+      ],
+      "oEANLocation": [
+       "OUT:/SyncCustomerDetails/DataArea/CustomerDetails/Address/EANLocation"
+      ]
+     },
+     "code": [
+      "// Current row from g_Adr (set by HasNextAddress).",
+      "oAddressType = g_Row[0];",
+      "oAddressNumber = g_Row[1];",
+      "oName = g_Row[2];",
+      "oAddress1 = g_Row[3];",
+      "oAddress2 = g_Row[4];",
+      "oAddress3 = g_Row[5];",
+      "oAddress4 = g_Row[6];",
+      "oPostalCode = g_Row[7];",
+      "oCity = g_Row[8];",
+      "oCountryCode = g_Row[9];",
+      "oAreaState = g_Row[10];",
+      "oCountyID = g_Row[11];",
+      "oCounty = g_Row[12];",
+      "oPhone1 = g_Row[13];",
+      "oFax = g_Row[14];",
+      "oYourReference = g_Row[15];",
+      "oDeliveryMethod = g_Row[16];",
+      "oTermsOfDelivery = g_Row[17];",
+      "oTaxCode = g_Row[18];",
+      "oVATRegistrationNumber = g_Row[19];",
+      "oViaAddress = g_Row[20];",
+      "oRoute = g_Row[21];",
+      "oRouteDeparture = g_Row[22];",
+      "oUnloadingZone = g_Row[23];",
+      "oValidFrom = g_Row[24];",
+      "oValidTo = g_Row[25];",
+      "oAddressCategory = g_Row[26];",
+      "oPriority = g_Row[27];",
+      "oEANLocation = g_Row[28];"
+     ],
+     "desc": "Write one Address element"
+    }
+   ]
+  },
+  {
+   "java": "LogResult",
+   "desc": "Summary in the MEC message log",
+   "code": [
+    "logInfo(\"CustomerDetails: Sync.CustomerDetails built for customer \" + CUNO + \" (CONO \" + CONO + \"): \"",
+    "        + g_Adr.size() + \" address(es)\");"
+   ]
+  }
+ ]
+}
